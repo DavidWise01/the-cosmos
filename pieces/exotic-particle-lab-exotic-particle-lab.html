@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<!-- TRIPOD-IP-v1.0 | DLW | TriPod LLC | 2026-02-18 | SHA256:02880745b847317c4e2424524ec25d0f7a2b84368d184586f45b54af9fcab763 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exotic Particle Laboratory · Tachyon & Boson Suite</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,600;1,300&family=IM+Fell+English:ital@1&display=swap');
+:root{
+  --bg:    #000000;
+  --bg2:   #060608;
+  --bg3:   #03020a;
+  --mag:   #ff00cc;    /* tachyon */
+  --magh:  #ff66ee;
+  --magl:  #880066;
+  --gold:  #ffd700;    /* boson */
+  --goldh: #fff0a0;
+  --goldl: #997700;
+  --cyan:  #00eeff;    /* photon */
+  --green: #00ff88;    /* Higgs */
+  --red:   #ff3311;
+  --white: #f0f0f8;
+  --dim:   #222233;
+  --mid:   #556688;
+  --text:  #aabbd0;
+  --bdr:   rgba(255,0,204,0.12);
+  --bdrg:  rgba(255,215,0,0.12);
+  --disp:  'Bebas Neue', 'Arial Narrow', sans-serif;
+  --mono:  'IBM Plex Mono', monospace;
+  --serif: 'IM Fell English', Georgia, serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);font-family:var(--mono);font-size:12px;overflow:hidden;}
+
+/* GRID */
+header{
+  height:38px;padding:0 18px;
+  background:rgba(6,6,8,0.98);
+  border-bottom:1px solid rgba(255,0,204,0.18);
+  display:flex;align-items:center;gap:0;
+}
+.ht{
+  font-family:var(--disp);font-size:1.4rem;letter-spacing:.25em;
+  background:linear-gradient(90deg,var(--mag),var(--gold),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 12px rgba(255,0,204,.4));
+}
+.hsep{width:1px;height:20px;background:rgba(255,255,255,.08);margin:0 16px;}
+.hmeta{font-size:.58rem;color:var(--mid);letter-spacing:.18em;text-transform:uppercase;}
+.hright{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.badge{font-size:.55rem;padding:2px 8px;border:1px solid;letter-spacing:.15em;}
+.badge-t{border-color:var(--mag);color:var(--mag);}
+.badge-b{border-color:var(--gold);color:var(--gold);}
+
+#main{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:calc(55vh - 19px) calc(45vh - 19px);
+  height:calc(100vh - 38px);
+  gap:1px;background:rgba(255,255,255,.05);
+}
+
+/* QUADRANT CELLS */
+.qcell{position:relative;overflow:hidden;background:var(--bg);}
+
+/* SPLIT BOTTOM */
+#bot-left{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(255,255,255,.05);
+}
+#bot-right{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:1px;background:rgba(255,255,255,.05);
+}
+.subcell{background:var(--bg2);overflow:hidden;position:relative;}
+
+/* CELL HEADERS */
+.cell-title{
+  position:absolute;top:7px;left:10px;
+  font-family:var(--disp);font-size:.85rem;letter-spacing:.22em;
+  pointer-events:none;z-index:5;
+}
+.ct-mag{color:var(--mag);filter:drop-shadow(0 0 6px rgba(255,0,204,.5));}
+.ct-gold{color:var(--gold);filter:drop-shadow(0 0 6px rgba(255,215,0,.5));}
+.ct-cy{color:var(--cyan);}
+.ct-gr{color:var(--green);}
+
+.cell-formula{
+  position:absolute;top:28px;left:10px;
+  font-family:var(--serif);font-style:italic;
+  font-size:.7rem;color:rgba(255,255,255,.25);
+  pointer-events:none;z-index:5;letter-spacing:.05em;
+}
+
+canvas.fill{display:block;width:100%;height:100%;position:absolute;inset:0;}
+
+/* INSTRUMENT COLUMN */
+#instruments{
+  background:var(--bg3);
+  border-left:1px solid rgba(255,215,0,.1);
+  overflow-y:auto;display:flex;flex-direction:column;
+  padding:0;
+}
+#instruments::-webkit-scrollbar{width:2px;}
+#instruments::-webkit-scrollbar-thumb{background:var(--goldl);}
+
+.iblock{padding:9px 11px;border-bottom:1px solid rgba(255,215,0,.08);}
+.iblock:last-child{border-bottom:none;}
+.ibt{
+  font-family:var(--disp);font-size:.75rem;letter-spacing:.2em;
+  margin-bottom:6px;
+}
+.ibt-m{color:var(--mag);}
+.ibt-g{color:var(--gold);}
+.ibt-c{color:var(--cyan);}
+.ibt-gr{color:var(--green);}
+
+.fml{font-family:var(--serif);font-style:italic;font-size:.68rem;color:rgba(255,215,0,.5);margin-bottom:5px;line-height:1.35;}
+
+.rrow{display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.58rem;align-items:baseline;}
+.rrow:last-child{border-bottom:none;}
+.rl{color:var(--mid);letter-spacing:.06em;}
+.rv{font-size:.65rem;font-weight:600;text-align:right;}
+.rv-m{color:var(--mag);}
+.rv-g{color:var(--gold);}
+.rv-c{color:var(--cyan);}
+.rv-gr{color:var(--green);}
+.rv-w{color:var(--white);}
+.rv-d{color:var(--mid);}
+
+/* SLIDER */
+.lrow{margin-bottom:5px;}
+.llbl{display:flex;justify-content:space-between;font-size:.55rem;color:var(--mid);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;}
+.llbl span{color:var(--gold);font-size:.62rem;}
+input[type=range]{-webkit-appearance:none;width:100%;height:2px;background:linear-gradient(90deg,var(--magl),var(--goldl));outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 5px var(--gold);}
+
+.brow{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px;}
+.btn{background:rgba(255,215,0,.06);border:1px solid rgba(255,215,0,.2);color:var(--text);font-family:var(--mono);font-size:.54rem;padding:3px 7px;cursor:pointer;letter-spacing:.09em;text-transform:uppercase;transition:all .15s;}
+.btn:hover{background:rgba(255,215,0,.15);color:var(--gold);border-color:var(--gold);}
+.btn.m{border-color:rgba(255,0,204,.25);background:rgba(255,0,204,.06);}
+.btn.m:hover{background:rgba(255,0,204,.18);color:var(--mag);border-color:var(--mag);}
+
+.pbar-wrap{height:3px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06);margin:3px 0;overflow:hidden;}
+.pbar{height:100%;transition:width .4s ease;}
+
+.div{height:1px;background:linear-gradient(90deg,transparent,rgba(255,215,0,.15),transparent);margin:5px 0;}
+
+/* PARTICLE CHIP */
+.pchip{
+  display:inline-flex;flex-direction:column;align-items:center;
+  border:1px solid;padding:4px 8px;margin:2px;
+  font-size:.55rem;letter-spacing:.08em;cursor:pointer;
+  transition:all .15s;min-width:52px;text-align:center;
+}
+.pchip:hover{opacity:.8;}
+.pchip .sym{font-size:1rem;font-family:var(--serif);font-style:italic;line-height:1;}
+.pchip .nm{font-size:.5rem;color:var(--mid);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="ht">EXOTIC PARTICLE LABORATORY</div>
+  <div class="hsep"></div>
+  <div class="hmeta">Tachyon Field · Gauge Boson · QFT · Feynman Diagrams · Real Physics</div>
+  <div class="hright">
+    <div class="badge badge-t">TACHYON m²&lt;0</div>
+    <div class="badge badge-b">BOSON spin=ℤ</div>
+    <div class="hsep"></div>
+    <div class="hmeta" style="color:var(--magl)">TriPod · DLW</div>
+  </div>
+</header>
+
+<div id="main">
+
+  <!-- Q1: TACHYON -->
+  <div class="qcell" id="q-tachyon">
+    <div class="cell-title ct-mag">TACHYON FIELD  //  v &gt; c</div>
+    <div class="cell-formula">E² = p²c² − |μ|²c⁴   (m² &lt; 0, μ = imaginary mass)</div>
+    <canvas class="fill" id="tach-canvas"></canvas>
+  </div>
+
+  <!-- Q2: BOSON -->
+  <div class="qcell" id="q-boson">
+    <div class="cell-title ct-gold">GAUGE BOSON FIELD  //  spin = 1</div>
+    <div class="cell-formula">A^μ propagator: −ig^μν/(k² − m²c²)   [Feynman gauge]</div>
+    <canvas class="fill" id="bos-canvas"></canvas>
+  </div>
+
+  <!-- Q3: BOTTOM LEFT — Minkowski + Feynman -->
+  <div class="qcell" id="bot-left">
+    <div style="display:grid;grid-template-columns:1fr 1fr;height:100%;gap:1px;background:rgba(255,255,255,.05);">
+      <!-- Minkowski spacetime -->
+      <div class="subcell">
+        <div class="cell-title ct-mag" style="font-size:.7rem;">MINKOWSKI SPACETIME</div>
+        <div class="cell-formula" style="top:22px;font-size:.6rem;">ds² = −c²dt² + dx² (tachyon: spacelike ds²&gt;0)</div>
+        <canvas class="fill" id="mink-canvas"></canvas>
+      </div>
+      <!-- Feynman -->
+      <div class="subcell">
+        <div class="cell-title ct-gold" style="font-size:.7rem;">FEYNMAN DIAGRAMS</div>
+        <div class="cell-formula" style="top:22px;font-size:.6rem;">Perturbation theory — vertex = coupling constant g</div>
+        <canvas class="fill" id="feyn-canvas"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Q4: BOTTOM RIGHT — instruments -->
+  <div class="qcell" id="bot-right">
+    <div style="display:grid;grid-template-columns:255px 1fr;height:100%;gap:1px;background:rgba(255,255,255,.05);">
+      <!-- Data panel -->
+      <div id="instruments" class="subcell">
+
+        <div class="iblock">
+          <div class="ibt ibt-m">TACHYON DATA</div>
+          <div class="fml">m² &lt; 0 → v_group &gt; c</div>
+          <div class="lrow">
+            <div class="llbl">|μ|/m_e (imaginary mass) <span id="lbl-mu">1.0</span></div>
+            <input type="range" id="sl-mu" min="0.1" max="5" value="1" step="0.1" oninput="onTachParam()">
+          </div>
+          <div class="lrow">
+            <div class="llbl">Momentum p (m_e c) <span id="lbl-p">2.0</span></div>
+            <input type="range" id="sl-p" min="0.5" max="10" value="2" step="0.1" oninput="onTachParam()">
+          </div>
+          <div class="rrow"><span class="rl">Group velocity v_g</span><span class="rv rv-m" id="r-vg">—</span></div>
+          <div class="rrow"><span class="rl">Phase velocity v_ph</span><span class="rv rv-w" id="r-vph">—</span></div>
+          <div class="rrow"><span class="rl">Total energy E</span><span class="rv rv-m" id="r-E">—</span></div>
+          <div class="rrow"><span class="rl">Mach angle θ_M</span><span class="rv rv-m" id="r-mach">—</span></div>
+          <div class="rrow"><span class="rl">Worldline type</span><span class="rv rv-m">SPACELIKE</span></div>
+          <div class="rrow"><span class="rl">Causality violation</span><span class="rv rv-m">POSSIBLE*</span></div>
+          <div style="font-size:.52rem;color:var(--mid);margin-top:4px;line-height:1.5;">*Via Feinberg reinterpretation. Tachyons may not transmit info due to quantum uncertainty.</div>
+        </div>
+
+        <div class="iblock">
+          <div class="ibt ibt-g">BOSON SELECTOR</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0;margin-bottom:6px;">
+            <div class="pchip" style="border-color:var(--cyan);color:var(--cyan);" onclick="selectBoson('photon')"><span class="sym">γ</span><span class="nm">Photon</span></div>
+            <div class="pchip" style="border-color:var(--gold);color:var(--gold);" onclick="selectBoson('W')"><span class="sym">W±</span><span class="nm">W Boson</span></div>
+            <div class="pchip" style="border-color:var(--gold);color:var(--gold);" onclick="selectBoson('Z')"><span class="sym">Z⁰</span><span class="nm">Z Boson</span></div>
+            <div class="pchip" style="border-color:#ff6600;color:#ff6600;" onclick="selectBoson('gluon')"><span class="sym">g</span><span class="nm">Gluon</span></div>
+            <div class="pchip" style="border-color:var(--green);color:var(--green);" onclick="selectBoson('higgs')"><span class="sym">H</span><span class="nm">Higgs</span></div>
+            <div class="pchip" style="border-color:#aaaaff;color:#aaaaff;" onclick="selectBoson('graviton')"><span class="sym">G</span><span class="nm">Graviton</span></div>
+          </div>
+          <div class="rrow"><span class="rl">Particle</span><span class="rv rv-g" id="r-bname">Photon γ</span></div>
+          <div class="rrow"><span class="rl">Spin</span><span class="rv rv-g" id="r-bspin">1</span></div>
+          <div class="rrow"><span class="rl">Mass</span><span class="rv rv-c" id="r-bmass">0</span></div>
+          <div class="rrow"><span class="rl">Charge</span><span class="rv rv-g" id="r-bcharge">0</span></div>
+          <div class="rrow"><span class="rl">Force</span><span class="rv rv-g" id="r-bforce">Electromagnetic</span></div>
+          <div class="rrow"><span class="rl">Range</span><span class="rv rv-g" id="r-brange">∞</span></div>
+          <div class="rrow"><span class="rl">Coupling</span><span class="rv rv-g" id="r-bcoupl">α = 1/137</span></div>
+          <div class="rrow"><span class="rl">Propagator</span><span class="rv rv-c" id="r-bprop">1/k²</span></div>
+          <div class="rrow"><span class="rl">Stats</span><span class="rv rv-g">Bose-Einstein</span></div>
+        </div>
+
+        <div class="iblock">
+          <div class="ibt ibt-gr">HIGGS MECHANISM</div>
+          <div class="fml">V(φ) = −μ²|φ|² + λ|φ|⁴</div>
+          <div class="rrow"><span class="rl">VEV ⟨φ⟩</span><span class="rv rv-gr">246 GeV</span></div>
+          <div class="rrow"><span class="rl">Higgs mass m_H</span><span class="rv rv-gr">125.09 GeV</span></div>
+          <div class="rrow"><span class="rl">W mass (Higgs gives)</span><span class="rv rv-g">80.4 GeV</span></div>
+          <div class="rrow"><span class="rl">Z mass (Higgs gives)</span><span class="rv rv-g">91.2 GeV</span></div>
+          <div class="rrow"><span class="rl">Self-coupling λ</span><span class="rv rv-gr">0.129</span></div>
+          <div class="rrow"><span class="rl">Discovery date</span><span class="rv rv-w">4 Jul 2012</span></div>
+          <div class="rrow"><span class="rl">σ significance</span><span class="rv rv-gr">5.9σ (CMS+ATLAS)</span></div>
+        </div>
+
+        <div class="iblock">
+          <div class="ibt ibt-c">DISPERSION RELATIONS</div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:.56rem;color:var(--mid);margin-bottom:2px;">MASSIVE (ω²=k²c²+m²c⁴/ℏ²)</div>
+            <div class="pbar-wrap"><div class="pbar" id="pb-mass" style="width:60%;background:var(--gold);"></div></div>
+          </div>
+          <div style="margin-bottom:4px;">
+            <div style="font-size:.56rem;color:var(--mid);margin-bottom:2px;">MASSLESS (ω=kc, photon)</div>
+            <div class="pbar-wrap"><div class="pbar" style="width:100%;background:var(--cyan);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:.56rem;color:var(--mag);margin-bottom:2px;">TACHYON (ω²=k²c²−|μ|²c⁴/ℏ²)</div>
+            <div class="pbar-wrap"><div class="pbar" id="pb-tach" style="width:70%;background:var(--mag);"></div></div>
+          </div>
+          <div class="div"></div>
+          <div class="rrow"><span class="rl">Tachyon group v_g</span><span class="rv rv-m" id="r-vg2">—</span></div>
+          <div class="rrow"><span class="rl">Photon group v_g</span><span class="rv rv-c">= c (always)</span></div>
+          <div class="rrow"><span class="rl">W boson v_g</span><span class="rv rv-g">< c (massive)</span></div>
+        </div>
+
+      </div><!-- /instruments -->
+
+      <!-- Higgs potential + BE distribution -->
+      <div class="subcell" style="display:grid;grid-template-rows:1fr 1fr;gap:1px;background:rgba(255,255,255,.05);">
+        <div style="background:var(--bg2);position:relative;overflow:hidden;">
+          <div class="cell-title ct-gr" style="font-size:.68rem;top:5px;">HIGGS POTENTIAL V(φ)</div>
+          <canvas class="fill" id="higgs-canvas"></canvas>
+        </div>
+        <div style="background:var(--bg3);position:relative;overflow:hidden;">
+          <div class="cell-title ct-g" style="font-size:.68rem;top:5px;color:var(--gold);">BOSE-EINSTEIN vs FERMI-DIRAC</div>
+          <canvas class="fill" id="be-canvas"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* TRIPOD-IP-v1.0 | DLW | TriPod LLC | 2026-02-18
+   SHA256:02880745b847317c4e2424524ec25d0f7a2b84368d184586f45b54af9fcab763 */
+
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const C=2.998e8, HBAR=1.0546e-34, KB=1.381e-23, ME=9.109e-31, EV=1.602e-19;
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let tachMu=1.0, tachP=2.0; // |μ| in me, p in me*c
+let bosonType='photon';
+let time=0;
+const BOSONS={
+  photon:   {name:'Photon γ',  spin:1, mass:'0 (massless)',     charge:'0',   force:'Electromagnetic', range:'∞',           coupling:'α ≈ 1/137',    prop:'−ig^μν/k²',      col:'#00eeff', freq:3.0},
+  W:        {name:'W± Boson',  spin:1, mass:'80.4 GeV',         charge:'±1e', force:'Weak',            range:'~10⁻¹⁸ m',    coupling:'g_W ≈ 0.65',   prop:'−ig^μν/(k²−M²)', col:'#ffd700', freq:2.0},
+  Z:        {name:'Z⁰ Boson',  spin:1, mass:'91.2 GeV',         charge:'0',   force:'Weak',            range:'~10⁻¹⁸ m',    coupling:'g_Z ≈ 0.74',   prop:'−ig^μν/(k²−M²)', col:'#ffaa00', freq:1.8},
+  gluon:    {name:'Gluon g',   spin:1, mass:'0 (confined)',      charge:'0',   force:'Strong (QCD)',    range:'~10⁻¹⁵ m',    coupling:'α_s ≈ 0.118',  prop:'−iδ^ab g^μν/k²', col:'#ff6600', freq:4.0},
+  higgs:    {name:'Higgs H⁰',  spin:0, mass:'125.09 GeV',       charge:'0',   force:'Scalar (mass)',   range:'~10⁻¹⁸ m',    coupling:'m_f/v',        prop:'i/(k²−m_H²)',    col:'#00ff88', freq:0.8},
+  graviton: {name:'Graviton G',spin:2, mass:'0 (theoretical)',   charge:'0',   force:'Gravity',         range:'∞',           coupling:'G_N/ℏ',        prop:'complicated',    col:'#aaaaff', freq:1.2},
+};
+
+// ═══════════════════════════════════════════
+// CANVAS REFS
+// ═══════════════════════════════════════════
+const tachC=document.getElementById('tach-canvas'), tachX=tachC.getContext('2d');
+const bosC =document.getElementById('bos-canvas'),  bosX =bosC.getContext('2d');
+const minkC=document.getElementById('mink-canvas'), minkX=minkC.getContext('2d');
+const feynC=document.getElementById('feyn-canvas'), feynX=feynC.getContext('2d');
+const higgC=document.getElementById('higgs-canvas'),higgX=higgC.getContext('2d');
+const beC  =document.getElementById('be-canvas'),   beX  =beC.getContext('2d');
+
+function resize(c){c.width=c.parentElement.clientWidth;c.height=c.parentElement.clientHeight;}
+function resizeAll(){[tachC,bosC,minkC,feynC,higgC,beC].forEach(resize);}
+resizeAll();
+window.addEventListener('resize',resizeAll);
+
+// ═══════════════════════════════════════════
+// PARAM SYNC
+// ═══════════════════════════════════════════
+function onTachParam(){
+  tachMu=+document.getElementById('sl-mu').value;
+  tachP =+document.getElementById('sl-p').value;
+  document.getElementById('lbl-mu').textContent=tachMu.toFixed(1);
+  document.getElementById('lbl-p').textContent =tachP.toFixed(1);
+  updateTachReadouts();
+}
+function updateTachReadouts(){
+  // E²=p²c²-|μ|²c⁴ → in me*c² units: E²=p²-μ²
+  const p=tachP, mu=tachMu;
+  const E2=p*p-mu*mu;
+  if(E2<=0){
+    document.getElementById('r-vg').textContent='UNDEFINED (p<μ)';
+    document.getElementById('r-E').textContent='IMAGINARY';
+    return;
+  }
+  const E=Math.sqrt(E2);
+  // v_g = dE/dp = pc²/E = p/E (in c=1 units → multiply by c)
+  const vg=p/E; // in units of c
+  const vph=E/p; // phase velocity in units of c
+  const machAngle=Math.asin(1/vg)*180/Math.PI;
+  document.getElementById('r-vg').textContent =vg.toFixed(4)+' c';
+  document.getElementById('r-vph').textContent=vph.toFixed(4)+' c';
+  document.getElementById('r-E').textContent  =E.toFixed(4)+' m_e c²';
+  document.getElementById('r-mach').textContent=isFinite(machAngle)?machAngle.toFixed(2)+'°':'—';
+  document.getElementById('r-vg2').textContent =vg.toFixed(3)+' c';
+  // Tachyon dispersion bar: vg proportion
+  document.getElementById('pb-tach').style.width=Math.min(vg*50,100)+'%';
+  // HUD
+  const sel=BOSONS[bosonType];
+  document.getElementById('pb-mass').style.width=(1/sel.freq*50)+'%';
+}
+function selectBoson(type){
+  bosonType=type;
+  const b=BOSONS[type];
+  function set(id,v){const el=document.getElementById(id);if(el)el.textContent=v;}
+  set('r-bname',  b.name);
+  set('r-bspin',  b.spin);
+  set('r-bmass',  b.mass);
+  set('r-bcharge',b.charge);
+  set('r-bforce', b.force);
+  set('r-brange', b.range);
+  set('r-bcoupl', b.coupling);
+  set('r-bprop',  b.prop);
+}
+
+// ═══════════════════════════════════════════
+// Q1: TACHYON FIELD VISUALIZATION
+// Imaginary-mass Klein-Gordon field: (∂²-∇²+μ²)φ=0 (μ²<0)
+// Cherenkov-like Mach cone for v>c
+// ═══════════════════════════════════════════
+function drawTachyon(){
+  const W=tachC.width, H=tachC.height;
+  const cx=W*.35, cy=H*.5;
+  tachX.clearRect(0,0,W,H);
+
+  const p=tachP, mu=tachMu;
+  const E2=p*p-mu*mu;
+  const vg=E2>0?p/Math.sqrt(E2):3; // group velocity in c
+  const machSin=E2>0?1/vg:0;
+  const machAngle=machSin>0&&machSin<=1?Math.asin(machSin):null;
+  const tachSpeed=Math.min(vg,6);
+  const tachX_pos=cx+tachSpeed*60*((time*.3)%1)*W*.3;
+
+  // ── Background: quantum vacuum fluctuations ──
+  tachX.save();
+  for(let i=0;i<6;i++){
+    for(let j=0;j<5;j++){
+      const x=i*W/6+W/12, y=j*H/5+H/10;
+      const phase=Math.sin(time*.5+i*.7+j*.5)*0.4;
+      const r=12+phase*4;
+      tachX.beginPath();
+      tachX.arc(x,y,r,0,Math.PI*2);
+      tachX.strokeStyle=`rgba(255,0,204,${0.04+Math.abs(phase)*.04})`;
+      tachX.lineWidth=.5; tachX.stroke();
+    }
+  }
+  tachX.restore();
+
+  // ── Light cones at origin ──
+  const lc_t=Math.min(W,H)*.45;
+  tachX.save();
+  // Future cone
+  tachX.beginPath();
+  tachX.moveTo(cx,cy);
+  tachX.lineTo(cx-lc_t*.7,cy-lc_t);
+  tachX.moveTo(cx,cy);
+  tachX.lineTo(cx+lc_t*.7,cy-lc_t);
+  tachX.strokeStyle='rgba(0,238,255,0.2)';
+  tachX.lineWidth=1; tachX.setLineDash([4,4]); tachX.stroke();
+  // Past cone
+  tachX.beginPath();
+  tachX.moveTo(cx,cy);tachX.lineTo(cx-lc_t*.7,cy+lc_t);
+  tachX.moveTo(cx,cy);tachX.lineTo(cx+lc_t*.7,cy+lc_t);
+  tachX.strokeStyle='rgba(0,238,255,0.12)';
+  tachX.stroke(); tachX.setLineDash([]);
+  // Labels
+  tachX.font='9px IBM Plex Mono'; tachX.fillStyle='rgba(0,238,255,.3)'; tachX.textAlign='center';
+  tachX.fillText('FUTURE LIGHT CONE',cx,cy-lc_t+12);
+  tachX.fillText('PAST LIGHT CONE',cx,cy+lc_t-4);
+  tachX.restore();
+
+  // ── Spacelike worldline (tachyon) ──
+  // Tachyon moves faster than light: dx/dt > c → worldline outside light cone
+  const tx=((time*.4)%(1.2))-.1;
+  const tachStartX=cx-W*.35, tachEndX=cx+W*.55;
+  const wlY=cy-H*.08; // slightly offset from horizontal (spacelike)
+  tachX.beginPath();
+  tachX.moveTo(tachStartX,cy+H*.04);
+  tachX.lineTo(tachEndX,cy-H*.22);
+  tachX.strokeStyle='rgba(255,0,204,0.35)';
+  tachX.lineWidth=1; tachX.setLineDash([6,3]); tachX.stroke(); tachX.setLineDash([]);
+
+  // Tachyon particle (moving along worldline)
+  const ptx=tachStartX+tx*(tachEndX-tachStartX);
+  const pty=cy+H*.04-tx*H*.26;
+  const pfrac=((tx+.1)/1.2);
+
+  // ── Mach cone ──
+  if(machAngle!==null){
+    const coneLen=Math.min(W,H)*.38;
+    const vDir=Math.atan2(-H*.26,tachEndX-tachStartX);
+    tachX.save();
+    tachX.translate(ptx,pty);
+    tachX.rotate(vDir);
+    // Two cone edges
+    for(const sign of[-1,1]){
+      tachX.beginPath();
+      tachX.moveTo(0,0);
+      tachX.lineTo(-coneLen,-Math.sin(machAngle)*coneLen*sign);
+      const cg=tachX.createLinearGradient(0,0,-coneLen,0);
+      cg.addColorStop(0,'rgba(255,0,204,0.5)');
+      cg.addColorStop(1,'rgba(255,0,204,0)');
+      tachX.strokeStyle=cg; tachX.lineWidth=1.5; tachX.stroke();
+    }
+    // Cone fill
+    tachX.beginPath();
+    tachX.moveTo(0,0);
+    tachX.lineTo(-coneLen,-Math.sin(machAngle)*coneLen);
+    tachX.lineTo(-coneLen, Math.sin(machAngle)*coneLen);
+    tachX.closePath();
+    const fg=tachX.createLinearGradient(0,0,-coneLen,0);
+    fg.addColorStop(0,'rgba(255,0,204,0.12)');
+    fg.addColorStop(1,'rgba(255,0,204,0)');
+    tachX.fillStyle=fg; tachX.fill();
+    tachX.restore();
+  }
+
+  // ── Tachyon particle itself ──
+  const glow=tachX.createRadialGradient(ptx,pty,0,ptx,pty,22);
+  glow.addColorStop(0,'rgba(255,0,204,1)');
+  glow.addColorStop(.3,'rgba(255,0,204,0.5)');
+  glow.addColorStop(1,'rgba(255,0,204,0)');
+  tachX.beginPath(); tachX.arc(ptx,pty,18,0,Math.PI*2);
+  tachX.fillStyle=glow; tachX.fill();
+  tachX.beginPath(); tachX.arc(ptx,pty,4,0,Math.PI*2);
+  tachX.fillStyle='#ff00cc'; tachX.fill();
+  // Trail
+  for(let i=1;i<=8;i++){
+    const tt=(tx-i*.04+.1)/1.2;
+    if(tt<0||tt>1)continue;
+    const trx=tachStartX+tt*(tachEndX-tachStartX);
+    const try_=cy+H*.04-tt*H*.26;
+    tachX.beginPath(); tachX.arc(trx,try_,3*(1-i/8),0,Math.PI*2);
+    tachX.fillStyle=`rgba(255,0,204,${(1-i/8)*.6})`; tachX.fill();
+  }
+
+  // ── Tachyon field waves (radial EM-like ripples from Cherenkov cone) ──
+  for(let r=0;r<5;r++){
+    const rad=((time*.4+r*.2)%1)*Math.min(W,H)*.45;
+    tachX.beginPath(); tachX.arc(ptx,pty,rad,0,Math.PI*2);
+    tachX.strokeStyle=`rgba(255,0,204,${(1-rad/(Math.min(W,H)*.45))*.15})`;
+    tachX.lineWidth=.8; tachX.stroke();
+  }
+
+  // ── Imaginary mass dispersion curve inset ──
+  const ix=W*.62, iy=H*.12, iw=W*.34, ih=H*.34;
+  tachX.fillStyle='rgba(6,6,8,.85)'; tachX.fillRect(ix,iy,iw,ih);
+  tachX.strokeStyle='rgba(255,0,204,.25)'; tachX.lineWidth=1; tachX.strokeRect(ix,iy,iw,ih);
+  tachX.font='7px IBM Plex Mono'; tachX.fillStyle='rgba(255,0,204,.5)';
+  tachX.textAlign='left'; tachX.fillText('E² = p² − μ²  (c=ℏ=1)',ix+4,iy+10);
+  // Axes
+  const ax=ix+12, ay=iy+ih-12, gw=iw-20, gh=ih-20;
+  tachX.beginPath(); tachX.moveTo(ax,iy+8); tachX.lineTo(ax,ay); tachX.lineTo(ix+iw-4,ay);
+  tachX.strokeStyle='rgba(255,255,255,.2)'; tachX.stroke();
+  tachX.fillStyle='rgba(255,255,255,.2)'; tachX.fillText('p',ix+iw-10,ay-2); tachX.fillText('E',ax+2,iy+18);
+  // Tachyon dispersion: E=sqrt(p²-μ²) for p>μ
+  tachX.beginPath();
+  const pmax=8, mu=tachMu;
+  let first=true;
+  for(let i=0;i<=100;i++){
+    const pp=mu+i/100*(pmax-mu);
+    const EE=Math.sqrt(Math.max(0,pp*pp-mu*mu));
+    const x=ax+(pp/pmax)*gw, y=ay-(EE/pmax)*gh;
+    if(first){tachX.moveTo(x,y);first=false;}else{tachX.lineTo(x,y);}
+  }
+  tachX.strokeStyle='rgba(255,0,204,.8)'; tachX.lineWidth=1.5; tachX.stroke();
+  // Normal dispersion E=sqrt(p²+m²) for comparison
+  tachX.beginPath(); first=true;
+  for(let i=0;i<=100;i++){
+    const pp=i/100*pmax;
+    const EE=Math.sqrt(pp*pp+mu*mu);
+    const x=ax+(pp/pmax)*gw, y=ay-(Math.min(EE,pmax)/pmax)*gh;
+    if(first){tachX.moveTo(x,y);first=false;}else{tachX.lineTo(x,y);}
+  }
+  tachX.strokeStyle='rgba(0,238,255,.4)'; tachX.lineWidth=1; tachX.setLineDash([3,3]); tachX.stroke(); tachX.setLineDash([]);
+  // Labels
+  tachX.fillStyle='rgba(255,0,204,.6)'; tachX.font='7px IBM Plex Mono';
+  tachX.fillText('tachyon',ax+gw*.55,ay-gh*.4);
+  tachX.fillStyle='rgba(0,238,255,.4)'; tachX.fillText('massive',ax+gw*.1,ay-gh*.2);
+  // μ threshold
+  const mx=ax+(mu/pmax)*gw;
+  tachX.beginPath(); tachX.moveTo(mx,iy+8); tachX.lineTo(mx,ay);
+  tachX.strokeStyle='rgba(255,0,204,.25)'; tachX.lineWidth=1; tachX.setLineDash([2,2]); tachX.stroke(); tachX.setLineDash([]);
+  tachX.fillStyle='rgba(255,0,204,.5)'; tachX.fillText('μ',mx-1,iy+16);
+
+  // ── Labels & HUD ──
+  tachX.fillStyle='rgba(255,0,204,.6)'; tachX.textAlign='left'; tachX.font='9px IBM Plex Mono';
+  tachX.fillText('SPACELIKE WORLDLINE',tachStartX+4,wlY-4);
+  if(E2>0){
+    tachX.fillText('v_g = '+tachP/Math.sqrt(E2).toFixed(3)+' c',ptx+12,pty-12);
+  }
+  tachX.fillStyle='rgba(0,238,255,.35)'; tachX.font='8px IBM Plex Mono';
+  tachX.fillText('c',cx+lc_t*.68,cy-lc_t*.9);
+  if(machAngle){tachX.fillStyle='rgba(255,0,204,.4)'; tachX.fillText('θ_Mach='+machAngle.toFixed(1)+'°',ptx-55,pty+25);}
+}
+
+// ═══════════════════════════════════════════
+// Q2: BOSON FIELD VISUALIZATION
+// Gauge boson = quantized vector field A^μ
+// Show: polarization waves, force mediation,
+// virtual boson exchange, field lines
+// ═══════════════════════════════════════════
+function drawBoson(){
+  const W=bosC.width, H=bosC.height;
+  bosX.clearRect(0,0,W,H);
+  const b=BOSONS[bosonType];
+  const col=b.col, freq=b.freq;
+
+  // ── Background field ──
+  // Quantized field A(x,t) = Σ_k (a_k e^{ikx-ωt} + h.c.)
+  // Visualize as superposition of plane waves
+  for(let mode=0;mode<6;mode++){
+    const k=mode+1, omega=Math.sqrt(k*k+b.spin*.5)*freq;
+    bosX.beginPath();
+    for(let x=0;x<=W;x+=2){
+      const xi=x/W;
+      const psi=Math.sin(k*xi*Math.PI*4-omega*time*.5+mode*1.1)*Math.cos(mode*0.7)*0.8;
+      const y=H*.5+psi*H*.18*(1-.8*xi);
+      x===0?bosX.moveTo(x,y):bosX.lineTo(x,y);
+    }
+    const alpha=(0.06-mode*.008);
+    bosX.strokeStyle=`${col}${Math.floor(alpha*255).toString(16).padStart(2,'0')}`;
+    bosX.lineWidth=1; bosX.stroke();
+  }
+
+  // ── Two fermion sources (exchange diagram in real space) ──
+  const fx1=W*.22, fy1=H*.35, fx2=W*.22, fy2=H*.65;
+  const gx1=W*.75, gy1=H*.35, gx2=W*.75, gy2=H*.65;
+
+  // Fermion worldlines
+  bosX.strokeStyle=`rgba(255,255,255,0.35)`; bosX.lineWidth=2;
+  bosX.beginPath(); bosX.moveTo(fx1,H*.08); bosX.lineTo(fx2,H*.92); bosX.stroke();
+  bosX.beginPath(); bosX.moveTo(gx1,H*.08); bosX.lineTo(gx2,H*.92); bosX.stroke();
+  // Fermion labels
+  bosX.font='italic 11px IM Fell English, serif';
+  bosX.fillStyle='rgba(255,255,255,.5)'; bosX.textAlign='center';
+  bosX.fillText('f',fx1,H*.05); bosX.fillText('f',gx1,H*.05);
+  bosX.fillText("f'",fx2,H*.97); bosX.fillText("f'",gx2,H*.97);
+
+  // ── Virtual boson propagator (wavy or dashed) ──
+  // Multiple virtual bosons at different times
+  const numExch=3;
+  for(let i=0;i<numExch;i++){
+    const t=(i+.5)/numExch;
+    const lx=fx1+(fx2-fx1)*t, ly=fy1+(fy2-fy1)*t;
+    const rx=gx1+(gx2-gx1)*t, ry=gy1+(gy2-gy1)*t;
+    const anim=((time*.3+i*.4)%1);
+    // Wavy line for gauge boson
+    if(b.spin===1||b.spin===2){
+      bosX.beginPath();
+      const n=60;
+      for(let k=0;k<=n;k++){
+        const f=k/n;
+        const x=lx+(rx-lx)*f;
+        const y=ly+(ry-ly)*f;
+        const perp_x=-(ry-ly)/Math.hypot(rx-lx,ry-ly);
+        const perp_y= (rx-lx)/Math.hypot(rx-lx,ry-ly);
+        const wave=Math.sin(f*Math.PI*8-time*2+i*1.5)*7*(1-Math.abs(f-.5)*2*.3);
+        k===0?bosX.moveTo(x+perp_x*wave,y+perp_y*wave):bosX.lineTo(x+perp_x*wave,y+perp_y*wave);
+      }
+    } else {
+      // Dashed for scalar (Higgs)
+      bosX.beginPath(); bosX.moveTo(lx,ly); bosX.lineTo(rx,ry);
+      bosX.setLineDash([4,4]);
+    }
+    const ga=0.4-i*.05;
+    bosX.strokeStyle=`${col}${Math.floor(ga*255).toString(16).padStart(2,'0')}`;
+    bosX.lineWidth=1.5; bosX.stroke(); bosX.setLineDash([]);
+    // Moving boson particle
+    const bx=lx+(rx-lx)*anim, by=ly+(ry-ly)*anim;
+    const bg=bosX.createRadialGradient(bx,by,0,bx,by,14);
+    bg.addColorStop(0,col+'ff'); bg.addColorStop(1,col+'00');
+    bosX.beginPath(); bosX.arc(bx,by,12,0,Math.PI*2);
+    bosX.fillStyle=bg; bosX.fill();
+    bosX.beginPath(); bosX.arc(bx,by,3,0,Math.PI*2);
+    bosX.fillStyle=col; bosX.fill();
+    // Boson label
+    bosX.font='10px IBM Plex Mono'; bosX.fillStyle=col;
+    const sym=bosonType==='photon'?'γ':bosonType==='W'?'W±':bosonType==='Z'?'Z⁰':bosonType==='gluon'?'g':bosonType==='higgs'?'H⁰':'G';
+    bosX.fillText(sym,bx+8,by-5);
+  }
+
+  // ── Polarization states ──
+  const px=W*.1, py=H*.18;
+  bosX.font='8px IBM Plex Mono'; bosX.textAlign='left';
+  bosX.fillStyle='rgba(255,255,255,.3)';
+  bosX.fillText('Polarisation states: '+(b.spin===0?'0 (scalar)':b.mass==='0 (massless)'?'2 (transverse)':'3 (transverse+longitudinal)'),px,py);
+
+  // Draw polarization vectors
+  if(b.spin>=1){
+    const pols=b.mass==='0 (massless)'?2:3;
+    for(let i=0;i<pols;i++){
+      const ang=time+i*Math.PI*2/pols;
+      const pvx=Math.cos(ang)*20, pvy=Math.sin(ang)*20;
+      bosX.beginPath();
+      bosX.moveTo(px+i*50+20,py+15);
+      bosX.lineTo(px+i*50+20+pvx,py+15+pvy);
+      bosX.strokeStyle=col; bosX.lineWidth=1.5;
+      bosX.stroke();
+      // Arrowhead
+      bosX.beginPath(); bosX.arc(px+i*50+20+pvx,py+15+pvy,2.5,0,Math.PI*2);
+      bosX.fillStyle=col; bosX.fill();
+    }
+  }
+
+  // ── Field strength visualization (inset) ──
+  const ix=W*.35, iy=H*.06, iw=W*.3, ih=H*.25;
+  bosX.fillStyle='rgba(6,6,8,.8)'; bosX.fillRect(ix,iy,iw,ih);
+  bosX.strokeStyle=col+'44'; bosX.lineWidth=1; bosX.strokeRect(ix,iy,iw,ih);
+  bosX.font='7px IBM Plex Mono'; bosX.fillStyle=col+'99'; bosX.textAlign='center';
+  bosX.fillText('Field: φ(x,t) = A cos(kx−ωt+φ₀)',ix+iw*.5,iy+9);
+  // Field wave
+  bosX.beginPath();
+  for(let x=0;x<=iw;x++){
+    const xi=x/iw;
+    const field=Math.cos(xi*Math.PI*freq*2-time*freq+.5)*Math.sin(xi*Math.PI);
+    const y=iy+ih*.5-field*ih*.38;
+    x===0?bosX.moveTo(ix+x,y):bosX.lineTo(ix+x,y);
+  }
+  bosX.strokeStyle=col; bosX.lineWidth=1.5; bosX.stroke();
+
+  // ── Stats box ──
+  bosX.fillStyle='rgba(0,0,0,.7)'; bosX.fillRect(W*.03,H*.72,W*.25,H*.24);
+  bosX.strokeStyle=col+'33'; bosX.strokeRect(W*.03,H*.72,W*.25,H*.24);
+  bosX.textAlign='left'; bosX.fillStyle=col; bosX.font='9px Bebas Neue, sans-serif';
+  bosX.fillText(b.name,W*.04+1,H*.72+12);
+  bosX.font='8px IBM Plex Mono'; bosX.fillStyle='rgba(255,255,255,.45)';
+  const stats=[`Spin: ${b.spin}`,`Mass: ${b.mass.split(' ')[0]}`,`Force: ${b.force.split(' ')[0]}`,`Range: ${b.range}`];
+  stats.forEach((s,i)=>bosX.fillText(s,W*.04,H*.72+24+i*11));
+}
+
+// ═══════════════════════════════════════════
+// MINKOWSKI SPACETIME DIAGRAM
+// ═══════════════════════════════════════════
+function drawMinkowski(){
+  const W=minkC.width, H=minkC.height;
+  const cx=W*.4, cy=H*.6;
+  minkX.clearRect(0,0,W,H);
+
+  // Axes: ct (vertical), x (horizontal)
+  const axR=Math.min(W,H)*.38;
+  // ct axis
+  minkX.beginPath(); minkX.moveTo(cx,cy+axR*.2); minkX.lineTo(cx,cy-axR);
+  minkX.strokeStyle='rgba(255,255,255,.3)'; minkX.lineWidth=1; minkX.stroke();
+  // x axis
+  minkX.beginPath(); minkX.moveTo(cx-axR*.5,cy); minkX.lineTo(cx+axR,cy);
+  minkX.strokeStyle='rgba(255,255,255,.3)'; minkX.lineWidth=1; minkX.stroke();
+  // Labels
+  minkX.font='9px IBM Plex Mono'; minkX.fillStyle='rgba(255,255,255,.4)';
+  minkX.textAlign='center'; minkX.fillText('ct',cx,cy-axR-5);
+  minkX.textAlign='left'; minkX.fillText('x',cx+axR+3,cy+3);
+
+  // Light cone (future: ct=x, ct=-x)
+  minkX.save();
+  // Future light cone fill
+  minkX.beginPath();
+  minkX.moveTo(cx,cy);minkX.lineTo(cx-axR*.9,cy-axR);minkX.lineTo(cx+axR*.9,cy-axR);minkX.closePath();
+  minkX.fillStyle='rgba(0,238,255,0.04)'; minkX.fill();
+  // Past cone fill
+  minkX.beginPath();
+  minkX.moveTo(cx,cy);minkX.lineTo(cx-axR*.9,cy+axR*.7);minkX.lineTo(cx+axR*.9,cy+axR*.7);minkX.closePath();
+  minkX.fillStyle='rgba(0,238,255,0.03)'; minkX.fill();
+  // Cone edges
+  minkX.strokeStyle='rgba(0,238,255,0.4)'; minkX.lineWidth=1;
+  minkX.beginPath(); minkX.moveTo(cx,cy); minkX.lineTo(cx+axR*.9,cy-axR); minkX.stroke();
+  minkX.beginPath(); minkX.moveTo(cx,cy); minkX.lineTo(cx-axR*.9,cy-axR); minkX.stroke();
+  minkX.beginPath(); minkX.moveTo(cx,cy); minkX.lineTo(cx+axR*.9,cy+axR*.7); minkX.stroke();
+  minkX.beginPath(); minkX.moveTo(cx,cy); minkX.lineTo(cx-axR*.9,cy+axR*.7); minkX.stroke();
+  minkX.restore();
+
+  // Region labels
+  minkX.font='8px IBM Plex Mono'; minkX.textAlign='center';
+  minkX.fillStyle='rgba(0,238,255,.35)'; minkX.fillText('TIMELIKE',cx,cy-axR*.5);
+  minkX.fillStyle='rgba(255,0,204,.35)'; minkX.fillText('SPACELIKE',cx+axR*.7,cy-axR*.1);
+  minkX.fillStyle='rgba(255,0,204,.25)'; minkX.fillText('SPACELIKE',cx-axR*.6,cy-axR*.1);
+
+  // Spacelike region fill (outside cone, sides)
+  minkX.fillStyle='rgba(255,0,204,0.04)';
+  minkX.fillRect(cx+axR*.02,cy-axR*.98,axR*.88,axR*.98);
+  minkX.fillRect(cx-axR*.9,cy-axR*.98,axR*.88,axR*.98);
+
+  // Tachyon worldline (spacelike: |dx|>|cdt|)
+  const tA=time*.15;
+  const p=tachP, mu=tachMu, E2=p*p-mu*mu;
+  const vg=E2>0?p/Math.sqrt(E2):3;
+  const slope=1/Math.max(vg,.01); // ct/x slope < 1 for tachyon
+  const tw=axR*.85;
+  minkX.beginPath();
+  minkX.moveTo(cx-tw,cy+tw*slope+Math.sin(tA)*3);
+  minkX.lineTo(cx+tw,cy-tw*slope+Math.sin(tA)*3);
+  minkX.strokeStyle='rgba(255,0,204,0.7)'; minkX.lineWidth=1.5;
+  minkX.setLineDash([6,3]); minkX.stroke(); minkX.setLineDash([]);
+  // Moving tachyon on it
+  const tf=((time*.2)%1)-.5;
+  const tx=cx+tf*tw*2*1, ty=cy-tf*tw*2*slope+Math.sin(tA)*3;
+  const tg=minkX.createRadialGradient(tx,ty,0,tx,ty,8);
+  tg.addColorStop(0,'rgba(255,0,204,.9)'); tg.addColorStop(1,'rgba(255,0,204,0)');
+  minkX.beginPath(); minkX.arc(tx,ty,7,0,Math.PI*2); minkX.fillStyle=tg; minkX.fill();
+
+  // Boson (photon) worldline — diagonal, slope exactly 1
+  minkX.beginPath();
+  minkX.moveTo(cx-axR*.7,cy+axR*.7);
+  minkX.lineTo(cx+axR*.7,cy-axR*.7);
+  minkX.strokeStyle='rgba(0,238,255,0.4)'; minkX.lineWidth=1;
+  minkX.stroke();
+  // Massive particle worldline — steeper slope
+  minkX.beginPath();
+  minkX.moveTo(cx-axR*.2,cy+axR*.7);
+  minkX.lineTo(cx+axR*.15,cy-axR*.7);
+  minkX.strokeStyle='rgba(255,215,0,0.3)'; minkX.lineWidth=1; minkX.stroke();
+
+  // Legend
+  minkX.textAlign='left'; minkX.font='7px IBM Plex Mono';
+  minkX.fillStyle='rgba(255,0,204,.6)'; minkX.fillText('— Tachyon (v>c)',W*.02,H*.1);
+  minkX.fillStyle='rgba(0,238,255,.5)'; minkX.fillText('— Photon γ (v=c)',W*.02,H*.1+11);
+  minkX.fillStyle='rgba(255,215,0,.4)'; minkX.fillText('— Massive (v<c)',W*.02,H*.1+22);
+
+  // ds² label
+  minkX.fillStyle='rgba(255,255,255,.2)'; minkX.font='8px IBM Plex Mono';
+  minkX.fillText('ds² = −c²dt² + dx²',W*.52,H*.92);
+  minkX.fillStyle='rgba(255,0,204,.35)';
+  minkX.fillText('tachyon: ds² > 0',W*.52,H*.92+10);
+}
+
+// ═══════════════════════════════════════════
+// FEYNMAN DIAGRAMS
+// ═══════════════════════════════════════════
+let feynDiag=0;
+const FEYN_DIAGRAMS=[
+  {name:'e⁻e⁺→γ→e⁻e⁺ (QED)',draw:drawFeynQED},
+  {name:'qq̄→g→qq̄ (QCD)',    draw:drawFeynQCD},
+  {name:'W boson decay',      draw:drawFeynW},
+  {name:'Higgs production',   draw:drawFeynHiggs},
+  {name:'Tachyon exchange',   draw:drawFeynTachyon},
+];
+function drawFeynQED(){drawGenericFeyn('γ','#00eeff','e⁻','e⁺');}
+function drawFeynQCD(){drawGenericFeyn('g','#ff6600','q','q̄');}
+function drawFeynW(){drawGenericFeyn('W±','#ffd700','ν','e⁻');}
+function drawFeynHiggs(){drawGenericFeyn('H⁰','#00ff88','t','t̄');}
+function drawFeynTachyon(){drawGenericFeyn('T','#ff00cc','f','f');}
+
+function drawGenericFeyn(boson, col, f1, f2){
+  const W=feynC.width, H=feynC.height;
+  const cx=W*.5, cy=H*.5;
+  feynX.clearRect(0,0,W,H);
+
+  const L=Math.min(W,H)*.3;
+  // Incoming fermions (left)
+  feynX.strokeStyle='rgba(255,255,255,.5)'; feynX.lineWidth=1.5;
+  feynX.beginPath(); feynX.moveTo(cx-L*1.4,cy-L*.6); feynX.lineTo(cx-L*.1,cy); feynX.stroke();
+  feynX.beginPath(); feynX.moveTo(cx-L*1.4,cy+L*.6); feynX.lineTo(cx-L*.1,cy); feynX.stroke();
+  // Outgoing fermions (right)
+  feynX.beginPath(); feynX.moveTo(cx+L*.1,cy); feynX.lineTo(cx+L*1.4,cy-L*.6); feynX.stroke();
+  feynX.beginPath(); feynX.moveTo(cx+L*.1,cy); feynX.lineTo(cx+L*1.4,cy+L*.6); feynX.stroke();
+  // Arrowheads
+  feynX.fillStyle='rgba(255,255,255,.5)';
+  const arrows=[[cx-L*.5,cy-L*.29,cx-L*.1,cy],[cx-L*.5,cy+L*.29,cx-L*.1,cy],[cx+L*.1,cy,cx+L*.8,cy-L*.42],[cx+L*.1,cy,cx+L*.8,cy+L*.42]];
+  arrows.forEach(([x1,y1,x2,y2])=>{
+    const ang=Math.atan2(y2-y1,x2-x1);
+    feynX.beginPath();
+    feynX.moveTo((x1+x2)*.5,       (y1+y2)*.5);
+    feynX.lineTo((x1+x2)*.5-8*Math.cos(ang-0.35),(y1+y2)*.5-8*Math.sin(ang-0.35));
+    feynX.lineTo((x1+x2)*.5-8*Math.cos(ang+0.35),(y1+y2)*.5-8*Math.sin(ang+0.35));
+    feynX.closePath(); feynX.fill();
+  });
+  // Propagator (boson line — wavy or dashed)
+  const isScalar=(boson==='H⁰'||boson==='T');
+  if(isScalar){
+    feynX.beginPath(); feynX.moveTo(cx-L*.1,cy); feynX.lineTo(cx+L*.1,cy);
+    feynX.strokeStyle=col; feynX.lineWidth=1.5; feynX.setLineDash([4,3]); feynX.stroke(); feynX.setLineDash([]);
+  } else {
+    feynX.beginPath();
+    const nn=30;
+    for(let i=0;i<=nn;i++){
+      const f=i/nn, x=cx-L*.2+f*L*.4;
+      const y=cy+Math.sin(f*Math.PI*5)*8;
+      i===0?feynX.moveTo(x,y):feynX.lineTo(x,y);
+    }
+    feynX.strokeStyle=col; feynX.lineWidth=2; feynX.stroke();
+  }
+  // Vertex dots
+  feynX.fillStyle=col;
+  feynX.beginPath(); feynX.arc(cx-L*.1,cy,5,0,Math.PI*2); feynX.fill();
+  feynX.beginPath(); feynX.arc(cx+L*.1,cy,5,0,Math.PI*2); feynX.fill();
+  // Labels
+  feynX.font='italic 11px IM Fell English, serif';
+  feynX.textAlign='center'; feynX.fillStyle='rgba(255,255,255,.6)';
+  feynX.fillText(f1, cx-L*1.4-6, cy-L*.6-5);
+  feynX.fillText(f2, cx-L*1.4-6, cy+L*.6+12);
+  feynX.fillText(f1+"'", cx+L*1.4+6, cy-L*.6-5);
+  feynX.fillText(f2+"'", cx+L*1.4+6, cy+L*.6+12);
+  feynX.fillStyle=col;
+  feynX.fillText(boson,cx,cy-14);
+  // Title
+  feynX.font='8px IBM Plex Mono'; feynX.fillStyle='rgba(255,255,255,.25)';
+  feynX.fillText(FEYN_DIAGRAMS[feynDiag].name,cx,H*.1);
+  feynX.fillText('g = coupling = vertex factor',cx,H*.9);
+}
+
+function drawFeynman(){
+  FEYN_DIAGRAMS[feynDiag].draw();
+  // Auto-cycle diagrams
+  feynDiag=Math.floor(time*.15)%FEYN_DIAGRAMS.length;
+}
+
+// ═══════════════════════════════════════════
+// HIGGS POTENTIAL  V(φ) = −μ²|φ|² + λ|φ|⁴
+// Mexican hat potential
+// ═══════════════════════════════════════════
+function drawHiggsPotential(){
+  const W=higgC.width, H=higgC.height;
+  higgX.clearRect(0,0,W,H);
+  const cx=W*.5, cy=H*.6;
+  const scx=W*.42, scy=H*.45;
+
+  // Draw 2D cross-section of V(φ)
+  const mu2=1, lam=0.5;
+  const phi_min=Math.sqrt(mu2/(2*lam)); // VEV = v/sqrt(2)
+  const ax=18, ay=H-14, gw=W-ax-8, gh=H-ay-8;
+  // Axes
+  higgX.beginPath(); higgX.moveTo(ax,8); higgX.lineTo(ax,ay); higgX.lineTo(W-4,ay);
+  higgX.strokeStyle='rgba(0,255,136,.2)'; higgX.lineWidth=1; higgX.stroke();
+  higgX.font='8px IBM Plex Mono'; higgX.fillStyle='rgba(0,255,136,.35)';
+  higgX.textAlign='center'; higgX.fillText('φ',W-8,ay-2);
+  higgX.fillText('V(φ)',ax+3,14);
+
+  // Mexican hat profile
+  higgX.beginPath();
+  const phiRange=2.2;
+  for(let i=0;i<=200;i++){
+    const phi=-phiRange+i/200*(phiRange*2);
+    const V=-mu2*phi*phi+lam*phi*phi*phi*phi;
+    const x=ax+(phi+phiRange)/(phiRange*2)*gw;
+    const y=ay-Math.min(Math.max((V+.5)/2,0),1)*gh;
+    i===0?higgX.moveTo(x,y):higgX.lineTo(x,y);
+  }
+  higgX.strokeStyle='#00ff88'; higgX.lineWidth=1.8; higgX.stroke();
+  // Fill below curve
+  higgX.lineTo(W-4,ay); higgX.lineTo(ax,ay); higgX.closePath();
+  const fg=higgX.createLinearGradient(0,ay-gh,0,ay);
+  fg.addColorStop(0,'rgba(0,255,136,0)'); fg.addColorStop(1,'rgba(0,255,136,0.08)');
+  higgX.fillStyle=fg; higgX.fill();
+
+  // Minima markers (VEV = ±φ₀)
+  const vev_x1=ax+(-phi_min+phiRange)/(phiRange*2)*gw;
+  const vev_x2=ax+( phi_min+phiRange)/(phiRange*2)*gw;
+  const vev_y=ay-(-mu2*phi_min*phi_min+lam*Math.pow(phi_min,4)+.5)/2*gh;
+  higgX.beginPath(); higgX.arc(vev_x1,vev_y,4,0,Math.PI*2);
+  higgX.fillStyle='#00ff88'; higgX.fill();
+  higgX.beginPath(); higgX.arc(vev_x2,vev_y,4,0,Math.PI*2);
+  higgX.fillStyle='#00ff88'; higgX.fill();
+  // Animated ball rolling toward VEV
+  const rollPhase=Math.sin(time*.3)*.8;
+  const rollPhi=rollPhase*phi_min;
+  const rollV=-mu2*rollPhi*rollPhi+lam*Math.pow(rollPhi,4);
+  const bx=ax+(rollPhi+phiRange)/(phiRange*2)*gw;
+  const by=ay-Math.min(Math.max((rollV+.5)/2,0),1)*gh;
+  const bg=higgX.createRadialGradient(bx,by,0,bx,by,6);
+  bg.addColorStop(0,'rgba(0,255,136,.9)'); bg.addColorStop(1,'rgba(0,255,136,0)');
+  higgX.beginPath(); higgX.arc(bx,by,5,0,Math.PI*2); higgX.fillStyle=bg; higgX.fill();
+
+  higgX.font='7px IBM Plex Mono'; higgX.fillStyle='rgba(0,255,136,.5)'; higgX.textAlign='left';
+  higgX.fillText('⟨φ⟩ = ±v/√2 = ±174 GeV',ax,H*.08);
+  higgX.fillText('SSB → Goldstone → W,Z masses',ax,H*.08+10);
+  higgX.fillStyle='rgba(0,255,136,.3)'; higgX.fillText('−μ²|φ|² + λ|φ|⁴',ax,H*.08+20);
+}
+
+// ═══════════════════════════════════════════
+// BOSE-EINSTEIN vs FERMI-DIRAC DISTRIBUTIONS
+// ═══════════════════════════════════════════
+function drawBEFD(){
+  const W=beC.width, H=beC.height;
+  beX.clearRect(0,0,W,H);
+  const ax=24, ay=H-14, gw=W-ax-8, gh=H-ay-8;
+  beX.beginPath(); beX.moveTo(ax,8); beX.lineTo(ax,ay); beX.lineTo(W-4,ay);
+  beX.strokeStyle='rgba(255,215,0,.2)'; beX.lineWidth=1; beX.stroke();
+  beX.font='8px IBM Plex Mono'; beX.fillStyle='rgba(255,215,0,.3)';
+  beX.textAlign='center'; beX.fillText('E/k_BT',W*.5,H-2);
+  beX.textAlign='right'; beX.fillText('n(E)',ax-1,12);
+
+  const T=1; // normalized
+  const mu_BE=-0.1; // chemical potential for BE (must be < 0)
+
+  // BE: n_BE(E) = 1/(exp((E-μ)/kT) - 1)
+  beX.beginPath();
+  let first=true;
+  for(let i=1;i<=200;i++){
+    const E=0.01+i/200*5;
+    const nBE=1/(Math.exp((E-mu_BE)/T)-1);
+    if(!isFinite(nBE)||nBE<0||nBE>8)continue;
+    const x=ax+(E/5)*gw, y=ay-(nBE/8)*gh;
+    if(first){beX.moveTo(x,y);first=false;}else{beX.lineTo(x,y);}
+  }
+  beX.strokeStyle='#ffd700'; beX.lineWidth=1.5; beX.stroke();
+
+  // FD: n_FD(E) = 1/(exp((E-μ)/kT) + 1)
+  const mu_FD=2.0;
+  beX.beginPath(); first=true;
+  for(let i=0;i<=200;i++){
+    const E=i/200*5;
+    const nFD=1/(Math.exp((E-mu_FD)/T)+1);
+    const x=ax+(E/5)*gw, y=ay-(nFD/1)*gh;
+    if(first){beX.moveTo(x,y);first=false;}else{beX.lineTo(x,y);}
+  }
+  beX.strokeStyle='rgba(0,238,255,.6)'; beX.lineWidth=1.5; beX.stroke();
+
+  // Maxwell-Boltzmann (classical)
+  beX.beginPath(); first=true;
+  for(let i=0;i<=200;i++){
+    const E=i/200*5;
+    const nMB=Math.exp(-(E-mu_FD)/T);
+    const x=ax+(E/5)*gw, y=ay-(Math.min(nMB,1))*gh;
+    if(first){beX.moveTo(x,y);first=false;}else{beX.lineTo(x,y);}
+  }
+  beX.strokeStyle='rgba(255,255,255,.2)'; beX.lineWidth=1; beX.setLineDash([3,3]); beX.stroke(); beX.setLineDash([]);
+
+  // Labels
+  beX.textAlign='left'; beX.font='7px IBM Plex Mono';
+  beX.fillStyle='rgba(255,215,0,.7)'; beX.fillText('Bose-Einstein (bosons)',ax+2,H*.12);
+  beX.fillStyle='rgba(0,238,255,.6)'; beX.fillText('Fermi-Dirac (fermions)',ax+2,H*.12+11);
+  beX.fillStyle='rgba(255,255,255,.3)'; beX.fillText('Maxwell-Boltzmann',ax+2,H*.12+22);
+  beX.fillStyle='rgba(255,215,0,.4)'; beX.fillText('← unlimited BE occupation',ax+gw*.1,H*.35);
+}
+
+// ═══════════════════════════════════════════
+// MAIN LOOP
+// ═══════════════════════════════════════════
+function loop(ts){
+  time=ts*.001;
+  drawTachyon();
+  drawBoson();
+  drawMinkowski();
+  drawFeynman();
+  drawHiggsPotential();
+  drawBEFD();
+  requestAnimationFrame(loop);
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+onTachParam();
+selectBoson('photon');
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

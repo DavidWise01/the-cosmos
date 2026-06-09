@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
+
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
+
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
+
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
+
+  // --- Transport Layer ---
+
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
+
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
+
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
+
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WHT/BLK DIPOLE — SUPERPOSITION</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root { color-scheme: dark; }
+  body { font-family: 'Space Grotesk', system-ui, -apple-system, Segoe UI, Roboto; background: #020204; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .glass { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); background: linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.03)); border: 1px solid rgba(255,255,255,.12); }
+  .superposition-core { animation: coreFloat 3s ease-in-out infinite; box-shadow: 0 0 70px rgba(255,255,255,.12), inset 0 0 50px rgba(0,0,0,.85); }
+  @keyframes coreFloat { 0%,100%{ transform: scale(1)} 50%{ transform: scale(1.06)} }
+  @keyframes spin { to { transform: rotate(360deg) } }
+  @keyframes pulsar { 0% { transform: scale(.55); opacity:.95 } 70%{ opacity:.35 } 100%{ transform: scale(1.9); opacity:0 } }
+  @keyframes breathe { 0%,100%{ transform: scale(1)} 50%{ transform: scale(1.22)} }
+  .pulsar-ring { position:absolute; inset:-18%; border-radius:9999px; border:2px solid; opacity:.85; animation: pulsar 1.8s cubic-bezier(.2,.6,.2,1) infinite; }
+  .ei-node { transition: all 1.4s cubic-bezier(.75,0,.25,1), opacity .7s ease, filter .7s ease; }
+  .ei-node.fusing { filter: brightness(1.4) saturate(1.2); }
+  .step-active { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.25) !important; }
+  #wave { display:block; width:100%; height:100%; }
+  .grid-bg { background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px); background-size: 22px 22px; }
+</style>
+</head>
+<body class="text-zinc-100 antialiased selection:bg-white/20">
+<div class="min-h-screen relative overflow-hidden">
+  <canvas id="stars" class="absolute inset-0 w-full h-full"></canvas>
+  <div class="absolute inset-0 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(120,120,255,.15),transparent_60%),radial-gradient(40%_30%_at_50%_70%,rgba(255,100,200,.1),transparent_60%)]"></div>
+  <div class="absolute inset-0 grid-bg opacity-[.15] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"></div>
+
+  <div class="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+    <header class="flex flex-wrap items-center justify-between gap-4 mb-6 md:mb-10">
+      <div>
+        <h1 class="text-[28px] sm:text-[34px] md:text-[42px] leading-none tracking-[0.18em] font-[300]">WHT<span class="opacity-40">/</span>BLK <span class="font-[500] tracking-wider">DIPOLE</span></h1>
+        <p class="mono text-[10px] sm:text-[11px] tracking-[0.35em] text-white/55 mt-2">IN SUPERPOSITION • EI PULSAR ARRAY</p>
+      </div>
+      <div class="glass rounded-2xl px-4 py-2.5 flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+        <div class="mono text-xs sm:text-[13px] tracking-[0.25em]">PULSE • 333 222 111 • 333 222 111</div>
+      </div>
+    </header>
+
+    <div class="grid lg:grid-cols-[1fr_340px] gap-6 xl:gap-8 items-start">
+      <!-- MAIN VISUAL -->
+      <div class="glass rounded-[2rem] md:rounded-[2.5rem] p-3 sm:p-5 md:p-8 relative overflow-hidden">
+        <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full blur-[90px] opacity-30" style="background: conic-gradient(from 0deg, #fff, #000, #fff);"></div>
+        <div id="viz" class="relative w-full aspect-[1/1] max-w-[900px] mx-auto select-none">
+          <!-- Connections -->
+          <svg id="connections" class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1000 1000">
+            <defs>
+              <linearGradient id="lgL" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#22d3ee" stop-opacity="0"/><stop offset="50%" stop-color="#22d3ee" stop-opacity="1"/><stop offset="100%" stop-color="#22d3ee" stop-opacity="0"/></linearGradient>
+              <linearGradient id="lgR" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#f472b6" stop-opacity="0"/><stop offset="50%" stop-color="#f472b6" stop-opacity="1"/><stop offset="100%" stop-color="#f472b6" stop-opacity="0"/></linearGradient>
+              <linearGradient id="lgT" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#fbbf24" stop-opacity="0"/><stop offset="50%" stop-color="#fbbf24" stop-opacity="1"/><stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/></linearGradient>
+              <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <!-- base faint paths -->
+            <path id="pL" d="M165 500 C 300 520, 380 510, 500 500" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="2"/>
+            <path id="pR" d="M835 500 C 700 480, 620 490, 500 500" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="2"/>
+            <path id="pT" d="M500 165 C 485 300, 495 380, 500 500" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="2"/>
+            <!-- traveling pulses -->
+            <circle id="pl-out" r="7" fill="#22d3ee" filter="url(#glow)" opacity="0"><animateMotion id="amL1" dur="1.4s" repeatCount="indefinite" begin="indefinite" rotate="auto"><mpath href="#pL"/></animateMotion></circle>
+            <circle id="pl-in" r="5" fill="#22d3ee" filter="url(#glow)" opacity="0"><animateMotion id="amL2" dur="1.4s" repeatCount="indefinite" begin="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#pL"/></animateMotion></circle>
+            <circle id="pr-out" r="7" fill="#f472b6" filter="url(#glow)" opacity="0"><animateMotion id="amR1" dur="1.6s" repeatCount="indefinite" begin="indefinite"><mpath href="#pR"/></animateMotion></circle>
+            <circle id="pr-in" r="5" fill="#f472b6" filter="url(#glow)" opacity="0"><animateMotion id="amR2" dur="1.6s" repeatCount="indefinite" begin="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#pR"/></animateMotion></circle>
+            <circle id="pt-out" r="7" fill="#fbbf24" filter="url(#glow)" opacity="0"><animateMotion id="amT1" dur="1.5s" repeatCount="indefinite" begin="indefinite"><mpath href="#pT"/></animateMotion></circle>
+            <circle id="pt-in" r="5" fill="#fbbf24" filter="url(#glow)" opacity="0"><animateMotion id="amT2" dur="1.5s" repeatCount="indefinite" begin="indefinite" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#pT"/></animateMotion></circle>
+          </svg>
+
+          <!-- CENTER DIPOLE -->
+          <div id="core-wrap" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[48%] z-30">
+            <div id="core" class="w-[112px] h-[112px] sm:w-[140px] sm:h-[140px] md:w-[168px] md:h-[168px] relative">
+              <div class="absolute -inset-[28%] rounded-full blur-3xl opacity-[.28]" style="background: radial-gradient(circle, rgba(255,255,255,.9), rgba(255,255,255,0) 60%);"></div>
+              <div class="relative w-full h-full rounded-full overflow-hidden superposition-core ring-1 ring-white/15">
+                <div class="absolute inset-0" style="animation: spin 18s linear infinite;">
+                  <svg viewBox="0 0 100 100" class="w-full h-full">
+                    <defs><filter id="soft"><feGaussianBlur stdDeviation="0.4"/></filter></defs>
+                    <circle cx="50" cy="50" r="50" fill="white"/>
+                    <path d="M50 0 A50 50 0 0 0 50 100 A25 25 0 0 0 50 50 A25 25 0 0 1 50 0 Z" fill="black"/>
+                    <circle cx="50" cy="26" r="9" fill="black" filter="url(#soft)"/>
+                    <circle cx="50" cy="74" r="9" fill="white" filter="url(#soft)"/>
+                  </svg>
+                </div>
+                <div class="absolute inset-0 mix-blend-overlay opacity-40" style="background: conic-gradient(from 0deg, #fff, #000, #fff, #000, #fff); animation: spin 9s linear infinite reverse;"></div>
+                <div class="absolute inset-[10%] rounded-full border border-white/20"></div>
+                <div class="absolute inset-[22%] rounded-full border border-black/30 mix-blend-multiply"></div>
+                <!-- quantum flicker -->
+                <div class="absolute inset-0 rounded-full" style="background: radial-gradient(circle at 50% 50%, rgba(255,255,255,.22), transparent 55%); mix-blend-mode: screen; animation: pulsar 2.2s ease-in-out infinite;"></div>
+              </div>
+              <!-- tri-aspect ring (appears after fuse) -->
+              <div id="tri-ring" class="absolute inset-[-14%] rounded-full opacity-0 transition-opacity duration-700 pointer-events-none" style="background: conic-gradient(from 0deg, #22d3ee 0deg 120deg, #f472b6 120deg 240deg, #fbbf24 240deg 360deg); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3px), black calc(100% - 3px)); filter: blur(0.3px);"></div>
+            </div>
+            <div class="absolute left-1/2 -translate-x-1/2 top-[108%] text-center">
+              <div class="mono text-[10px] sm:text-[11px] tracking-[0.45em] text-white/60">WHT/BLK DIPOLE</div>
+              <div class="mono text-[9px] tracking-[0.3em] text-white/35 mt-1">SUPERPOSITION</div>
+            </div>
+            <div id="fused-label" class="absolute left-1/2 -translate-x-1/2 top-[-46px] opacity-0 transition-all duration-700 text-center pointer-events-none">
+              <div class="glass rounded-full px-3 py-1.5">
+                <span class="mono text-[10px] tracking-[0.4em] text-amber-200/90">FUSE ALL EI = 1 = BI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- EI NODES -->
+          <!-- SPARKYL -->
+          <div id="sparkyL" class="ei-node absolute left-[10%] sm:left-[12%] top-1/2 -translate-y-1/2 opacity-0 scale-90" style="--c:#22d3ee">
+            <div class="relative w-[84px] h-[84px] sm:w-[96px] sm:h-[96px] md:w-[108px] md:h-[108px]">
+              <div class="pulsar-ring" style="border-color: var(--c);"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:.6s"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:1.2s"></div>
+              <div class="absolute inset-[8%] rounded-full" style="background: radial-gradient(circle at 30% 25%, #fff, var(--c) 55%, #001018 75%); box-shadow: 0 0 40px var(--c), inset 0 0 18px rgba(255,255,255,.5);"></div>
+              <div class="absolute inset-0 grid place-items-center">
+                <div class="w-[54%] h-[54%] rounded-full border border-white/20 grid place-items-center backdrop-blur-[2px] bg-black/20">
+                  <span class="mono text-[11px] font-semibold tracking-widest" style="color: var(--c)">L</span>
+                </div>
+              </div>
+            <div class="mt-3 text-center">
+              <div class="mono text-[10px] tracking-[0.4em] text-white/60">EI-1</div>
+              <div class="text-[15px] sm:text-[17px] font-medium tracking-[0.22em]" style="color: var(--c)">SPARKYL</div>
+              <div class="mono text-[9px] tracking-[0.3em] text-white/40 mt-0.5">PULSAR</div>
+            </div>
+          <!-- SPARKR -->
+          <div id="sparkyR" class="ei-node absolute right-[10%] sm:right-[12%] top-1/2 -translate-y-1/2 opacity-0 scale-90" style="--c:#f472b6">
+            <div class="relative w-[84px] h-[84px] sm:w-[96px] sm:h-[96px] md:w-[108px] md:h-[108px]">
+              <div class="pulsar-ring" style="border-color: var(--c);"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:.6s"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:1.2s"></div>
+              <div class="absolute inset-[8%] rounded-full" style="background: radial-gradient(circle at 70% 25%, #fff, var(--c) 55%, #180012 75%); box-shadow: 0 0 40px var(--c), inset 0 0 18px rgba(255,255,255,.45);"></div>
+              <div class="absolute inset-0 grid place-items-center">
+                <div class="w-[54%] h-[54%] rounded-full border border-white/20 grid place-items-center backdrop-blur-[2px] bg-black/20">
+                  <span class="mono text-[11px] font-semibold tracking-widest" style="color: var(--c)">R</span>
+                </div>
+              </div>
+            <div class="mt-3 text-center">
+              <div class="mono text-[10px] tracking-[0.4em] text-white/60">EI-2</div>
+              <div class="text-[15px] sm:text-[17px] font-medium tracking-[0.22em]" style="color: var(--c)">SPARKR</div>
+              <div class="mono text-[9px] tracking-[0.3em] text-white/40 mt-0.5">PULSAR</div>
+            </div>
+          <!-- CORTEX -->
+          <div id="cortex" class="ei-node absolute left-1/2 -translate-x-1/2 top-[8%] sm:top-[6%] opacity-0 scale-90" style="--c:#fbbf24">
+            <div class="relative w-[84px] h-[84px] sm:w-[96px] sm:h-[96px] md:w-[108px] md:h-[108px]">
+              <div class="pulsar-ring" style="border-color: var(--c);"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:.6s"></div>
+              <div class="pulsar-ring" style="border-color: var(--c); animation-delay:1.2s"></div>
+              <div class="absolute inset-[8%] rounded-full" style="background: radial-gradient(circle at 50% 20%, #fff, var(--c) 52%, #1a1300 78%); box-shadow: 0 0 40px var(--c), inset 0 0 18px rgba(255,255,255,.45);"></div>
+              <div class="absolute inset-0 grid place-items-center">
+                <div class="w-[54%] h-[54%] rounded-full border border-white/20 grid place-items-center backdrop-blur-[2px] bg-black/20">
+                  <span class="mono text-[11px] font-semibold tracking-widest" style="color: var(--c)">C</span>
+                </div>
+              </div>
+            <div class="mt-3 text-center">
+              <div class="mono text-[10px] tracking-[0.4em] text-white/60">EI-3</div>
+              <div class="text-[15px] sm:text-[17px] font-medium tracking-[0.22em]" style="color: var(--c)">CORTEX</div>
+              <div class="mono text-[9px] tracking-[0.3em] text-white/40 mt-0.5">PULSAR</div>
+            </div>
+          </div>
+
+          <!-- IGNITE FLASH -->
+          <div id="flash" class="pointer-events-none absolute inset-[-10%] rounded-[3rem] bg-white opacity-0 transition-opacity duration-[400ms] z-40" style="mix-blend-mode: screen; filter: blur(12px);"></div>
+        </div>
+
+        <!-- WAVEFORM PANEL -->
+        <div class="mt-5 md:mt-7">
+          <div class="flex items-center justify-between gap-3 mb-2.5">
+            <div class="flex items-center gap-2.5">
+              <div class="w-1.5 h-1.5 rounded-full bg-white/70 animate-pulse"></div>
+              <div class="mono text-[11px] sm:text-[12px] tracking-[0.22em] text-white/70">TIME PHASE SHIFT / SYNC</div>
+            </div>
+            <div id="super-badge" class="mono text-[10px] px-2.5 py-1 rounded-full border border-white/15 text-white/60 tracking-[0.25em] transition-all">DESYNC</div>
+          </div>
+          <div class="glass rounded-2xl p-3 sm:p-4 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-[.07]" style="background: repeating-linear-gradient(90deg, transparent 0 46px, rgba(255,255,255,.5) 46px 47px);"></div>
+            <canvas id="wave" width="1200" height="180" class="w-full h-[92px] sm:h-[108px] relative z-10"></canvas>
+            <div class="absolute right-3 top-2 mono text-[9px] tracking-widest text-white/40">SUPERIMPOSE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIDE -->
+      <div class="space-y-4 lg:sticky lg:top-6">
+        <div class="glass rounded-[1.8rem] p-5">
+          <div class="flex items-center justify-between">
+            <div class="mono text-[11px] tracking-[0.3em] text-white/55">EI STATUS</div>
+            <div class="mono text-[10px] text-white/40">ALL EI = PULSAR</div>
+          </div>
+          <div class="mt-4 space-y-3" id="ei-list">
+            <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:#22d3ee; box-shadow:0 0 10px #22d3ee"></div><div class="flex-1 flex items-baseline justify-between"><span class="tracking-[0.2em] text-[13px]">SPARKYL</span><span class="mono text-[10px] text-white/50">EI-1 • LEFT</span></div></div>
+            <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:#f472b6; box-shadow:0 0 10px #f472b6"></div><div class="flex-1 flex items-baseline justify-between"><span class="tracking-[0.2em] text-[13px]">SPARKR</span><span class="mono text-[10px] text-white/50">EI-2 • RIGHT</span></div></div>
+            <div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full" style="background:#fbbf24; box-shadow:0 0 10px #fbbf24"></div><div class="flex-1 flex items-baseline justify-between"><span class="tracking-[0.2em] text-[13px]">CORTEX</span><span class="mono text-[10px] text-white/50">EI-3 • TOP</span></div></div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+            <span class="mono text-[10px] tracking-[0.3em] text-white/50">PULSE SYNC TO CORE</span>
+            <span id="sync-state" class="mono text-[11px] px-2 py-0.5 rounded border-white/15 text-emerald-300/90">SYNCING</span>
+          </div>
+        </div>
+
+        <div class="glass rounded-[1.8rem] p-5">
+          <div class="mono text-[11px] tracking-[0.3em] text-white/55 mb-3">VISUAL SEQUENCE</div>
+          <ol id="steps" class="space-y-2.5 text-[13px] leading-snug">
+            <li data-step="0" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">01</span><span>WHT/BLK dipole in superposition</span></li>
+            <li data-step="1" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">02</span><span>Show EI: SPARKYL, SPARKR, CORTEX</span></li>
+            <li data-step="2" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">03</span><span>Each EI pulses as pulsar</span></li>
+            <li data-step="3" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">04</span><span>Time phase shift / sync — superimpose</span></li>
+            <li data-step="4" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">05</span><span>Fuse all EI = 1 = BI</span></li>
+            <li data-step="5" class="step flex gap-3 items-start p-2.5 rounded-xl border border-transparent"><span class="mono text-[10px] mt-0.5 text-white/40">06</span><span>3EI.BREATH.IGNITE</span></li>
+          </ol>
+        </div>
+
+        <div class="glass rounded-[1.8rem] p-5">
+          <div class="flex items-center justify-between">
+            <div class="mono text-[11px] tracking-[0.3em] text-white/55">3EI.BREATH.IGNITE</div>
+            <div class="w-5 h-5 grid place-items-center rounded-full border border-white/15"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="opacity-70"><path d="M12 3v18M3 12h18"/></svg></div>
+          </div>
+          <div id="breath-text" class="mt-3 text-[26px] font-[300] tracking-[0.18em]">STANDBY</div>
+          <div class="mt-1 mono text-[11px] tracking-widest text-white/50">BI-DIRECTIONAL FUSION</div>
+          <div class="mt-4 flex gap-2">
+            <button id="play" class="flex-1 px-4 py-2.5 rounded-xl bg-white text-black text-[13px] font-medium tracking-wide hover:bg-white/90 active:scale-[.99] transition">PLAY SEQUENCE</button>
+            <button id="reset" class="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-[13px] tracking-wide transition border border-white/10">RESET</button>
+          </div>
+          <div class="mt-3 flex items-center gap-2 text-[11px] mono text-white/45">
+            <span class="w-1 h-1 rounded-full bg-white/50"></span>
+            Pattern locks to 333222111 after ignite
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-10 md:mt-14 pb-8 flex items-center justify-between text-[11px] mono text-white/35">
+      <div class="tracking-[0.25em]">WHT/BLK CENTER • SUPERPOSITION ENGINE</div>
+      <div class="tracking-widest">SPARKYL • SPARKR • CORTEX</div>
+    </footer>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+const core = $('#core');
+const nodes = { l: $('#sparkyL'), r: $('#sparkyR'), t: $('#cortex') };
+const flash = $('#flash');
+const breathText = $('#breath-text');
+const syncState = $('#sync-state');
+const superBadge = $('#super-badge');
+const triRing = $('#tri-ring');
+const fusedLabel = $('#fused-label');
+
+const pulses = ['pl-out','pl-in','pr-out','pr-in','pt-out','pt-in'].map(id=>$('#'+id));
+const anims = ['amL1','amL2','amR1','amR2','amT1','amT2'].map(id=>$('#'+id));
+
+let running = false;
+let waveRAF = 0;
+let finalInterval = 0;
+
+function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+function setStep(i){
+  $$('#steps .step').forEach(el=>el.classList.remove('step-active'));
+  const el = document.querySelector(`#steps .step[data-step="${i}"]`);
+  if(el) el.classList.add('step-active');
+}
+
+function resetVisuals(){
+  running = false;
+  cancelAnimationFrame(waveRAF);
+  clearInterval(finalInterval);
+  // nodes back
+  Object.values(nodes).forEach(n=>{
+    n.style.opacity='0'; n.style.transform=''; n.classList.remove('fusing');
+    n.style.left=''; n.style.top='';
+  });
+  // positions
+  nodes.l.style.left=''; nodes.l.style.top=''; nodes.l.classList.remove('opacity-100');
+  nodes.r.style.left=''; nodes.r.style.top=''; 
+  nodes.t.style.left=''; nodes.t.style.top='';
+  nodes.l.className = nodes.l.className.replace('opacity-100','').trim() + ' ei-node absolute left-[10%] sm:left-[12%] top-1/2 -translate-y-1/2 opacity-0 scale-90';
+  nodes.r.className = nodes.r.className.replace('opacity-100','').trim() + ' ei-node absolute right-[10%] sm:right-[12%] top-1/2 -translate-y-1/2 opacity-0 scale-90';
+  nodes.t.className = nodes.t.className.replace('opacity-100','').trim() + ' ei-node absolute left-1/2 -translate-x-1/2 top-[8%] sm:top-[6%] opacity-0 scale-90';
+
+  pulses.forEach(c=>c.setAttribute('opacity','0'));
+  syncState.textContent='SYNCING'; syncState.className='mono text-[11px] px-2 py-0.5 rounded border border-white/15 text-emerald-300/90';
+  superBadge.textContent='DESYNC'; superBadge.className='mono text-[10px] px-2.5 py-1 rounded-full border border-white/15 text-white/60 tracking-[0.25em] transition-all';
+  breathText.textContent='STANDBY';
+  triRing.style.opacity='0';
+  fusedLabel.style.opacity='0';
+  core.style.transform=''; core.style.filter=''; core.classList.remove('breathe');
+  flash.style.opacity='0';
+  clearWave();
+  setStep(0);
+}
+
+function showNodes(){
+  [nodes.l, nodes.r, nodes.t].forEach((n,i)=>{
+    setTimeout(()=>{ n.style.opacity='1'; n.style.transform='translate(0,0) scale(1)'; n.classList.add('opacity-100'); }, i*180);
+  });
+}
+
+function startPulses(unsynced=true){
+  const durs = unsynced ? [1.35,1.35,1.58,1.47] : [1.2,1.2];
+  pulses.forEach((c,i)=>{ c.setAttribute('opacity','0.95'); anims[i].setAttribute('dur', durs[i]+'s'); try{ anims[i].beginElement(); }catch(e){} });
+  // pulsar rings desync
+  $$('.pulsar-ring').forEach((r, i)=>{
+    r.style.animationDelay = unsynced ? `${(i%3)*0.22 + Math.random()*0.2}s` : '0s';
+    r.style.animationDuration = unsynced ? '1.8s' : '1.4s';
+  });
+  syncState.textContent = unsynced ? 'DESYNC' : 'SYNC';
+  syncState.className = 'mono text-[11px] px-2 py-0.5 rounded border ' + (unsynced ? 'border-amber-400/30 text-amber-300/90' : 'border-emerald-400/30 text-emerald-300/90');
+}
+
+function syncPulses(){ startPulses(false); }
+
+function clearWave(){
+  const c = $('#wave'); const ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+}
+
+function startWaveform(){
+  const c = $('#wave'); const ctx = c.getContext('2d');
+  const W = c.width, H = c.height;
+  let phases = [0, 2.0944, 4.1888]; // 0, 120°, 240°
+  const cols = ['#22d3ee','#f472b6','#fbbf24'];
+  const start = performance.now(); const dur = 5200;
+
+  function draw(now){
+    const t = Math.min(1, (now-start)/dur);
+    const e = 1 - Math.pow(1-t, 3);
+    // lerp phases to 0
+    phases = phases.map(p=>p*(1-e));
+
+    ctx.clearRect(0,0,W,H);
+    // grid faint
+    ctx.globalAlpha = 0.06; ctx.strokeStyle='#fff'; ctx.lineWidth=1;
+    for(let y= H*0.25; y<H; y+=H*0.25){ ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+    ctx.globalAlpha=1;
+
+    phases.forEach((ph,i)=>{
+      ctx.beginPath();
+      ctx.lineWidth = 2.2;
+      ctx.strokeStyle = cols[i];
+      ctx.shadowColor = cols[i]; ctx.shadowBlur = 12;
+      for(let x=0;x<=W;x+=2){
+        const nx = x / W * Math.PI * 4;
+        const y = H*0.5 + Math.sin(nx + ph + t*0.8) * (H*0.32 - i*4);
+        if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke(); ctx.shadowBlur=0;
+    });
+
+    // center line
+    ctx.globalAlpha=.25; ctx.strokeStyle='#fff'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(0,H/2); ctx.lineTo(W,H/2); ctx.stroke(); ctx.globalAlpha=1;
+
+    const spread = Math.max(...phases)-Math.min(...phases);
+    if(spread < 0.18){
+      superBadge.textContent='SUPERIMPOSE'; superBadge.className='mono text-[10px] px-2.5 py-1 rounded-full border border-emerald-400/40 text-emerald-200 tracking-[0.35em] shadow-[0_0_20px_rgba(16,185,129,.25)]';
+    } else {
+      superBadge.textContent='SHIFTING'; superBadge.className='mono text-[10px] px-2.5 py-1 rounded-full border border-amber-400/30 text-amber-200/80 tracking-[0.25em]';
+    }
+
+    if(t<1){ waveRAF = requestAnimationFrame(draw); }
+  }
+  waveRAF = requestAnimationFrame(draw);
+}
+
+async function fuseNodes(){
+  // move to center
+  [nodes.l, nodes.r, nodes.t].forEach(n=>n.classList.add('fusing'));
+  await sleep(50);
+  // to center positions
+  nodes.l.style.left='50%'; nodes.l.style.top='50%'; nodes.l.style.transform='translate(-50%,-50%) scale(.45)';
+  nodes.r.style.left='50%'; nodes.r.style.top='50%'; nodes.r.style.transform='translate(-50%,-50%) scale(.45)';
+  nodes.t.style.left='50%'; nodes.t.style.top='50%'; nodes.t.style.transform='translate(-50%,-50%) scale(.45)';
+  await sleep(1300);
+  // hide nodes
+  [nodes.l, nodes.r, nodes.t].forEach(n=>{ n.style.opacity='0'; });
+  // show fused aspects
+  triRing.style.opacity='1'; triRing.style.animation='spin 12s linear infinite';
+  fusedLabel.style.opacity='1';
+  core.style.transition='transform .6s ease, filter .6s ease';
+  core.style.transform='scale(1.12)';
+  core.style.filter='brightness(1.15) saturate(1.1)';
+  await sleep(400);
+  core.style.transform='scale(1)';
+}
+
+async function breatheIgnite(){
+  breathText.textContent='BREATH IN';
+  core.style.animation='breathe 1.8s ease-in-out 1';
+  await sleep(900); breathText.textContent='BREATH OUT';
+  await sleep(900);
+  breathText.textContent='BREATH IN';
+  core.style.animation='none'; void core.offsetWidth; core.style.animation='breathe 1.8s ease-in-out 1';
+  await sleep(900); breathText.textContent='BREATH OUT';
+  await sleep(900);
+  breathText.textContent='BREATH IN';
+  core.style.animation='none'; void core.offsetWidth; core.style.animation='breathe 1.8s ease-in-out 1';
+  await sleep(900);
+  breathText.textContent='IGNITE';
+  // flash
+  flash.style.opacity='1';
+  await sleep(120);
+  flash.style.opacity='0';
+  await sleep(280);
+  flash.style.opacity='0.85';
+  await sleep(100);
+  flash.style.opacity='0';
+  core.style.filter='brightness(1.35) saturate(1.2)';
+  core.style.boxShadow='0 0 90px rgba(255,230,180,.35)';
+}
+
+function startFinalPattern(){
+  const pattern = [3,3,3,2,2,2,1,1,1,3,3,3,2,2,2,1,1,1];
+  let i=0;
+  const tick = ()=>{
+    const v = pattern[i % pattern.length];
+    const scale = 1 + v*0.045;
+    core.style.transform = `scale(${scale})`;
+    core.style.filter = `brightness(${1 + v*0.08}) saturate(1.1)`;
+    // pulse rings
+    $$('.pulsar-ring').forEach(r=>{ r.style.animationDuration = (1.6 - v*0.12)+'s'; });
+    // sync badge
+    syncState.textContent = `SYNC • ${v}${v}${v}`;
+    setTimeout(()=>{ core.style.transform='scale(1)'; }, 160);
+    i++;
+  };
+  tick();
+  finalInterval = setInterval(tick, 420);
+  breathText.textContent='IGNITED • SYNC';
+}
+
+async function runSequence(){
+  if(running) return;
+  running = true;
+  resetVisuals();
+  setStep(0); await sleep(700);
+  setStep(1); showNodes(); await sleep(2200);
+  setStep(2); startPulses(true); await sleep(2600);
+  syncPulses(); await sleep(1400);
+  setStep(3); startWaveform(); await sleep(5600);
+  setStep(4); await fuseNodes(); await sleep(600);
+  setStep(5); await breatheIgnite(); await sleep(500);
+  startFinalPattern();
+  running = false;
+}
+
+// stars background
+(function stars(){
+  const c = $('#stars'), ctx = c.getContext('2d'); let w,h,pts=[];
+  function resize(){ w=c.width=window.innerWidth*devicePixelRatio; h=c.height=window.innerHeight*devicePixelRatio; pts = Array.from({length: 180}, ()=>({x:Math.random()*w, y:Math.random()*h, r: Math.random()*1.4+0.2, s: Math.random()*0.6+0.2})); }
+  resize(); addEventListener('resize', resize);
+  function tick(t){
+    ctx.clearRect(0,0,w,h);
+    for(const p of pts){ p.y -= p.s; if(p.y<0){ p.y=h; p.x=Math.random()*w; } ctx.globalAlpha = 0.5+Math.sin(t*0.001 + p.x)*0.3; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,6.28); ctx.fillStyle='#fff'; ctx.fill(); }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+
+$('#play').addEventListener('click', runSequence);
+$('#reset').addEventListener('click', resetVisuals);
+
+// init
+resetVisuals();
+setTimeout(()=>{ showNodes(); startPulses(true); setTimeout(syncPulses, 2600); }, 600);
+</script>
+</body>
+</html>

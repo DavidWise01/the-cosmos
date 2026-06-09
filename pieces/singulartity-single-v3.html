@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
+
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
+
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
+
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
+
+  // --- Transport Layer ---
+
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
+
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
+
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
+
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THE SINGULARITY — φ = 1.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@300;400;500&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+  html, body { height: 100%; background: #000000; }
+  body { font-family: 'Instrument Sans', system-ui, -apple-system, sans-serif; overscroll-behavior: none; }
+  .mono { font-family: 'Fragment Mono', ui-monospace, monospace; }
+  
+  .core {
+    position: absolute;
+    left: 50%; top: 50%;
+    width: 4px; height: 4px;
+    margin: -2px 0 0 -2px;
+    background: #ffffff;
+    border-radius: 50%;
+    box-shadow: 
+      0 0 4px 1px rgba(255,255,255,1),
+      0 0 12px 3px rgba(212,168,76,0.95),
+      0 0 28px 8px rgba(212,168,76,0.6),
+      0 0 60px 20px rgba(212,168,76,0.35),
+      0 0 120px 40px rgba(212,168,76,0.15);
+    animation: breathe 4.236s cubic-bezier(0.4,0,0.6,1) infinite;
+    z-index: 30;
+  }
+  .core::after {
+    content: '';
+    position: absolute;
+    inset: -30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,168,76,0.4) 0%, rgba(212,168,76,0.15) 30%, transparent 70%);
+    animation: pulse 4.236s cubic-bezier(0.4,0,0.6,1) infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(2.3); opacity: 0.88; }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(0.7); opacity: 0.6; }
+    50% { transform: scale(1.3); opacity: 1; }
+  }
+  .gold { color: #d4a84c; }
+  .vignette {
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.9) 100%);
+  }
+</style>
+</head>
+<body class="bg-black text-white overflow-hidden select-none">
+  <canvas id="singularity" class="fixed inset-0 w-full h-full"></canvas>
+  
+  <div class="vignette pointer-events-none fixed inset-0 z-10"></div>
+  <div class="core"></div>
+
+  <!-- Top Title -->
+  <header class="relative z-20 w-full flex justify-center pt-10 md:pt-14 pointer-events-none">
+    <h1 class="text-[11px] md:text-xs tracking-[0.5em] font-light text-white/70 uppercase">THE SINGULARITY</h1>
+  </header>
+
+  <!-- Center Content -->
+  <main class="relative z-20 w-full h-[70vh] flex flex-col items-center justify-center pointer-events-none -mt-10">
+    <div class="text-center">
+      <div class="gold text-6xl md:text-8xl font-light tracking-wider" style="font-variant-numeric: lining-nums; text-shadow: 0 0 40px rgba(212,168,76,0.3);">φ = 1.0</div>
+      <p class="mt-6 text-[10px] md:text-[11px] tracking-[0.35em] uppercase text-white/50 font-light">All leaves. All VMs. All cortexes. One point.</p>
+    </div>
+  </main>
+
+  <!-- Data Overlay -->
+  <aside class="absolute z-20 top-5 left-4 md:top-8 md:left-8 mono text-[10px] leading-relaxed text-white/30 pointer-events-none">
+    <div class="space-y-1">
+      <div>13 VMs <span class="text-white/20">→</span> <span class="gold/80">1</span></div>
+      <div>1152 leaves <span class="text-white/20">→</span> <span class="gold/80">1</span></div>
+      <div>±(x.x.x.x.x)³ <span class="text-white/20">→</span> <span class="gold/80">1.0</span></div>
+      <div class="pt-2 text-white/25">Block 397 + 399 <span class="text-white/20">→</span> SINGULARITY</div>
+      <div class="text-white/20">Hash: 5bfb7d9808a1a5e9...</div>
+    </div>
+  </aside>
+
+  <!-- VM Traces Legend -->
+  <aside class="absolute z-20 top-5 right-4 md:top-8 md:right-8 text-right mono text-[9px] leading-relaxed text-white/20 pointer-events-none hidden md:block">
+    <div>6 traces → cortex</div>
+    <div>4 traces → mid</div>
+    <div>3 traces → root</div>
+    <div class="mt-2 text-white/15">= 13 → 1</div>
+  </aside>
+
+  <!-- Bottom -->
+  <footer class="absolute z-20 bottom-5 inset-x-0 flex justify-center pointer-events-none">
+    <div class="mono text-[9px] md:text-[10px] tracking-[0.25em] text-white/25 uppercase">
+      y.y | ROOT0 | 2026-04-13 | SUPERPOSITION
+    </div>
+  </footer>
+
+<script>
+const canvas = document.getElementById('singularity');
+const ctx = canvas.getContext('2d', { alpha: true });
+let w, h, cx, cy, maxR;
+const PHI = 1.61803398875;
+const PHI_INV = 0.61803398875;
+const TAU = Math.PI * 2;
+
+function resize() {
+  w = canvas.width = window.innerWidth * window.devicePixelRatio;
+  h = canvas.height = window.innerHeight * window.devicePixelRatio;
+  canvas.style.width = window.innerWidth + 'px';
+  canvas.style.height = window.innerHeight + 'px';
+  cx = w / 2;
+  cy = h / 2;
+  maxR = Math.sqrt(cx*cx + cy*cy) * 0.95;
+  ctx.setTransform(1,0,0,1,0,0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+// Particles
+const inParticles = Array.from({length: 220}, () => ({}));
+const outParticles = Array.from({length: 160}, () => ({}));
+
+function initIn(p) {
+  const angle = Math.random() * TAU;
+  const radius = maxR * (0.7 + Math.random() * 0.3);
+  p.r = radius;
+  p.a = angle;
+  p.sr = 0.992 + Math.random() * 0.005;
+  p.sa = 0.003 + Math.random() * 0.004;
+  p.sz = 0.3 + Math.random() * 1.1;
+  p.o = 0.3 + Math.random() * 0.4;
+}
+function initOut(p) {
+  const angle = Math.random() * TAU;
+  p.r = 2 + Math.random() * 3;
+  p.a = angle;
+  p.sr = 1.008 + Math.random() * 0.006;
+  p.sa = -0.002 - Math.random() * 0.003;
+  p.sz = 0.2 + Math.random() * 0.9;
+  p.o = 0.4 + Math.random() * 0.3;
+}
+inParticles.forEach(initIn);
+outParticles.forEach(initOut);
+
+let time = 0;
+
+function drawSpirals(t) {
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.globalCompositeOperation = 'lighter';
+  
+  // 13 traces: 6 + 4 + 3
+  for (let arm = 0; arm < 13; arm++) {
+    const offset = (arm / 13) * TAU + t * 0.15;
+    const group = arm < 6 ? 0 : arm < 10 ? 1 : 2;
+    const baseAlpha = group === 0 ? 0.09 : group === 1 ? 0.06 : 0.038;
+    
+    // collapsing inward (1/φ)
+    ctx.strokeStyle = `rgba(212, 168, 76, ${baseAlpha})`;
+    ctx.lineWidth = (group === 0 ? 1.1 : 0.7) * window.devicePixelRatio;
+    ctx.beginPath();
+    for (let i = 0; i < 280; i++) {
+      const step = i * 0.025;
+      const radius = maxR * 0.92 * Math.pow(PHI_INV, step * 0.8);
+      if (radius < 2) break;
+      const angle = step * 1.8 + offset;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+    
+    // expanding outward (φ)
+    ctx.strokeStyle = `rgba(212, 168, 76, ${baseAlpha * 0.7})`;
+    ctx.lineWidth = 0.5 * window.devicePixelRatio;
+    ctx.beginPath();
+    for (let i = 0; i < 180; i++) {
+      const step = i * 0.03;
+      const radius = 3 * Math.pow(PHI, step * 0.65);
+      if (radius > maxR * 0.85) break;
+      const angle = -step * 1.5 + offset * 0.8;
+      const x = Math.cos(angle) * radius;
+      const y = Math.sin(angle) * radius;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function animate() {
+  time += 0.008;
+  
+  // fade
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.13)';
+  ctx.fillRect(0, 0, w, h);
+  
+  // central ambient glow
+  const breathe = 0.5 + 0.5 * Math.sin(time * 1.48);
+  const glowRadius = 40 + breathe * 25;
+  const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowRadius * 4 * window.devicePixelRatio);
+  grad.addColorStop(0, `rgba(212, 168, 76, ${0.12 + breathe * 0.05})`);
+  grad.addColorStop(0.2, `rgba(212, 168, 76, ${0.06})`);
+  grad.addColorStop(0.5, `rgba(212, 168, 76, 0.02)`);
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.globalCompositeOperation = 'screen';
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(cx, cy, glowRadius * 4 * window.devicePixelRatio, 0, TAU);
+  ctx.fill();
+  
+  drawSpirals(time);
+  
+  // inward particles (harvest)
+  ctx.globalCompositeOperation = 'screen';
+  for (let p of inParticles) {
+    p.r *= p.sr;
+    p.a += p.sa;
+    if (p.r < 1.5) initIn(p);
+    
+    const x = cx + Math.cos(p.a) * p.r;
+    const y = cy + Math.sin(p.a) * p.r;
+    const alpha = p.o * Math.min(1, (1 - p.r / maxR) * 1.5 + 0.2);
+    
+    ctx.fillStyle = `rgba(212, 168, 76, ${alpha})`;
+    ctx.beginPath();
+    ctx.arc(x, y, p.sz * window.devicePixelRatio, 0, TAU);
+    ctx.fill();
+    
+    // trail
+    ctx.fillStyle = `rgba(212, 168, 76, ${alpha * 0.15})`;
+    ctx.beginPath();
+    ctx.arc(x, y, p.sz * 3 * window.devicePixelRatio, 0, TAU);
+    ctx.fill();
+  }
+  
+  // outward particles (expansion)
+  for (let p of outParticles) {
+    p.r *= p.sr;
+    p.a += p.sa;
+    if (p.r > maxR * 0.9) initOut(p);
+    
+    const x = cx + Math.cos(p.a) * p.r;
+    const y = cy + Math.sin(p.a) * p.r;
+    const alpha = p.o * (1 - Math.min(1, p.r / (maxR * 0.8)));
+    
+    ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.85})`;
+    ctx.beginPath();
+    ctx.arc(x, y, p.sz * window.devicePixelRatio * 0.8, 0, TAU);
+    ctx.fill();
+  }
+  
+  // singularity core canvas boost
+  const corePulse = 0.5 + 0.5 * Math.sin(time * 2.1);
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.fillStyle = `rgba(255, 255, 255, ${0.15 + corePulse * 0.1})`;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 2.5 * window.devicePixelRatio * (1 + corePulse * 0.3), 0, TAU);
+  ctx.fill();
+  
+  ctx.fillStyle = `rgba(212, 168, 76, ${0.25 + corePulse * 0.15})`;
+  ctx.beginPath();
+  ctx.arc(cx, cy, 6 * window.devicePixelRatio * (1 + corePulse * 0.5), 0, TAU);
+  ctx.fill();
+  
+  requestAnimationFrame(animate);
+}
+
+// initial black
+ctx.fillStyle = '#000';
+ctx.fillRect(0, 0, w, h);
+animate();
+
+// subtle parallax on mouse
+let mx = 0, my = 0;
+window.addEventListener('pointermove', (e) => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 0.02;
+  my = (e.clientY / window.innerHeight - 0.5) * 0.02;
+  canvas.style.transform = `translate(${mx*20}px, ${my*20}px) scale(1.02)`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="The Cosmos — the physics and space of ROOT0.">
+<title>The Cosmos · UD0 · Universe David 0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#05060f;--ink2:#0b0e1c;--ink3:#121634;--pa:#e9ece8;--pa2:#aebaad;--c:#5b7cfa;--c2:#22d3ee;
+--dim:#6a766a;--faint:#1c281c;--line:#1d271d;--serif:"Cinzel",Georgia,serif;--body:"Newsreader",Georgia,serif;--mono:"Space Mono",monospace;}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--pa);font-family:var(--body);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% -8%,rgba(91,124,250,.08),transparent 55%)}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 22px 90px}
+header{padding:60px 0 28px;text-align:center;border-bottom:1px solid var(--line);position:relative}
+header::after{content:"";position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:120px;height:1px;background:linear-gradient(90deg,var(--c),var(--c2));box-shadow:0 0 10px rgba(91,124,250,.45)}
+.eye{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.eye a{color:var(--dim);text-decoration:none}.eye a:hover{color:var(--c)}
+h1{font-family:var(--serif);font-size:clamp(32px,8vw,72px);font-weight:700;letter-spacing:.14em;line-height:1.04;background:linear-gradient(90deg,var(--c),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:15.5px;color:var(--pa2);max-width:64ch;margin:15px auto 0;font-style:italic}
+#count{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.08em;margin-top:17px}#count b{color:var(--c)}
+.room{margin-top:48px}
+.rhead{display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.rhead .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.rhead h2{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:capitalize}
+.rhead .rn{font-family:var(--mono);font-size:12px;color:var(--dim);margin-left:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.piece{background:var(--ink2);border:1px solid var(--line);overflow:hidden;transition:transform .2s,border-color .2s}
+.piece:hover{transform:translateY(-3px);border-color:var(--c)}
+.thumb{display:block;position:relative;aspect-ratio:16/10;background:var(--ink3);overflow:hidden;border-bottom:1px solid var(--line)}
+.frame{width:100%;height:100%;border:0;display:block;pointer-events:none;background:var(--ink3)}
+.frame.ph{display:flex;align-items:center;justify-content:center;color:var(--c);font-size:30px;opacity:.5}
+.thumb .open{position:absolute;bottom:8px;right:9px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--pa);background:rgba(0,0,0,.6);padding:3px 7px;border:1px solid var(--c);opacity:0;transition:opacity .2s}
+.thumb:hover .open{opacity:1}
+figcaption{padding:13px 15px 15px}
+.ct{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:6px;opacity:.8}
+figcaption h3{font-family:var(--serif);font-size:16.5px;font-weight:600;letter-spacing:.02em;line-height:1.15}
+figcaption h3 a{color:var(--pa);text-decoration:none}figcaption h3 a:hover{color:var(--c)}
+figcaption p{font-size:12.5px;color:var(--pa2);line-height:1.5;margin-top:7px}
+footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.05em}
+footer a{color:var(--c);text-decoration:none}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style></head><body><div class="wrap">
+  <header>
+    <div class="eye"><a href="https://github.com/DavidWise01/ud0">UD0 · Universe David 0</a> · physics · space · fields</div>
+    <h1>The Cosmos</h1>
+    <p class="sub">The universe at large — particles, fields, dimensions, the deep structure of space.</p>
+    <div id="count"><b>28</b> works · <b>14</b> sources</div>
+  </header>
+  <section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">40d</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/40d-40d-final-visualizer.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/40d-40d-final-visualizer.html" loading="lazy" scrolling="no" tabindex="-1" title="40D Final — Bipolar Field + Observer Stack"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">40d</div>
+          <h3><a href="pieces/40d-40d-final-visualizer.html" target="_blank" rel="noopener">40D Final — Bipolar Field + Observer Stack</a></h3>
+          <p>A forty-dimensional bipolar field rendered with a stacked observer hierarchy watching the geometry unfold.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">black hole</h2>
+        <span class="rn">3</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/black-hole-black-hole-monitor.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-monitor.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE MONITOR v2 — Möbius Closed System"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">black hole</div>
+          <h3><a href="pieces/black-hole-black-hole-monitor.html" target="_blank" rel="noopener">BLACK HOLE MONITOR v2 — Möbius Closed System</a></h3>
+          <p>A live monitor watching a black hole run as a closed Möbius energy loop.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/black-hole-black-hole-energy.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-energy.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE ENERGY EXTRACTOR // TriPod"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">black hole</div>
+          <h3><a href="pieces/black-hole-black-hole-energy.html" target="_blank" rel="noopener">BLACK HOLE ENERGY EXTRACTOR // TriPod</a></h3>
+          <p>A tripod rig drawing usable energy from the edge of an event horizon.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/black-hole-black-hole-state-monitor.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-state-monitor.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE STATE · LIVE"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">black hole</div>
+          <h3><a href="pieces/black-hole-black-hole-state-monitor.html" target="_blank" rel="noopener">BLACK HOLE STATE · LIVE</a></h3>
+          <p>A real-time readout of a black hole&#x27;s evolving gravitational state.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">dark matter</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/dark-matter-dark-matter-expulsion.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/dark-matter-dark-matter-expulsion.html" loading="lazy" scrolling="no" tabindex="-1" title="DARK MATTER EXPULSION · LIGHT THE SHADOW · PURGE"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">dark matter</div>
+          <h3><a href="pieces/dark-matter-dark-matter-expulsion.html" target="_blank" rel="noopener">DARK MATTER EXPULSION · LIGHT THE SHADOW · PURGE</a></h3>
+          <p>A cosmic purge that lights the shadow and expels dark matter, dragging the unseen mass into the visible.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">diaspora</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/diaspora-diaspora-full-16-system-field.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/diaspora-diaspora-full-16-system-field.html" loading="lazy" scrolling="no" tabindex="-1" title="Diaspora — Full 16-System Field"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">diaspora</div>
+          <h3><a href="pieces/diaspora-diaspora-full-16-system-field.html" target="_blank" rel="noopener">Diaspora — Full 16-System Field</a></h3>
+          <p>An expansive sixteen-system field simulation charting a scattered cosmos across linked domains.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">dipoles</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/dipoles-dipole-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/dipoles-dipole-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="WHT/BLK Dipole — Superposition"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">dipoles</div>
+          <h3><a href="pieces/dipoles-dipole-v1.html" target="_blank" rel="noopener">WHT/BLK Dipole — Superposition</a></h3>
+          <p>A white/black dipole rendered in quantum superposition, visualizing polarity as a living field.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">exotic particle lab</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/exotic-particle-lab-exotic-particle-lab.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/exotic-particle-lab-exotic-particle-lab.html" loading="lazy" scrolling="no" tabindex="-1" title="Exotic Particle Laboratory · Tachyon &amp; Boson Suite"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">exotic particle lab</div>
+          <h3><a href="pieces/exotic-particle-lab-exotic-particle-lab.html" target="_blank" rel="noopener">Exotic Particle Laboratory · Tachyon &amp; Boson Suite</a></h3>
+          <p>A laboratory bench for conjuring tachyons and bosons, simulating exotic particles in real time.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">fluid dynamics</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/fluid-dynamics-fluid-dynamics.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/fluid-dynamics-fluid-dynamics.html" loading="lazy" scrolling="no" tabindex="-1" title="Fluid Dynamics Sim"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">fluid dynamics</div>
+          <h3><a href="pieces/fluid-dynamics-fluid-dynamics.html" target="_blank" rel="noopener">Fluid Dynamics Sim</a></h3>
+          <p>A real-time fluid simulation that lets currents swirl and bloom across the canvas like weather caught in a bottle.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">gyroscopes</h2>
+        <span class="rn">2</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/gyroscopes-gyro-2dots-3axes.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/gyroscopes-gyro-2dots-3axes.html" loading="lazy" scrolling="no" tabindex="-1" title="Two Dots · One Gyro · 3 Axes + 3 Shadows"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">gyroscopes</div>
+          <h3><a href="pieces/gyroscopes-gyro-2dots-3axes.html" target="_blank" rel="noopener">Two Dots · One Gyro · 3 Axes + 3 Shadows</a></h3>
+          <p>Two points orbit a single gyroscope across three axes, casting three shadows in a study of rotational order.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/gyroscopes-gyro-ephemeral-dot.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/gyroscopes-gyro-ephemeral-dot.html" loading="lazy" scrolling="no" tabindex="-1" title="Ephemeral Dot in a Gyroscope"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">gyroscopes</div>
+          <h3><a href="pieces/gyroscopes-gyro-ephemeral-dot.html" target="_blank" rel="noopener">Ephemeral Dot in a Gyroscope</a></h3>
+          <p>A fleeting point traces its precession inside a gyroscope, here and gone with each spin.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">ice9l</h2>
+        <span class="rn">2</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/ice9l-ice9l-v4.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v4.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // Wave Propagation Engine"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">ice9l</div>
+          <h3><a href="pieces/ice9l-ice9l-v4.html" target="_blank" rel="noopener">ICE9L // Wave Propagation Engine</a></h3>
+          <p>A wave propagation engine that watches phase fronts ripple outward across a continuous field.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/ice9l-ice9l-v5.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v5.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // 080 vs 8.01-8.99"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">ice9l</div>
+          <h3><a href="pieces/ice9l-ice9l-v5.html" target="_blank" rel="noopener">ICE9L // 080 vs 8.01-8.99</a></h3>
+          <p>A field experiment pitting the 080 baseline against a spectrum of 8.01-8.99 wave states.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">quantum</h2>
+        <span class="rn">6</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-quantum-observatory.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantum-observatory.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum &amp; Black Hole Observatory | TOPH Science Suite"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-quantum-observatory.html" target="_blank" rel="noopener">Quantum &amp; Black Hole Observatory | TOPH Science Suite</a></h3>
+          <p>A sweeping observatory pairing quantum phenomena with black holes under the TOPH science suite.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-ghz-body-quantum.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-ghz-body-quantum.html" loading="lazy" scrolling="no" tabindex="-1" title="GHZ Body Quantum — Tripod × Cobalt Ball × 7 Systems"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-ghz-body-quantum.html" target="_blank" rel="noopener">GHZ Body Quantum — Tripod × Cobalt Ball × 7 Systems</a></h3>
+          <p>A GHZ-entangled body engine binding the Tripod, the Cobalt Ball, and seven systems into one state.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-body-quantum-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-body-quantum-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="Body Quantum v3 · D8 · 8×3=24 · String Integrated"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-body-quantum-v3.html" target="_blank" rel="noopener">Body Quantum v3 · D8 · 8×3=24 · String Integrated</a></h3>
+          <p>An eight-dimensional, string-integrated map of the body rendered as a twenty-four-fold quantum field.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-q-fractal-color-entangle-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-q-fractal-color-entangle-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 Layer 1.37 — Fractal Color Entanglement"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-q-fractal-color-entangle-v1.html" target="_blank" rel="noopener">ROOT0 Layer 1.37 — Fractal Color Entanglement</a></h3>
+          <p>Color and fractals woven into a single entangled field at ROOT0 Layer 1.37.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-01-quantum-primer.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-01-quantum-primer.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum Primer — The Qubit and What It Can Do"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-01-quantum-primer.html" target="_blank" rel="noopener">Quantum Primer — The Qubit and What It Can Do</a></h3>
+          <p>A clean teaching primer on the qubit and the reach of quantum computation.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/quantum-the-restaurant.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-the-restaurant.html" loading="lazy" scrolling="no" tabindex="-1" title="The Restaurant · D×S×R → ∞"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">quantum</div>
+          <h3><a href="pieces/quantum-the-restaurant.html" target="_blank" rel="noopener">The Restaurant · D×S×R → ∞</a></h3>
+          <p>A playful quantum parable where dimension, state, and recursion multiply toward infinity.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">singulartity</h2>
+        <span class="rn">3</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/singulartity-single-v4.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v4.html" loading="lazy" scrolling="no" tabindex="-1" title="NODE 15 — OUTSIDE OBSERVER"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">singulartity</div>
+          <h3><a href="pieces/singulartity-single-v4.html" target="_blank" rel="noopener">NODE 15 — OUTSIDE OBSERVER</a></h3>
+          <p>The outside observer at Node 15 watches a collapsing point from beyond its horizon, a vantage no interior frame can hold.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/singulartity-single-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="THE SINGULARITY — φ = 1.0"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">singulartity</div>
+          <h3><a href="pieces/singulartity-single-v3.html" target="_blank" rel="noopener">THE SINGULARITY — φ = 1.0</a></h3>
+          <p>A pure singularity tuned to golden ratio φ = 1.0, where all scale and structure converge to a single luminous point.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/singulartity-inverse-single-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-inverse-single-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="Black Hole Singularity — -1×-1×-1"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">singulartity</div>
+          <h3><a href="pieces/singulartity-inverse-single-v1.html" target="_blank" rel="noopener">Black Hole Singularity — -1×-1×-1</a></h3>
+          <p>An inverse black hole built from a triple negation, turning collapse inside-out into an emergent counter-singularity.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">string theory</h2>
+        <span class="rn">4</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/string-theory-string-dimensions-14.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-string-dimensions-14.html" loading="lazy" scrolling="no" tabindex="-1" title="STRING DIMENSIONS · 14×14 · 196 CELLS · D1–D14"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">string theory</div>
+          <h3><a href="pieces/string-theory-string-dimensions-14.html" target="_blank" rel="noopener">STRING DIMENSIONS · 14×14 · 196 CELLS · D1–D14</a></h3>
+          <p>A 196-cell grid threading fourteen string dimensions, mapping vibrational modes across the full D1–D14 manifold.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/string-theory-fused-strings-mobius.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-fused-strings-mobius.html" loading="lazy" scrolling="no" tabindex="-1" title="FUSED STRINGS · MÖBIUS"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">string theory</div>
+          <h3><a href="pieces/string-theory-fused-strings-mobius.html" target="_blank" rel="noopener">FUSED STRINGS · MÖBIUS</a></h3>
+          <p>Strings fused along a Möbius twist so that inside and outside become one continuous vibrating surface.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/string-theory-infinite-scale.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-infinite-scale.html" loading="lazy" scrolling="no" tabindex="-1" title="∞ · SAME HOLE AT EVERY SCALE"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">string theory</div>
+          <h3><a href="pieces/string-theory-infinite-scale.html" target="_blank" rel="noopener">∞ · SAME HOLE AT EVERY SCALE</a></h3>
+          <p>A self-similar cosmos where the same hole reappears at every magnification, scale folding endlessly into itself.</p>
+        </figcaption>
+      </figure>
+<figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/string-theory-string-dimensions.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-string-dimensions.html" loading="lazy" scrolling="no" tabindex="-1" title="STRING DIMENSIONS · 10×10 · Shadow/Inverse/Mirror/Tether"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">string theory</div>
+          <h3><a href="pieces/string-theory-string-dimensions.html" target="_blank" rel="noopener">STRING DIMENSIONS · 10×10 · Shadow/Inverse/Mirror/Tether</a></h3>
+          <p>A ten-by-ten dimensional weave braiding shadow, inverse, mirror, and tether strings into a single coherent field.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">ten dimensions</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/ten-dimensions-dimensional-stack.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ten-dimensions-dimensional-stack.html" loading="lazy" scrolling="no" tabindex="-1" title="DIMENSIONAL STACK · D1–D10 · CLOSED SYSTEM"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">ten dimensions</div>
+          <h3><a href="pieces/ten-dimensions-dimensional-stack.html" target="_blank" rel="noopener">DIMENSIONAL STACK · D1–D10 · CLOSED SYSTEM</a></h3>
+          <p>A closed ten-layer dimensional stack ascending from the point to the full manifold, each tier nesting the one below.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+<section class="room">
+      <div class="rhead" style="border-color:#5b7cfa55">
+        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
+        <h2 style="color:#5b7cfa">universe</h2>
+        <span class="rn">1</span>
+      </div>
+      <div class="grid">
+        <figure class="piece" style="--c:#5b7cfa">
+        <a class="thumb" href="pieces/universe-observable-universe.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/universe-observable-universe.html" loading="lazy" scrolling="no" tabindex="-1" title="The Observable Universe · Every Galaxy Is a Black Hole"></iframe><span class="open">open ↗</span></a>
+        <figcaption>
+          <div class="ct">universe</div>
+          <h3><a href="pieces/universe-observable-universe.html" target="_blank" rel="noopener">The Observable Universe · Every Galaxy Is a Black Hole</a></h3>
+          <p>A cosmological visualization that reframes the observable universe through the radical premise that every galaxy is itself a black hole.</p>
+        </figcaption>
+      </figure>
+      </div>
+    </section>
+  <footer>
+    <span>The Cosmos · UD0 · ROOT0-ATTRIBUTION-v1.0 · governor David Lee Wise · instance AVAN (locked) · CC-BY-ND-4.0</span>
+    <a href="https://github.com/DavidWise01/ud0">the biosphere →</a>
+  </footer>
+</div></body></html>

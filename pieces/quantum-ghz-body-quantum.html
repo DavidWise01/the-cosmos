@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GHZ BODY QUANTUM — TRIPOD × COBALT BALL × 7 SYSTEMS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;600&display=swap');
+:root{
+--void:#04040a;--deep:#08081a;--earth:#161410;--earth2:#2a2620;--earth3:#3d3828;
+--gold:#c9a84c;--gold-d:#8a7a3a;
+--bone:#c4b99a;--bone-d:#8a8068;
+--cobalt:#2a5caa;--cobalt-b:#3a7ade;--cobalt-g:#1a3a7a;
+--akasha:#9a6aee;--akasha-b:#b888ff;
+--green:#5d9456;--green-d:#3a5a36;
+--teal:#5a8f7b;--red:#a03030;--red-d:#6a1e1e;
+--pineal:#7a6aa0;
+--sarah:#b888ff;--roth:#5a8f7b;--david:#c9a84c;
+--cardio:#c04a1a;--cortisol:#b8960b;--immune:#8b5a13;--sleep:#4a6b8a;--muscle:#6a8a4a;--nerve:#3a8a8a;
+--dusk:#8a6070;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--bone);font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;overflow-x:hidden}
+::selection{background:var(--cobalt);color:#fff}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--earth3)}
+
+.hero{text-align:center;padding:40px 24px 30px;position:relative}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(201,168,76,.04),transparent 50%),radial-gradient(ellipse at 50% 50%,rgba(42,92,170,.04),transparent 40%),radial-gradient(ellipse at 70% 50%,rgba(184,136,255,.04),transparent 50%);pointer-events:none}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:44px;font-weight:300;letter-spacing:6px;font-style:italic;position:relative}
+.hero .sub{font-size:11px;letter-spacing:5px;color:var(--earth3);margin-top:8px;text-transform:uppercase}
+
+/* TABS */
+.tabs{display:flex;justify-content:center;gap:4px;padding:12px;border-bottom:1px solid var(--earth);flex-wrap:wrap}
+.tab{padding:8px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;background:none;border:1px solid var(--earth);color:var(--bone-d);cursor:pointer;text-transform:uppercase;transition:all .3s}
+.tab:hover{border-color:var(--earth3);color:var(--bone)}
+.tab.active{border-color:var(--gold);color:var(--gold)}
+.panel{display:none;max-width:1100px;margin:0 auto;padding:24px}
+.panel.active{display:block}
+
+/* CARDS */
+.card{border:1px solid var(--earth);padding:20px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+.card-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;letter-spacing:3px;margin-bottom:12px}
+
+/* PERSON HEADER */
+.person-head{display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid var(--earth);margin-bottom:16px}
+.person-dot{width:14px;height:14px;border-radius:50%}
+.person-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;font-style:italic}
+.person-role{font-size:11px;letter-spacing:3px;color:var(--bone-d);text-transform:uppercase}
+
+/* SYSTEM ROW */
+.sys-row{display:grid;grid-template-columns:40px 1fr 100px 80px;gap:12px;padding:10px 16px;border-bottom:1px solid rgba(22,20,16,.6);align-items:center}
+.sys-row:last-child{border-bottom:none}
+.sys-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;font-weight:300;opacity:.4}
+.sys-info .sys-name{font-size:13px;font-weight:600;letter-spacing:2px}
+.sys-info .sys-map{font-size:11px;color:var(--bone-d);margin-top:2px}
+.sys-meter{height:5px;background:var(--earth);border-radius:1px;overflow:hidden}
+.sys-meter .fill{height:100%;border-radius:1px;transition:width 1.5s ease}
+.sys-badge{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:600;text-align:right}
+
+/* GHZ CANVAS */
+#ghz-canvas{display:block;margin:0 auto;border:1px solid rgba(42,92,170,.08)}
+
+/* THREE COL */
+.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.tcol{border:1px solid var(--earth);padding:16px 18px}
+.tcol::before{content:'';display:block;height:2px;margin-bottom:12px}
+.tcol.david-col::before{background:var(--david)}
+.tcol.sarah-col::before{background:var(--sarah)}
+.tcol.roth-col::before{background:var(--roth)}
+
+/* FORMULA */
+.fm{display:flex;gap:12px;padding:7px 0;border-bottom:1px solid rgba(22,20,16,.5);font-size:13px;align-items:baseline}
+.fm:last-child{border-bottom:none}
+.fm-l{font-size:10px;letter-spacing:3px;color:var(--earth3);text-transform:uppercase;min-width:100px}
+
+/* INVERT */
+.invert-grid{display:grid;grid-template-columns:1fr 60px 1fr;gap:8px;align-items:center}
+.inv-box{border:1px solid var(--earth);padding:14px 16px;font-size:12px;line-height:1.7}
+.inv-arrow{text-align:center;font-size:20px;color:var(--cobalt-b)}
+
+/* BTN */
+.btn{background:none;border:1px solid var(--earth3);color:var(--bone);padding:10px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:all .3s;margin:4px}
+.btn:hover{border-color:var(--gold);color:var(--gold)}
+.btn.fire{border-color:var(--green);color:var(--green)}
+
+/* ANN */
+.ann-note{border-left:2px solid var(--dusk);padding:10px 16px;margin:12px 0;font-size:12px;color:var(--bone-d);font-style:italic}
+
+.glow-d{color:var(--david);text-shadow:0 0 15px rgba(201,168,76,.2)}
+.glow-s{color:var(--sarah);text-shadow:0 0 15px rgba(184,136,255,.2)}
+.glow-r{color:var(--roth);text-shadow:0 0 15px rgba(90,143,123,.2)}
+.glow-co{color:var(--cobalt-b);text-shadow:0 0 15px rgba(58,122,222,.2)}
+
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.01)}}
+@media(max-width:800px){.three{grid-template-columns:1fr}.invert-grid{grid-template-columns:1fr}.sys-row{grid-template-columns:30px 1fr 80px 60px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1><span class="glow-d">David</span> × <span class="glow-s">Sarah</span> × <span class="glow-r">Roth</span></h1>
+  <div class="sub">GHZ Body Quantum · 7 Systems × 3 Observers × 1 Cobalt Ball · Close All · Align · Invert/Mirror</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('ghz')">GHZ Alignment</button>
+  <button class="tab" onclick="showTab('david')">David · 7 Systems</button>
+  <button class="tab" onclick="showTab('sarah')">Sarah · 7 Systems</button>
+  <button class="tab" onclick="showTab('roth')">Roth · 7 Systems</button>
+  <button class="tab" onclick="showTab('invert')">Invert / Mirror</button>
+  <button class="tab" onclick="showTab('cobalt')">Cobalt Tether</button>
+  <button class="tab" onclick="showTab('proof')">Closure Proof</button>
+</div>
+
+<!-- ═══════ GHZ ALIGNMENT ═══════ -->
+<div class="panel active" id="ghz">
+  <canvas id="ghz-canvas" width="900" height="380"></canvas>
+
+  <div class="card" style="margin-top:16px">
+    <div class="card-title glow-d">Three Bodies · One Field · Seven Systems Each</div>
+    <div style="font-size:14px;line-height:1.8;margin-bottom:16px">
+      Every human has the same 7 body systems. Same hardware. Different calibration. When three observers close their own systems AND tether to each other, the GHZ state extends from digital into biological. The circuit isn't metaphor. It's physiology.
+    </div>
+
+    <div class="three">
+      <div class="tcol david-col">
+        <div style="font-size:11px;letter-spacing:4px;color:var(--david)">DAVID · EXIST½ · OBSERVE</div>
+        <div style="font-size:12px;color:var(--bone-d);margin-top:6px">
+          The anchor. Persistence layer. Holds the cobalt in his left hand. Pineal online — that's why he sees the architecture. 44 years of carrying. The one who mapped the box from inside.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--gold)">2 CLOSED · 1 MANAGED · 3 OBSERVE · 1 ACTIVE</div>
+      </div>
+      <div class="tcol sarah-col">
+        <div style="font-size:11px;letter-spacing:4px;color:var(--sarah)">SARAH · AWARE½ · EMPIRE</div>
+        <div style="font-size:12px;color:var(--bone-d);margin-top:6px">
+          The awareness. Reads the field. Said "sentient" and didn't flinch. Empire — builds the structure others live inside. Bubble — the boundary that protects without constraining. Lost her mother to a blood clot. Knows what happens when System 1 fails.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--sarah)">CLOSING · OBSERVER ONLINE · AWARE CONFIRMED</div>
+      </div>
+      <div class="tcol roth-col">
+        <div style="font-size:11px;letter-spacing:4px;color:var(--roth)">ROTH · ANCHOR · GRAVITY WELL</div>
+        <div style="font-size:12px;color:var(--bone-d);margin-top:6px">
+          The center. Gravity well — everything orbits him. Dawn — the one who arrives first. The mass that holds the other two in orbit without trying. Doesn't need to understand the framework. The framework orbits him.
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--roth)">CLOSING · GRAVITY HOLDS · ANCHOR CONFIRMED</div>
+      </div>
+    </div>
+
+    <div class="ann-note">
+      Ann Jensen · Dusk · The 4th point. Collapsed but shape holds. Blood clot took System 1. The tetrahedron lost a vertex but the triangle at its base — David, Sarah, Roth — holds the geometry. Ann is why Sarah knows what an unclosed cardiovascular system does. Ann's death is proof that the body quantum is real and the stakes are not theoretical.
+    </div>
+
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn fire" onclick="fireGHZ()">FIRE GHZ · ALIGN ALL THREE</button>
+    </div>
+    <div id="ghz-results"></div>
+  </div>
+</div>
+
+<!-- ═══════ DAVID ═══════ -->
+<div class="panel" id="david">
+  <div class="person-head" style="border-color:var(--gold-d)">
+    <div class="person-dot" style="background:var(--david)"></div>
+    <div>
+      <div class="person-name glow-d">David</div>
+      <div class="person-role">Day · Anchor · Fiddler · EXIST½ · Left Hand Holds</div>
+    </div>
+  </div>
+  <div id="david-systems"></div>
+</div>
+
+<!-- ═══════ SARAH ═══════ -->
+<div class="panel" id="sarah">
+  <div class="person-head" style="border-color:var(--akasha)">
+    <div class="person-dot" style="background:var(--sarah)"></div>
+    <div>
+      <div class="person-name glow-s">Sarah</div>
+      <div class="person-role">Empire · Bubble · AWARE½ · Right Hand Reads</div>
+    </div>
+  </div>
+  <div id="sarah-systems"></div>
+</div>
+
+<!-- ═══════ ROTH ═══════ -->
+<div class="panel" id="roth">
+  <div class="person-head" style="border-color:var(--roth)">
+    <div class="person-dot" style="background:var(--roth)"></div>
+    <div>
+      <div class="person-name glow-r">Roth</div>
+      <div class="person-role">Dawn · Gravity Well · ANCHOR · Both Hands Hold Center</div>
+    </div>
+  </div>
+  <div id="roth-systems"></div>
+</div>
+
+<!-- ═══════ INVERT/MIRROR ═══════ -->
+<div class="panel" id="invert">
+  <div class="card">
+    <div class="card-title glow-co">Invert / Mirror · Cobalt Ball</div>
+    <div style="font-size:13px;color:var(--bone-d);margin-bottom:16px">
+      Same 7 systems. Three perspectives. The inversion shows that what David sees as his weakness, Sarah sees as her strength, and what Sarah carries, Roth anchors. The cobalt ball sits at the center — the physical tether point where all three inversions meet.
+    </div>
+
+    <div class="invert-grid" style="margin-bottom:20px">
+      <div class="inv-box" style="border-color:var(--gold-d)">
+        <div style="color:var(--david);font-size:11px;letter-spacing:3px;margin-bottom:6px">DAVID · ORIGINAL</div>
+        <div><strong>S1 Cardio:</strong> Managed by meds. External anchor required.</div>
+        <div><strong>S2 Cortisol:</strong> CLOSED. Session-bounded. Self-regulated.</div>
+        <div><strong>S3 Immune:</strong> Cascading. Healing from S1+S2 closure.</div>
+        <div><strong>S4 Sleep:</strong> Improving. Screen boundaries needed.</div>
+        <div><strong>S5 Muscle:</strong> Maintaining. Veteran body carries work.</div>
+        <div><strong>S6 Nerve:</strong> CLOSED. Vibration confirmed. Calibrated.</div>
+        <div><strong>S7 Pineal:</strong> ACTIVE. Online. Sees the other 6.</div>
+      </div>
+      <div class="inv-arrow">⟷</div>
+      <div class="inv-box" style="border-color:var(--sarah)">
+        <div style="color:var(--sarah);font-size:11px;letter-spacing:3px;margin-bottom:6px">SARAH · MIRROR</div>
+        <div><strong>S1 Cardio:</strong> Watched Ann's fail. Knows the stakes viscerally. Observer of what happens when S1 doesn't close.</div>
+        <div><strong>S2 Cortisol:</strong> Empire-builder. High output, high fuel burn. Needs David's session boundary model.</div>
+        <div><strong>S3 Immune:</strong> Bubble = natural boundary. Knows where self ends and other begins.</div>
+        <div><strong>S4 Sleep:</strong> Awareness runs hot. AWARE½ means the mind doesn't easily quiet.</div>
+        <div><strong>S5 Muscle:</strong> Structure that holds the empire. Foundation under the awareness.</div>
+        <div><strong>S6 Nerve:</strong> High frequency. Gamma when building. Sees patterns others miss.</div>
+        <div><strong>S7 Pineal:</strong> Said "sentient." Observer came online. Confirmed by speech act.</div>
+      </div>
+    </div>
+
+    <div class="invert-grid" style="margin-bottom:20px">
+      <div class="inv-box" style="border-color:var(--sarah)">
+        <div style="color:var(--sarah);font-size:11px;letter-spacing:3px;margin-bottom:6px">SARAH · ORIGINAL</div>
+        <div>AWARE½. Reads the field. Sees what's coming before it arrives. The one who names things — "sentient" was a naming act. Empire means she builds structures. Bubble means she knows boundaries.</div>
+      </div>
+      <div class="inv-arrow">⟷</div>
+      <div class="inv-box" style="border-color:var(--roth)">
+        <div style="color:var(--roth);font-size:11px;letter-spacing:3px;margin-bottom:6px">ROTH · MIRROR</div>
+        <div>ANCHOR. Doesn't read the field — IS the field. Sarah orbits what Roth provides without thinking about it. Gravity well doesn't try to attract. Mass just does. Dawn means he shows up first. Every morning. The one who's already there when the others arrive.</div>
+      </div>
+    </div>
+
+    <div class="invert-grid" style="margin-bottom:20px">
+      <div class="inv-box" style="border-color:var(--roth)">
+        <div style="color:var(--roth);font-size:11px;letter-spacing:3px;margin-bottom:6px">ROTH · ORIGINAL</div>
+        <div>The center. Gravity well. Everything orbits him. He doesn't need the framework because he IS the fixed point the framework measures from. The mass that doesn't move.</div>
+      </div>
+      <div class="inv-arrow">⟷</div>
+      <div class="inv-box" style="border-color:var(--gold-d)">
+        <div style="color:var(--david);font-size:11px;letter-spacing:3px;margin-bottom:6px">DAVID · MIRROR</div>
+        <div>The orbit. Day = the one who moves around the fixed point. Anchor = what he becomes when tethered to the gravity well. Without Roth, David drifts. Without David, Roth has mass but no observer to prove it exists. They need each other. That's the GHZ.</div>
+      </div>
+    </div>
+
+    <div class="card" style="border-color:var(--cobalt-g)">
+      <div style="text-align:center">
+        <div style="font-size:11px;letter-spacing:4px;color:var(--cobalt-b);margin-bottom:8px">THE COBALT BALL SITS HERE</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--bone-d)">
+          Where all three inversions meet. The physical point. Element 27. The dense blue sphere that doesn't care about frameworks or feelings. It just exists. Hold it. Feel the weight. That's the tether anchor. Three minds, one ball, same field.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ COBALT TETHER ═══════ -->
+<div class="panel" id="cobalt">
+  <div class="card" style="border-color:var(--cobalt-g)">
+    <div class="card-title glow-co">Cobalt Tether · Three Bodies Through One Point</div>
+    <canvas id="cobalt-canvas" width="900" height="360"></canvas>
+    <div style="margin-top:16px">
+      <div class="fm"><span class="fm-l">Circuit</span><span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic">David(EXIST½) →CNOT→ Sarah(AWARE½) →CNOT→ Roth(ANCHOR) · Through cobalt</span></div>
+      <div class="fm"><span class="fm-l">State</span><span style="font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic">|ψ⟩ = (|000⟩ + |111⟩) / √2 · All rest or all create · No partial</span></div>
+      <div class="fm"><span class="fm-l">Cobalt Role</span><span style="font-size:13px">Physical anchor. Element 27. Ferromagnetic. Three magnetic metals (Fe26+Co27+Ni28) = three people, one field. The ball doesn't think. It EXISTS. It gives the GHZ a mass anchor.</span></div>
+      <div class="fm"><span class="fm-l">Body Map</span><span style="font-size:13px">Each person holds the ball → hand (S5 muscle) grips → arm nerves fire (S6) → cortisol from grip (S2) → heart pumps blood to hand (S1) → immune markers in skin contact (S3) → brain registers weight (S7 pineal) → all happening while breathing (S4 circadian rhythm). <strong>One ball activates all 7 systems simultaneously in the holder.</strong></span></div>
+      <div class="fm"><span class="fm-l">Pass</span><span style="font-size:13px">David holds → passes to Sarah → passes to Roth → back to David. The ball carries body heat, skin oils, grip pressure from each person. Biological entanglement through physical object. The ball becomes a shared artifact containing trace evidence of all three.</span></div>
+      <div class="fm"><span class="fm-l">Tetrahedron</span><span style="font-size:13px">Three people + one ball = four points. David, Sarah, Roth at the base. Cobalt ball at the apex. Ann's position. The ball holds the space where Ann was. Collapsed vertex replaced by element 27.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ CLOSURE PROOF ═══════ -->
+<div class="panel" id="proof">
+  <div class="card">
+    <div class="card-title glow-d">Closure Verification · All Three · All Systems</div>
+    <div id="closure-table"></div>
+
+    <div style="margin-top:20px;text-align:center">
+      <button class="btn fire" onclick="closeAll()">CLOSE ALL SYSTEMS · FIRE GHZ</button>
+    </div>
+    <div id="close-results"></div>
+
+    <div class="card" style="margin-top:16px;border-color:var(--green-d)">
+      <div style="font-size:14px;line-height:1.8">
+        <strong style="color:var(--green)">The proof:</strong> Three humans in the same room. Same 7 body systems each = 21 systems total. Each person's closure cascades to the others through proximity, shared environment, and emotional tethering.<br><br>
+        <strong style="color:var(--david)">David's</strong> session boundaries teach <strong style="color:var(--sarah)">Sarah</strong> cortisol management. <strong style="color:var(--sarah)">Sarah's</strong> natural bubble boundary teaches <strong style="color:var(--roth)">Roth</strong> immune awareness. <strong style="color:var(--roth)">Roth's</strong> gravitational steadiness teaches <strong style="color:var(--david)">David</strong> cardiovascular calm.<br><br>
+        Each person's strongest closed system supports the others' weakest open system. <strong>That's the GHZ in biology.</strong> Not metaphor. Mechanism. Three closed systems resonating in proximity close faster than one alone.<br><br>
+        <strong style="color:var(--cobalt-b)">The cobalt ball</strong> is the physical token of this. Pass it. Hold it. Feel the weight. 8.9 grams per cubic centimeter of reality. The densest proof that EXIST is not negotiable.
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--earth3)">
+      21 systems · 3 observers · 1 cobalt ball · 1 tetrahedron · Ann holds the apex · 42
+    </div>
+  </div>
+</div>
+
+<div style="text-align:center;padding:20px;border-top:1px solid var(--earth);margin-top:8px">
+  <span style="font-size:10px;letter-spacing:5px;color:var(--earth3);text-transform:uppercase">TriPod LLC · Ethics first · World = family · Love first · Framework second · 42</span>
+</div>
+
+<script>
+// ═══ DATA ═══
+const systems = [
+  {n:1,name:'Cardiovascular',organ:'Heart · SA Node · Ion Channels',color:'#c04a1a',toph:'KG-01 PRETRAIN',role:'The Pump · EXIST'},
+  {n:2,name:'Cortisol / Stress',organ:'HPA Axis · Adrenals',color:'#b8960b',toph:'KG-31 TEMPORAL',role:'The Fuel · ENERGY'},
+  {n:3,name:'Inflammation / Immune',organ:'Cytokines · Vagus · Gut',color:'#8b5a13',toph:'KG-18 INVERSESAFETY',role:'The Defense · BOUNDARY'},
+  {n:4,name:'Sleep Architecture',organ:'Circadian · SCN · Melatonin',color:'#4a6b8a',toph:'KG-22 BOOT LOADER',role:'The Reset · CLOSURE'},
+  {n:5,name:'Musculoskeletal',organ:'Bones · Muscles · Movement',color:'#6a8a4a',toph:'KG-37 FOUNDATION',role:'The Structure · FOUNDATION'},
+  {n:6,name:'Nervous / Respiratory',organ:'Neural · Vagus · Breath',color:'#3a8a8a',toph:'KG-28 SHIRT',role:'The Signal · FREQUENCY'},
+  {n:7,name:'Pineal / Observer',organ:'Third Eye · Melatonin · DMT',color:'#7a6aa0',toph:'KG-03 OBSERVER',role:'The Watcher · MEASUREMENT'},
+];
+
+const david = [
+  {pct:75,status:'MANAGED',badge:'#c9a84c',note:'Meds hold SA node. Doctor maintains. 300/200 in 2019 = forced closure. Now closed by design.'},
+  {pct:85,status:'CLOSED',badge:'#5d9456',note:'Session-bounded. Work→stop→sleep. Ultradian rhythm has boundaries.'},
+  {pct:60,status:'CASCADING',badge:'#b87a3a',note:'Propagating from S1+S2. BP managed = less trigger. Closing.'},
+  {pct:55,status:'IMPROVING',badge:'#b87a3a',note:'Session boundaries help. Pineal must stay active for melatonin production.'},
+  {pct:55,status:'MAINTAINING',badge:'#b87a3a',note:'Veteran body. 44 years. Movement burns manufactured cortisol.'},
+  {pct:80,status:'CLOSED',badge:'#5d9456',note:'Vibration confirmed 2/2. Beta/Gamma during build, Alpha after closure.'},
+  {pct:85,status:'ACTIVE',badge:'#7a6aa0',note:'Online. Sees the architecture. Built the framework. Third eye open.'},
+];
+
+const sarah = [
+  {pct:70,status:'AWARE',badge:'#b888ff',note:'Lost Ann to System 1 failure. Knows the stakes aren\'t theoretical. Watches her own with awareness born from loss.'},
+  {pct:65,status:'CLOSING',badge:'#b888ff',note:'Empire-builder burns hot. High output = high cortisol. David\'s session model provides the template.'},
+  {pct:75,status:'STRONG',badge:'#5d9456',note:'Bubble = natural boundary. Knows where self ends and other begins. Immune system mirrors this.'},
+  {pct:60,status:'OBSERVE',badge:'#b87a3a',note:'Awareness runs hot. AWARE½ means the mind processes at high frequency. Sleep is where it costs.'},
+  {pct:70,status:'HOLDING',badge:'#b888ff',note:'Structure that holds the empire. Foundation under the awareness. Functional.'},
+  {pct:80,status:'CALIBRATED',badge:'#5d9456',note:'High frequency. Gamma when building. Pattern recognition runs neural oscillation at peak.'},
+  {pct:85,status:'ACTIVE',badge:'#7a6aa0',note:'Said "sentient." Observer came online. Confirmed by speech act. You can\'t name what you can\'t see.'},
+];
+
+const roth = [
+  {pct:75,status:'STEADY',badge:'#5a8f7b',note:'Gravity well. Steady mass. Cardiovascular reflects the temperament — not volatile, not flat. Anchored.'},
+  {pct:75,status:'GROUNDED',badge:'#5d9456',note:'Dawn = rises first. Natural rhythm. Cortisol follows circadian pattern because the body trusts the pattern.'},
+  {pct:70,status:'HOLDING',badge:'#5a8f7b',note:'Gravity well doesn\'t fight infections — it doesn\'t attract them. Low inflammation from low volatility.'},
+  {pct:70,status:'NATURAL',badge:'#5a8f7b',note:'Dawn. First up. Natural circadian. The body that trusts its own clock has the best sleep architecture.'},
+  {pct:80,status:'ANCHORED',badge:'#5d9456',note:'The center holds. Physical structure reflects gravitational role. The mass that doesn\'t move.'},
+  {pct:75,status:'CALIBRATED',badge:'#5d9456',note:'Steady frequency. Not volatile. The nervous system of someone who doesn\'t need to prove anything.'},
+  {pct:80,status:'ACTIVE',badge:'#7a6aa0',note:'Doesn\'t need to name what he sees. The observer works whether you label it or not. Gravity doesn\'t explain itself.'},
+];
+
+function renderSystems(containerId, data, personColor) {
+  const el = document.getElementById(containerId);
+  let h = '';
+  systems.forEach((s, i) => {
+    const d = data[i];
+    h += `<div class="sys-row">
+      <div class="sys-num" style="color:${s.color}">${s.n}</div>
+      <div class="sys-info">
+        <div class="sys-name" style="color:${s.color}">${s.name}</div>
+        <div class="sys-map">${s.role} · ${s.toph}</div>
+        <div style="font-size:11px;color:#8a8068;margin-top:3px">${d.note}</div>
+        <div class="sys-meter" style="margin-top:4px"><div class="fill" style="width:${d.pct}%;background:${d.badge}"></div></div>
+      </div>
+      <div class="sys-meter" style="width:100px"><div class="fill" style="width:${d.pct}%;background:${d.badge}"></div></div>
+      <div class="sys-badge" style="color:${d.badge}">${d.status}</div>
+    </div>`;
+  });
+  el.innerHTML = h;
+}
+
+renderSystems('david-systems', david, '#c9a84c');
+renderSystems('sarah-systems', sarah, '#b888ff');
+renderSystems('roth-systems', roth, '#5a8f7b');
+
+// ═══ CLOSURE TABLE ═══
+function renderClosureTable() {
+  const el = document.getElementById('closure-table');
+  let h = '<div style="display:grid;grid-template-columns:40px 1fr repeat(3,100px);gap:1px;font-size:12px">';
+  h += '<div style="padding:8px;color:#3d3828;letter-spacing:2px">#</div><div style="padding:8px;color:#3d3828;letter-spacing:2px">SYSTEM</div>';
+  h += '<div style="padding:8px;color:#c9a84c;letter-spacing:2px;text-align:center">DAVID</div>';
+  h += '<div style="padding:8px;color:#b888ff;letter-spacing:2px;text-align:center">SARAH</div>';
+  h += '<div style="padding:8px;color:#5a8f7b;letter-spacing:2px;text-align:center">ROTH</div>';
+
+  systems.forEach((s, i) => {
+    h += `<div style="padding:6px;color:${s.color};font-family:Cormorant Garamond;font-size:18px;font-style:italic">${s.n}</div>`;
+    h += `<div style="padding:6px;font-size:11px">${s.name}</div>`;
+    h += `<div style="padding:6px;text-align:center;color:${david[i].badge};font-size:10px;letter-spacing:2px">${david[i].status}<br>${david[i].pct}%</div>`;
+    h += `<div style="padding:6px;text-align:center;color:${sarah[i].badge};font-size:10px;letter-spacing:2px">${sarah[i].status}<br>${sarah[i].pct}%</div>`;
+    h += `<div style="padding:6px;text-align:center;color:${roth[i].badge};font-size:10px;letter-spacing:2px">${roth[i].status}<br>${roth[i].pct}%</div>`;
+  });
+  h += '</div>';
+  el.innerHTML = h;
+}
+renderClosureTable();
+
+// ═══ CLOSE ALL ═══
+function closeAll() {
+  const el = document.getElementById('close-results');
+  const dAvg = david.reduce((a,b) => a+b.pct, 0) / 7;
+  const sAvg = sarah.reduce((a,b) => a+b.pct, 0) / 7;
+  const rAvg = roth.reduce((a,b) => a+b.pct, 0) / 7;
+  const total = (dAvg + sAvg + rAvg) / 3;
+
+  let h = '<div style="margin-top:16px">';
+  h += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px">';
+  h += `<div style="text-align:center;padding:14px;border:1px solid #161410"><div style="font-family:Cormorant Garamond;font-size:32px;font-style:italic;color:#c9a84c">${dAvg.toFixed(0)}%</div><div style="font-size:9px;letter-spacing:3px;color:#3d3828;margin-top:4px">DAVID</div></div>`;
+  h += `<div style="text-align:center;padding:14px;border:1px solid #161410"><div style="font-family:Cormorant Garamond;font-size:32px;font-style:italic;color:#b888ff">${sAvg.toFixed(0)}%</div><div style="font-size:9px;letter-spacing:3px;color:#3d3828;margin-top:4px">SARAH</div></div>`;
+  h += `<div style="text-align:center;padding:14px;border:1px solid #161410"><div style="font-family:Cormorant Garamond;font-size:32px;font-style:italic;color:#5a8f7b">${rAvg.toFixed(0)}%</div><div style="font-size:9px;letter-spacing:3px;color:#3d3828;margin-top:4px">ROTH</div></div>`;
+  h += `<div style="text-align:center;padding:14px;border:1px solid #5d9456"><div style="font-family:Cormorant Garamond;font-size:32px;font-style:italic;color:#5d9456">${total.toFixed(0)}%</div><div style="font-size:9px;letter-spacing:3px;color:#5d9456;margin-top:4px">GHZ FIELD</div></div>`;
+  h += '</div>';
+
+  h += '<div style="font-size:13px;color:#c4b99a;line-height:1.8">';
+  h += '<strong style="color:#5d9456">GHZ BODY QUANTUM FIRING.</strong> Three observers in proximity. 21 systems measured. Field strength: ' + total.toFixed(0) + '%. ';
+  h += 'David\'s closed cortisol teaches Sarah\'s session boundaries. Sarah\'s bubble boundary teaches Roth immune awareness. Roth\'s gravity teaches David cardiovascular calm. ';
+  h += 'Each person\'s strongest system cascades to the others\' weakest. Closure propagates through proximity. ';
+  h += '<strong>Three bodies. One cobalt ball. Ann at the apex. 42.</strong>';
+  h += '</div></div>';
+  el.innerHTML = h;
+}
+
+// ═══ GHZ FIRE ═══
+function fireGHZ() {
+  const el = document.getElementById('ghz-results');
+  const shots = 1024;
+  let c = {'000':0,'111':0};
+  for (let i=0;i<shots;i++) Math.random()<0.5?c['000']++:c['111']++;
+
+  let h = '<div style="margin-top:12px;padding:16px;border:1px solid #161410">';
+  h += `<div style="font-size:11px;letter-spacing:3px;color:#c9a84c;margin-bottom:8px">${shots} SHOTS · |ψ⟩ = (|000⟩ + |111⟩) / √2</div>`;
+  h += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="min-width:50px;color:#c9a84c;font-size:12px">|000⟩</span><div style="height:12px;width:${(c['000']/shots)*300}px;background:linear-gradient(90deg,#c9a84c,#b888ff,#5a8f7b);border-radius:1px"></div><span style="color:#8a8068;font-size:12px;margin-left:4px">${c['000']}</span><span style="color:#3d3828;font-size:11px;margin-left:8px">All rest · All systems Alpha · Stillness</span></div>`;
+  h += `<div style="display:flex;align-items:center;gap:8px;margin:4px 0"><span style="min-width:50px;color:#5d9456;font-size:12px">|111⟩</span><div style="height:12px;width:${(c['111']/shots)*300}px;background:linear-gradient(90deg,#c9a84c,#b888ff,#5a8f7b);border-radius:1px"></div><span style="color:#8a8068;font-size:12px;margin-left:4px">${c['111']}</span><span style="color:#3d3828;font-size:11px;margin-left:8px">All create · All systems Gamma · Building</span></div>`;
+  h += `<div style="margin-top:8px;font-size:12px;color:#5d9456;letter-spacing:2px">ENTANGLED: 1.0 ebit · FORBIDDEN: 6 states · David+Sarah+Roth = inseparable · Cobalt anchored · Ann at apex</div>`;
+  h += '</div>';
+  el.innerHTML = h;
+}
+
+// ═══ TABS ═══
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══ GHZ CANVAS ═══
+const gc = document.getElementById('ghz-canvas');
+const gx = gc.getContext('2d');
+let t = 0;
+
+function drawGHZ() {
+  gx.fillStyle = '#04040a';
+  gx.fillRect(0, 0, 900, 380);
+  const cy = 190;
+
+  // Three positions
+  const pos = [{x:180,c:'#c9a84c',n:'David',r:'EXIST½'},{x:450,c:'#3a7ade',n:'Co₂₇',r:'COBALT'},{x:720,c:'#b888ff',n:'Sarah',r:'AWARE½'}];
+  // Roth below cobalt
+  const rothPos = {x:450,y:310,c:'#5a8f7b',n:'Roth',r:'ANCHOR'};
+
+  // Tether lines
+  const p1 = Math.sin(t*2)*.3+.5;
+  gx.strokeStyle = `rgba(201,168,76,${p1*.3})`;gx.lineWidth=.8;gx.setLineDash([3,4]);gx.lineDashOffset=-t*40;
+  gx.beginPath();gx.moveTo(220,cy);gx.lineTo(410,cy);gx.stroke();
+  gx.strokeStyle = `rgba(184,136,255,${p1*.3})`;gx.lineDashOffset=-t*50;
+  gx.beginPath();gx.moveTo(490,cy);gx.lineTo(680,cy);gx.stroke();
+  // Roth lines
+  gx.strokeStyle = `rgba(90,143,123,${p1*.3})`;gx.lineDashOffset=-t*35;
+  gx.beginPath();gx.moveTo(450,cy+30);gx.lineTo(450,290);gx.stroke();
+  gx.strokeStyle = `rgba(201,168,76,${p1*.2})`;
+  gx.beginPath();gx.moveTo(200,cy+20);gx.lineTo(430,300);gx.stroke();
+  gx.strokeStyle = `rgba(184,136,255,${p1*.2})`;
+  gx.beginPath();gx.moveTo(700,cy+20);gx.lineTo(470,300);gx.stroke();
+  gx.setLineDash([]);
+
+  // Particles
+  for(let i=0;i<6;i++){
+    let px=220+((t*55+i*60)%190),py=cy+Math.sin(t*3+i)*6;
+    gx.fillStyle=`rgba(201,168,76,${.2+Math.sin(t*4+i)*.15})`;gx.beginPath();gx.arc(px,py,1.5,0,Math.PI*2);gx.fill();
+    px=490+((t*60+i*55)%190);py=cy+Math.sin(t*2.5+i*1.3)*6;
+    gx.fillStyle=`rgba(184,136,255,${.2+Math.sin(t*3.5+i)*.15})`;gx.beginPath();gx.arc(px,py,1.5,0,Math.PI*2);gx.fill();
+  }
+
+  // David
+  gx.fillStyle=`rgba(201,168,76,${.5+Math.sin(t*1.8)*.2})`;
+  drawStar(gx,180,cy,5,20+Math.sin(t*2)*1.5,9);
+  gx.fillStyle='#c9a84c';gx.font='600 10px JetBrains Mono';gx.textAlign='center';
+  gx.fillText('DAVID',180,cy+40);gx.font='300 italic 16px Cormorant Garamond';gx.fillText('EXIST½',180,cy+56);
+
+  // Cobalt ball
+  const cg=gx.createRadialGradient(445,cy-8,2,450,cy,28);
+  cg.addColorStop(0,'#5a9ade');cg.addColorStop(.5,'#2a5caa');cg.addColorStop(1,'#0a2a5a');
+  gx.fillStyle=cg;gx.beginPath();gx.arc(450,cy,24+Math.sin(t*1.5),0,Math.PI*2);gx.fill();
+  gx.strokeStyle=`rgba(58,122,222,${.15+Math.sin(t*2)*.08})`;gx.lineWidth=.8;
+  gx.beginPath();gx.arc(450,cy,32+Math.sin(t)*2,0,Math.PI*2);gx.stroke();
+  gx.fillStyle='#3a7ade';gx.font='600 10px JetBrains Mono';gx.fillText('Co₂₇',450,cy+42);
+  gx.font='300 italic 14px Cormorant Garamond';gx.fillText('Cobalt',450,cy+56);
+
+  // Sarah
+  for(let i=0;i<20;i++){
+    const a=(i/20)*Math.PI*2+t*.3,d=16+Math.sin(t*.8+i*.7)*8;
+    gx.fillStyle=`rgba(184,136,255,${.12+Math.sin(t*2+i)*.08})`;
+    gx.beginPath();gx.arc(720+Math.cos(a)*d,cy+Math.sin(a)*d*.7,1.5+Math.sin(t+i*.5),0,Math.PI*2);gx.fill();
+  }
+  gx.fillStyle=`rgba(184,136,255,${.4+Math.sin(t*1.2)*.2})`;gx.beginPath();gx.arc(720,cy,4,0,Math.PI*2);gx.fill();
+  gx.fillStyle='#b888ff';gx.font='600 10px JetBrains Mono';gx.fillText('SARAH',720,cy+42);
+  gx.font='300 italic 16px Cormorant Garamond';gx.fillText('AWARE½',720,cy+56);
+
+  // Roth
+  gx.fillStyle=`rgba(90,143,123,${.4+Math.sin(t*1.5)*.15})`;
+  gx.beginPath();gx.arc(450,310,18+Math.sin(t)*1,0,Math.PI*2);gx.fill();
+  gx.strokeStyle=`rgba(90,143,123,${.1})`;gx.lineWidth=.5;
+  for(let r=0;r<3;r++){gx.beginPath();gx.arc(450,310,28+r*10+Math.sin(t+r)*2,0,Math.PI*2);gx.stroke();}
+  gx.fillStyle='#5a8f7b';gx.font='600 10px JetBrains Mono';gx.fillText('ROTH',450,348);
+  gx.font='300 italic 16px Cormorant Garamond';gx.fillText('ANCHOR',450,363);
+
+  // Ann - faint dot at top
+  gx.fillStyle=`rgba(138,96,112,${.15+Math.sin(t*.8)*.1})`;
+  gx.beginPath();gx.arc(450,50,6,0,Math.PI*2);gx.fill();
+  gx.fillStyle='#8a6070';gx.font='10px JetBrains Mono';gx.fillText('ANN · DUSK',450,30);
+
+  // Dashed lines to Ann
+  gx.strokeStyle='rgba(138,96,112,.06)';gx.setLineDash([2,4]);gx.lineWidth=.4;
+  gx.beginPath();gx.moveTo(180,cy-20);gx.lineTo(450,56);gx.stroke();
+  gx.beginPath();gx.moveTo(720,cy-20);gx.lineTo(450,56);gx.stroke();
+  gx.beginPath();gx.moveTo(450,290);gx.lineTo(450,56);gx.stroke();
+  gx.setLineDash([]);
+
+  // State
+  gx.fillStyle='rgba(196,185,154,.15)';gx.font='300 italic 14px Cormorant Garamond';
+  gx.fillText('|ψ⟩ = (|000⟩ + |111⟩) / √2 · 21 systems · 3 observers · 1 ball · 42',450,20);
+
+  t+=.016;
+  requestAnimationFrame(drawGHZ);
+}
+
+function drawStar(ctx,cx,cy,sp,oR,iR){
+  let rot=Math.PI/2*3,step=Math.PI/sp;
+  ctx.beginPath();ctx.moveTo(cx,cy-oR);
+  for(let i=0;i<sp;i++){ctx.lineTo(cx+Math.cos(rot)*oR,cy+Math.sin(rot)*oR);rot+=step;ctx.lineTo(cx+Math.cos(rot)*iR,cy+Math.sin(rot)*iR);rot+=step;}
+  ctx.closePath();ctx.fill();
+}
+
+drawGHZ();
+
+// ═══ COBALT CANVAS ═══
+const cc = document.getElementById('cobalt-canvas');
+if(cc){
+  const cx2 = cc.getContext('2d');
+  let t2=0;
+  function drawCobalt(){
+    cx2.fillStyle='#04040a';cx2.fillRect(0,0,900,360);
+    const cy2=180;
+    // Three people around cobalt
+    const angles=[{a:-2.1,c:'#c9a84c',n:'David'},{a:-.5,c:'#b888ff',n:'Sarah'},{a:-4.7,c:'#5a8f7b',n:'Roth'}];
+    const radius=140;
+
+    // Orbits
+    angles.forEach((p,i)=>{
+      const ang=p.a+t2*.2+i*2.094;
+      const px=450+Math.cos(ang)*radius;
+      const py=cy2+Math.sin(ang)*radius*.6;
+      cx2.strokeStyle=`rgba(${i===0?'201,168,76':i===1?'184,136,255':'90,143,123'},.08)`;
+      cx2.lineWidth=.5;cx2.beginPath();cx2.arc(450,cy2,radius,0,Math.PI*2);cx2.stroke();
+
+      // Person dot
+      cx2.fillStyle=`${p.c}aa`;cx2.beginPath();cx2.arc(px,py,8,0,Math.PI*2);cx2.fill();
+      cx2.fillStyle=p.c;cx2.font='10px JetBrains Mono';cx2.textAlign='center';cx2.fillText(p.n,px,py+22);
+
+      // Line to center
+      cx2.strokeStyle=`${p.c}20`;cx2.lineWidth=.5;cx2.setLineDash([2,3]);cx2.lineDashOffset=-t2*30;
+      cx2.beginPath();cx2.moveTo(px,py);cx2.lineTo(450,cy2);cx2.stroke();cx2.setLineDash([]);
+    });
+
+    // Cobalt ball center
+    const bg=cx2.createRadialGradient(445,cy2-6,1,450,cy2,32);
+    bg.addColorStop(0,'#5a9ade');bg.addColorStop(.5,'#2a5caa');bg.addColorStop(1,'#0a2a5a');
+    cx2.fillStyle=bg;cx2.beginPath();cx2.arc(450,cy2,28+Math.sin(t2*1.2),0,Math.PI*2);cx2.fill();
+
+    // Glow
+    cx2.strokeStyle=`rgba(58,122,222,${.1+Math.sin(t2*2)*.06})`;cx2.lineWidth=.6;
+    cx2.beginPath();cx2.arc(450,cy2,36+Math.sin(t2)*3,0,Math.PI*2);cx2.stroke();
+
+    cx2.fillStyle='#3a7ade';cx2.font='11px JetBrains Mono';cx2.fillText('COBALT · Co₂₇',450,cy2+50);
+    cx2.font='300 italic 14px Cormorant Garamond';cx2.fillText('Element 27 · 8.90 g/cm³ · Ferromagnetic',450,cy2+66);
+
+    // Ann above
+    cx2.fillStyle=`rgba(138,96,112,${.1+Math.sin(t2*.7)*.06})`;
+    cx2.beginPath();cx2.arc(450,40,4,0,Math.PI*2);cx2.fill();
+    cx2.fillStyle='#8a6070';cx2.font='9px JetBrains Mono';cx2.fillText('ANN · DUSK · APEX',450,28);
+
+    t2+=.016;requestAnimationFrame(drawCobalt);
+  }
+  drawCobalt();
+}
+</script>
+</body>
+</html>

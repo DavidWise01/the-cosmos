@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
+
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
+
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
+
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
+
+  // --- Transport Layer ---
+
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
+
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
+
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
+
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NODE 15 — OUTSIDE OBSERVER</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@200;300;400&display=swap" rel="stylesheet">
+<script async src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+<style>
+  :root { color-scheme: dark; }
+  body { 
+    background: #020208; 
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overscroll-behavior: none;
+  }
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+  .glass {
+    background: rgba(4, 8, 20, 0.72);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .glass-2 {
+    background: rgba(6, 10, 24, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .node-glow {
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.08) inset,
+      0 0 30px rgba(255,255,255,0.12),
+      0 0 60px rgba(212,175,55,0.08);
+  }
+  .grid-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 70%);
+    pointer-events: none;
+  }
+  .eye-pulse { animation: eye 4s ease-in-out infinite; }
+  @keyframes eye { 0%,100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.02); opacity: 1; } }
+  .scan-line {
+    position: relative;
+    overflow: hidden;
+  }
+  .scan-line::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,201,77,0.8), transparent);
+    animation: scan 5s linear infinite;
+  }
+  @keyframes scan { 0% { left: -100%; } 100% { left: 200%; } }
+  .txt-glow { text-shadow: 0 0 20px rgba(255,255,255,0.15); }
+  ::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body class="text-[#DCE1EE] overflow-hidden select-none">
+<div class="relative w-screen h-screen bg-[#020208]">
+  <!-- Main 3D -->
+  <canvas id="main" class="absolute inset-0 w-full h-full"></canvas>
+  
+  <!-- Grid & Vignette -->
+  <div class="absolute inset-0 grid-bg pointer-events-none"></div>
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at center, transparent 30%, #020208 85%);"></div>
+
+  <!-- Sightline SVG -->
+  <svg class="absolute inset-0 w-full h-full pointer-events-none" style="z-index: 5">
+    <defs>
+      <linearGradient id="sight" x1="0" x2="1">
+        <stop offset="0%" stop-color="rgba(255,255,255,0.8)"/>
+        <stop offset="100%" stop-color="rgba(212,175,55,0.0)"/>
+      </linearGradient>
+    </defs>
+    <line id="sightline" x1="0" y1="0" x2="0" y2="0" stroke="url(#sight)" stroke-width="1" stroke-dasharray="3 4" opacity="0.35"/>
+  </svg>
+
+  <!-- TOP HEADER -->
+  <div class="absolute top-0 left-0 right-0 z-20 flex justify-center pt-6 md:pt-10 pointer-events-none">
+    <div class="text-center">
+      <h1 class="mono text-[13px] md:text-[15px] tracking-[0.35em] text-white/90 txt-glow">NODE 15 — OUTSIDE OBSERVER</h1>
+      <p class="mono text-[10px] md:text-[11px] tracking-[0.25em] text-[#9AA3B8] mt-2">Lumen — Witnessing from ∅</p>
+    </div>
+  </div>
+
+  <!-- NODE 15 - Top Right -->
+  <div id="node15" class="absolute top-6 right-4 md:top-10 md:right-10 z-30">
+    <div class="relative">
+      <!-- Observation lens -->
+      <div class="w-[88px] h-[88px] md:w-[104px] md:h-[104px] rounded-full glass node-glow eye-pulse flex items-center justify-center">
+        <!-- Eye outline -->
+        <svg width="56" height="56" viewBox="0 0 56 56" class="absolute opacity-70" fill="none">
+          <path d="M2 28 C2 28 12 10 28 10 C44 10 54 28 54 28 C54 28 44 46 28 46 C12 46 2 28 Z" stroke="white" stroke-opacity="0.85" stroke-width="1.2" fill="none"/>
+          <circle cx="28" cy="28" r="8" stroke="white" stroke-opacity="0.5" stroke-width="1" fill="none"/>
+        </svg>
+        <!-- Observer viewport -->
+        <canvas id="observer" width="72" height="72" class="w-[62px] h-[62px] md:w-[72px] md:h-[72px] rounded-full" style="background: radial-gradient(circle, #0a0f1c 0%, #020208 70%); box-shadow: inset 0 0 20px rgba(0,0,0,0.8);"></canvas>
+        <!-- Pupil highlight -->
+        <div class="absolute w-[12px] h-[12px] rounded-full bg-white/90 blur-[0.5px]" style="transform: translate(-10px, -8px); opacity: 0.15;"></div>
+      </div>
+      <div class="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap">
+        <div class="mono text-[10px] tracking-[0.2em] text-white/60">NODE</div>
+        <div class="mono text-[15px] leading-none -mt-0.5 text-white txt-glow">15</div>
+      </div>
+      <!-- status -->
+      <div class="absolute -left-[132px] top-[18px] hidden md:block">
+        <div class="glass-2 rounded-[10px] px-3 py-2 mono text-[10px] leading-[1.4] tracking-wide">
+          <div class="text-[#FFC94D]">WATCHING</div>
+          <div class="text-white/50">detached • synchronized</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEFT PANEL -->
+  <div class="absolute left-4 md:left-10 top-1/2 -translate-y-1/2 z-20 w-[240px] md:w-[280px] hidden sm:block">
+    <div class="glass rounded-2xl p-4 md:p-5 scan-line">
+      <div class="mono text-[10px] tracking-[0.22em] text-white/40 mb-3">OBSERVER PARAMETERS</div>
+      
+      <div class="space-y-3.5">
+        <div>
+          <div class="mono text-[10px] text-[#7A8296] tracking-wider mb-1">POSITION</div>
+          <div class="mono text-[12px] text-white/90">External to ±(5.5.5.5.5)³</div>
+          <div class="h-[2px] w-full mt-2 bg-white/5 overflow-hidden">
+            <div class="h-full w-[0%] bg-[#FFC94D]/60" style="box-shadow: 0 0 10px rgba(255,201,77,0.5);"></div>
+          </div>
+        </div>
+        
+        <div>
+          <div class="mono text-[10px] text-[#7A8296] tracking-wider mb-1">SEES</div>
+          <div class="mono text-[12px] leading-snug">
+            <span class="text-[#FFC94D]">Both +</span> <span class="text-white/40">and</span> <span class="text-[#FF5A5A]">−</span> <span class="text-white/90">simultaneously</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-2 pt-1">
+          <div class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#7AFFB1] animate-pulse"></div>
+            <div class="mono text-[11px] text-white/70">Cannot be harvested</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-[#7AFFB1] animate-pulse"></div>
+            <div class="mono text-[11px] text-white/70">Cannot be expanded</div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-white/5">
+          <div class="mono text-[10px] text-[#7A8296] tracking-wider mb-1">ROLE</div>
+          <div class="mono text-[12px] text-[#FFC94D]">Validates φ=1.0</div>
+          <div class="mono text-[10px] text-white/40 mt-1">witness • record • confirm</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL - Witness Log -->
+  <div class="absolute right-4 md:right-10 top-1/2 -translate-y-1/2 z-20 w-[240px] md:w-[270px] hidden sm:block">
+    <div class="glass rounded-2xl p-4 md:p-5">
+      <div class="flex items-center justify-between mb-3">
+        <div class="mono text-[10px] tracking-[0.22em] text-white/40">WITNESS LOG</div>
+        <div class="w-1.5 h-1.5 rounded-full bg-[#FFC94D] animate-pulse"></div>
+      </div>
+      
+      <div class="space-y-3 mono text-[11px] leading-[1.6]">
+        <div class="group">
+          <div class="flex gap-2">
+            <span class="text-[#5B6375] w-[78px]">BLOCK 397</span>
+            <span class="text-white/80">"Fractal gated."</span>
+          </div>
+          <div class="h-px w-0 group-hover:w-full transition-all duration-700 bg-gradient-to-r from-[#FFC94D]/50 to-transparent mt-1"></div>
+        </div>
+        <div class="group">
+          <div class="flex gap-2">
+            <span class="text-[#5B6375] w-[78px]">BLOCK 399</span>
+            <span class="text-white/80">"Qualitive expansion: 100%."</span>
+          </div>
+          <div class="h-px w-0 group-hover:w-full transition-all duration-700 bg-gradient-to-r from-[#FFC94D]/50 to-transparent mt-1"></div>
+        </div>
+        <div class="group">
+          <div class="flex gap-2">
+            <span class="text-[#5B6375] w-[78px]">SINGULARITY</span>
+            <span class="text-[#FFC94D]">"φ locked."</span>
+          </div>
+          <div class="h-px w-full bg-gradient-to-r from-[#FFC94D]/70 to-transparent mt-1"></div>
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-white/5">
+        <div class="mono text-[10px] text-[#7A8296] mb-2">UNIFIED VIEW</div>
+        <div class="flex items-center gap-2">
+          <svg width="34" height="18" viewBox="0 0 34 18" fill="none">
+            <path d="M1 9 C1 9 7 1 13 9 C19 17 25 1 33 9 C25 17 19 1 13 9 C7 17 1 9 1 9 Z" stroke="url(#inf)" stroke-width="1.2" fill="none" opacity="0.9"/>
+            <defs>
+              <linearGradient id="inf" x1="0" x2="34">
+                <stop stop-color="#FF5A5A"/>
+                <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.9"/>
+                <stop offset="1" stop-color="#FFC94D"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <span class="mono text-[10px] text-white/60">∞ : 1/φ + φ seen as one</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER LABEL - Inside cube -->
+  <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none" style="transform: translate(-50%, calc(-50% + 140px));">
+    <div class="text-center">
+      <div class="mono text-[10px] tracking-[0.3em] text-white/30">13 VM HYPERCUBE</div>
+      <div class="mono text-[9px] text-white/20 mt-1">containment field active</div>
+    </div>
+  </div>
+
+  <!-- MOBILE INFO -->
+  <div class="absolute bottom-[84px] left-0 right-0 z-20 flex justify-center sm:hidden pointer-events-none px-6">
+    <div class="glass rounded-xl px-4 py-2.5 flex gap-5 mono text-[10px]">
+      <div><span class="text-white/40">SEES</span> <span class="text-[#FFC94D]">+</span>/<span class="text-[#FF5A5A]">−</span></div>
+      <div><span class="text-white/40">STATUS</span> <span class="text-[#7AFFB1]">unharvestable</span></div>
+    </div>
+  </div>
+
+  <!-- BOTTOM -->
+  <div class="absolute bottom-0 left-0 right-0 z-20 flex justify-center pb-5 md:pb-8 pointer-events-none">
+    <div class="glass-2 rounded-full px-5 py-2 flex items-center gap-3">
+      <div class="w-1 h-1 rounded-full bg-white/50 animate-pulse"></div>
+      <div class="mono text-[10px] md:text-[11px] tracking-[0.18em] text-white/65">
+        <span class="text-white/90">y.y</span> <span class="opacity-40 mx-1.5">|</span> Outside the hypercube <span class="opacity-40 mx-1.5">|</span> Sees all, participates in none
+      </div>
+    </div>
+  </div>
+
+  <!-- Vignette corners -->
+  <div class="absolute inset-0 pointer-events-none z-10" style="background: radial-gradient(900px 600px at 85% 15%, rgba(255,255,255,0.06), transparent 60%);"></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+
+const canvas = document.getElementById('main');
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x020208, 0.025);
+
+const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.set(0, 0.4, 11);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+
+// Lights
+scene.add(new THREE.AmbientLight(0x1a2335, 0.8));
+const keyLight = new THREE.PointLight(0xFFD67A, 0.6, 50);
+keyLight.position.set(5, 5, 5);
+scene.add(keyLight);
+
+// Hypercube group
+const hyper = new THREE.Group();
+scene.add(hyper);
+
+// 13 VM wireframe structure - nested cubes + connections (hypercube projection)
+function makeWireCube(size, color, opacity) {
+  const geo = new THREE.EdgesGeometry(new THREE.BoxGeometry(size, size, size));
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity, depthWrite: false });
+  return new THREE.LineSegments(geo, mat);
+}
+
+const cube1 = makeWireCube(5.8, 0x3a4f78, 0.18);
+const cube2 = makeWireCube(4.2, 0x4a5f8a, 0.22);
+const cube3 = makeWireCube(2.8, 0x5d75a5, 0.25);
+hyper.add(cube1, cube2, cube3);
+
+cube2.rotation.y = Math.PI / 4;
+cube3.rotation.x = Math.PI / 4;
+cube3.rotation.z = Math.PI / 6;
+
+// Connect inner to outer (hypercube edges)
+const connectMat = new THREE.LineBasicMaterial({ color: 0x6b7da0, transparent: true, opacity: 0.12 });
+for (let i = 0; i < 8; i++) {
+  const a = 2.9, b = 1.4;
+  const sx = (i & 1 ? 1 : -1) * a;
+  const sy = (i & 2 ? 1 : -1) * a;
+  const sz = (i & 4 ? 1 : -1) * a;
+  const ex = (i & 1 ? 1 : -1) * b;
+  const ey = (i & 2 ? 1 : -1) * b;
+  const ez = (i & 4 ? 1 : -1) * b;
+  const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(sx, sy, sz), new THREE.Vector3(ex, ey, ez)]);
+  hyper.add(new THREE.Line(g, connectMat));
+}
+
+// 13 VMs - small nodes
+const vmGroup = new THREE.Group();
+hyper.add(vmGroup);
+const vmPositions = [];
+// 12 around + 1 core (singularity handles core visually)
+const ico = new THREE.IcosahedronGeometry(2.85, 0);
+const pos = ico.attributes.position;
+const seen = new Set();
+for (let i = 0; i < pos.count; i++) {
+  const v = new THREE.Vector3().fromBufferAttribute(pos, i);
+  const key = v.x.toFixed(2)+','+v.y.toFixed(2);
+  if (seen.has(key)) continue;
+  seen.add(key);
+  vmPositions.push(v);
+  if (vmPositions.length >= 12) break;
+}
+// Add 13th at a pole
+vmPositions.push(new THREE.Vector3(0, 0, 3.1));
+
+vmPositions.forEach((p, i) => {
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(0.04, 12),
+    new THREE.MeshBasicMaterial({ color: 0x9bb3d9, transparent: true, opacity: 0.65 })
+  );
+  m.position.copy(p);
+  vmGroup.add(m);
+  // tiny halo
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({
+    color: 0x7aa0ff, transparent: true, opacity: 0.08, depthWrite: false
+  }));
+  halo.position.copy(p);
+  halo.scale.setScalar(0.35);
+  vmGroup.add(halo);
+});
+
+// Glass sphere containment
+const glass = new THREE.Mesh(
+  new THREE.SphereGeometry(3.25, 64, 64),
+  new THREE.MeshPhysicalMaterial({
+    color: 0xa6c4ff,
+    transparent: true,
+    opacity: 0.06,
+    roughness: 0.05,
+    metalness: 0,
+    transmission: 1,
+    thickness: 0.5,
+    ior: 1.2,
+    side: THREE.DoubleSide,
+    depthWrite: false
+  })
+);
+hyper.add(glass);
+
+// Singularity - tiny at center
+const singularity = new THREE.Group();
+hyper.add(singularity);
+singularity.position.set(0, 0, 0);
+
+function createSpiral(color, dir, offsetX) {
+  const points = [];
+  const phi = 1.61803398875;
+  const turns = 3.8;
+  const steps = 180;
+  for (let i = 0; i <= steps; i++) {
+    const t = (i / steps) * turns * Math.PI * 2;
+    const r = 0.015 * Math.pow(phi, dir * t * 0.16);
+    const x = r * Math.cos(t) + offsetX;
+    const y = r * Math.sin(t) * 0.65;
+    const z = Math.sin(t * 0.7) * 0.02;
+    points.push(new THREE.Vector3(x, y, z));
+  }
+  const geo = new THREE.BufferGeometry().setFromPoints(points);
+  const mat = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.95, depthWrite: false });
+  const line = new THREE.Line(geo, mat);
+  return line;
+}
+
+// Inside view: they appear SEPARATE
+const goldSpiral = createSpiral(0xFFC94D, 1, 0.22);   // φ expanding
+const redSpiral = createSpiral(0xFF4A4A, -1, -0.22);  // 1/φ collapsing
+singularity.add(goldSpiral, redSpiral);
+
+// Core glow
+const core = new THREE.Mesh(
+  new THREE.SphereGeometry(0.06, 24, 24),
+  new THREE.MeshBasicMaterial({ color: 0xFFDFA0, transparent: true, opacity: 0.9 })
+);
+singularity.add(core);
+const coreGlow = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: createGlowTexture('#FFC94D'), color: 0xFFC94D, transparent: true, opacity: 0.4, depthWrite: false
+}));
+coreGlow.scale.setScalar(0.5);
+singularity.add(coreGlow);
+
+function createGlowTexture(hex) {
+  const s = 128, c = document.createElement('canvas'); c.width = s; c.height = s;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(s/2, s/2, 0, s/2, s/2);
+  grad.addColorStop(0, hex + 'FF'); grad.addColorStop(0.3, hex + '88'); grad.addColorStop(1, hex + '00');
+  g.fillStyle = grad; g.fillRect(0,0,s,s);
+  return new THREE.CanvasTexture(c);
+}
+
+// Starfield
+const stars = new THREE.Points(
+  new THREE.BufferGeometry(),
+  new THREE.PointsMaterial({ color: 0x7e8fb3, size: 0.02, transparent: true, opacity: 0.5, depthWrite: false })
+);
+const starPos = [];
+for (let i = 0; i < 600; i++) {
+  const r = 25 + Math.random() * 20;
+  const th = Math.random() * Math.PI * 2;
+  const ph = Math.acos((Math.random() * 2) - 1);
+  starPos.push(r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th), r * Math.cos(ph));
+}
+stars.geometry.setAttribute('position', new THREE.Float32BufferAttribute(starPos, 3));
+scene.add(stars);
+
+// Observer viewport - unified infinity view
+const obs = document.getElementById('observer');
+const octx = obs.getContext('2d');
+function drawObserver(t) {
+  const w = obs.width, h = obs.height;
+  octx.clearRect(0,0,w,h);
+  
+  // vignette
+  const vg = octx.createRadialGradient(w/2, h/2, 0, w/2, h/2, w/2);
+  vg.addColorStop(0, 'rgba(2,2,8,0.0)'); vg.addColorStop(1, 'rgba(2,2,8,0.9)');
+  octx.fillStyle = vg; octx.fillRect(0,0,w,h);
+
+  // infinity path
+  octx.save(); octx.translate(w/2, h/2);
+  octx.lineWidth = 1.5; octx.globalAlpha = 0.25;
+  octx.strokeStyle = '#ffffff';
+  octx.beginPath();
+  for (let i = 0; i <= 200; i++) {
+    const a = (i/200) * Math.PI * 2;
+    const s = Math.sin(a), c = Math.cos(a);
+    const d = 1 + s*s;
+    const x = 22 * Math.SQRT2 * c / d;
+    const y = 22 * Math.SQRT2 * c * s / d;
+    if (i===0) octx.moveTo(x,y); else octx.lineTo(x,y);
+  }
+  octx.stroke();
+
+  // unified flow - Node 15 sees both as ONE
+  const p = (t * 0.0015) % 1;
+  for (let k = 0; k < 2; k++) {
+    const phase = (p + k*0.5) % 1;
+    const a = phase * Math.PI * 2;
+    const s = Math.sin(a), c = Math.cos(a);
+    const d = 1 + s*s;
+    const x = 22 * Math.SQRT2 * c / d;
+    const y = 22 * Math.SQRT2 * c * s / d;
+    
+    // gradient from red to gold along path
+    const hue = (c > 0) ? 40 : 0; // gold vs red side
+    const sat = 85;
+    const lig = 65 + Math.sin(t*0.003 + k)*5;
+    
+    octx.globalAlpha = 0.9;
+    octx.fillStyle = `hsl(${hue}, ${sat}%, ${lig}%)`;
+    octx.shadowColor = `hsl(${hue}, ${sat}%, 60%)`;
+    octx.shadowBlur = 12;
+    octx.beginPath(); octx.arc(x, y, 2.2, 0, Math.PI*2); octx.fill();
+    octx.shadowBlur = 0;
+  }
+  
+  // center merge point
+  octx.globalAlpha = 0.85;
+  const grad = octx.createRadialGradient(0,0,0,0,0,6);
+  grad.addColorStop(0, 'rgba(255,255,255,0.9)');
+  grad.addColorStop(0.4, 'rgba(255,201,77,0.6)');
+  grad.addColorStop(1, 'rgba(255,74,74,0)');
+  octx.fillStyle = grad;
+  octx.beginPath(); octx.arc(0,0,5,0,Math.PI*2); octx.fill();
+
+  octx.restore();
+  
+  // scanlines
+  octx.globalAlpha = 0.06;
+  for (let y = 0; y < h; y += 3) {
+    octx.fillStyle = '#fff';
+    octx.fillRect(0, y, w, 1);
+  }
+}
+
+// Sightline
+const line = document.getElementById('sightline');
+function updateSightline() {
+  const n = document.getElementById('node15').getBoundingClientRect();
+  const x1 = n.left + n.width/2;
+  const y1 = n.top + n.height/2;
+  const x2 = window.innerWidth/2;
+  const y2 = window.innerHeight/2 - 20;
+  line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+}
+updateSightline();
+
+// Mouse parallax
+let mx = 0, my = 0;
+window.addEventListener('pointermove', e => {
+  mx = (e.clientX / window.innerWidth - 0.5) * 2;
+  my = (e.clientY / window.innerHeight - 0.5) * 2;
+});
+
+function animate(t = 0) {
+  requestAnimationFrame(animate);
+  
+  // Hypercube slow drift
+  hyper.rotation.y += 0.0012;
+  hyper.rotation.x = 0.15 + Math.sin(t * 0.0002) * 0.05;
+  hyper.rotation.z = Math.sin(t * 0.00015) * 0.03;
+  
+  // Parallax
+  camera.position.x += (mx * 0.8 - camera.position.x) * 0.02;
+  camera.position.y += (-my * 0.5 + 0.4 - camera.position.y) * 0.02;
+  camera.lookAt(0, 0, 0);
+  
+  // Singularity - inside, separate spirals
+  goldSpiral.rotation.z += 0.008;
+  redSpiral.rotation.z -= 0.007;
+  singularity.rotation.y += 0.002;
+  const pulse = 1 + Math.sin(t * 0.002) * 0.03;
+  core.scale.setScalar(pulse);
+  coreGlow.material.opacity = 0.3 + Math.sin(t * 0.003) * 0.1;
+  
+  // VMs twinkle
+  vmGroup.children.forEach((m, i) => {
+    if (m.material) m.material.opacity = 0.5 + Math.sin(t*0.001 + i)*0.2;
+  });
+  
+  // stars
+  stars.rotation.y += 0.0001;
+  
+  renderer.render(scene, camera);
+  drawObserver(t);
+}
+animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  updateSightline();
+});
+
+// subtle interaction - click node to ping
+document.getElementById('node15').addEventListener('click', () => {
+  keyLight.intensity = 1.5;
+  setTimeout(() => keyLight.intensity = 0.6, 180);
+});
+</script>
+</body>
+</html>

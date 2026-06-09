@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ephemeral Dot in a Gyroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{--paper:#0a0a12;--cardsolid:#13131f;--ink:#ece8f5;--dim:#8a85a3;--glow:#6de0d0;--violet:#9b6cff;--orange:#ffb347;--line:rgba(155,108,255,0.2);}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;color:var(--ink);background-color:var(--paper);background-image:radial-gradient(circle at 50% -10%, #1a1430 0%, #08080f 65%);background-attachment:fixed;font-family:"Newsreader",Georgia,serif;line-height:1.55;}
+  .wrap{max-width:1060px;margin:0 auto;padding:26px 20px 60px;}
+  ::selection{background:var(--violet);color:#0a0a12;}
+  .kick{font-family:"Space Mono",monospace;font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--violet);}
+  h1{font-family:"Cinzel";font-weight:800;font-size:clamp(30px,6vw,54px);line-height:1;letter-spacing:0.01em;text-transform:uppercase;margin:8px 0 0;}
+  h1 em{font-style:normal;color:var(--glow);text-shadow:0 0 16px rgba(109,224,208,0.5);}
+  .stamp{display:inline-block;font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);border:1px dashed var(--orange);padding:4px 11px;margin-top:12px;}
+  .dek{font-size:clamp(15px,2vw,17px);max-width:660px;margin:14px 0 0;color:#cfc9e0;}
+  .dek b{color:var(--glow);}
+  .stage{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-top:22px;align-items:stretch;}
+  @media (max-width:760px){.stage{grid-template-columns:1fr;}}
+  .panel{border:1px solid var(--line);background:var(--cardsolid);padding:15px 16px;}
+  .panel h2{font-family:"Cinzel";font-weight:700;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--glow);margin:0 0 6px;}
+  .panel .sub{font-family:"Space Mono",monospace;font-size:10.5px;color:var(--dim);margin-bottom:8px;}
+  .svgbox{display:flex;justify-content:center;align-items:center;}
+  @keyframes dotpulse{0%,100%{r:7;opacity:.9}50%{r:10;opacity:1}}
+  #edot{animation:dotpulse 2.2s ease-in-out infinite;}
+  @media (prefers-reduced-motion:reduce){#edot{animation:none;}}
+  .controls{display:flex;flex-wrap:wrap;gap:9px;align-items:center;margin-top:12px;}
+  .btn{font-family:"Space Mono",monospace;font-size:12.5px;font-weight:700;color:var(--ink);background:#1d1730;border:1px solid var(--line);padding:7px 12px;cursor:pointer;border-radius:3px;transition:all .12s ease;}
+  .btn:hover{background:var(--violet);color:#0a0a12;}
+  .btn.on{background:var(--glow);color:#0a0a12;}
+  .slab{font-family:"Space Mono",monospace;font-size:10.5px;letter-spacing:0.06em;text-transform:uppercase;color:var(--dim);}
+  .slider{accent-color:var(--orange);width:130px;vertical-align:middle;}
+  .note{border:1px dashed var(--orange);background:var(--cardsolid);padding:13px 16px;margin:18px 0 0;font-size:13.5px;color:#cfc9e0;}
+  .note b{color:var(--orange);}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+  @media (max-width:680px){.cols{grid-template-columns:1fr;}}
+  .mini{border:1px solid var(--line);background:var(--cardsolid);padding:14px 16px;}
+  .mini h3{font-family:"Cinzel";font-weight:700;font-size:14px;color:var(--violet);margin:0 0 8px;}
+  .mini p{font-size:13.5px;margin:0 0 8px;color:#c8c2da;}
+  .mini p:last-child{margin-bottom:0;}
+  .mini b{color:var(--glow);}
+  .foot{border-top:1px dashed var(--line);margin-top:22px;padding-top:14px;font-family:"Space Mono",monospace;font-size:11.5px;color:var(--dim);line-height:1.7;}
+  .foot b{color:var(--orange);}
+  .leg{font-family:"Space Mono",monospace;font-size:10px;letter-spacing:0.05em;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="kick">running in parallel · ephemeral dot ‖ gyroscope</span>
+  <h1>The Dot at <em>0,0</em></h1>
+  <div class="stamp">a visualization — the gyroscope is real physics; the dot-at-center is a staging choice</div>
+  <div class="dek">A gyroscope's center is the one point that <b>doesn't move</b> while the gimbals turn around it. So we pin the ephemeral dot there, at 0,0,0 — the still pivot. And we run a qubit <b>in parallel</b>, because a spinning gyro and a qubit precess by the very same law.</div>
+
+  <div class="stage">
+    <div class="panel">
+      <h2>Gyroscope — the dot at the still center</h2>
+      <div class="sub">three gimbal rings · spin axis precessing · ephemeral dot fixed at 0,0,0</div>
+      <div class="svgbox">
+        <svg id="gyro" width="100%" viewBox="0 0 320 300" style="max-width:360px" aria-label="a gimballed gyroscope with a dot at its center">
+          <path id="ringO" fill="none" stroke="#3a6f78" stroke-width="2"/>
+          <path id="ringM" fill="none" stroke="#4f9aa6" stroke-width="2"/>
+          <path id="ringI" fill="none" stroke="#6de0d0" stroke-width="2"/>
+          <line id="axis" stroke="#ffb347" stroke-width="2.4"/>
+          <circle id="axisTip" r="4" fill="#ffb347"/>
+          <path id="rotor" fill="rgba(109,224,208,0.10)" stroke="#6de0d0" stroke-width="1.4"/>
+          <g id="spokes" stroke="#6de0d0" stroke-width="1"></g>
+          <circle id="edot" cx="160" cy="150" r="7" fill="#9b6cff"/>
+          <circle cx="160" cy="150" r="13" fill="none" stroke="#9b6cff" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.6"/>
+          <text x="160" y="292" text-anchor="middle" class="leg" fill="#8a85a3">center = fixed pivot (the still point)</text>
+        </svg>
+      </div>
+      <div class="controls">
+        <button class="btn on" id="playBtn">⏸ pause</button>
+        <button class="btn on" id="precBtn">precession: on</button>
+        <span class="slab">spin</span><input type="range" min="0.2" max="2" step="0.1" value="1" class="slider" id="speed">
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>The qubit, in parallel</h2>
+      <div class="sub">a Bloch vector precessing by the same law (Larmor / Rabi)</div>
+      <div class="svgbox">
+        <svg id="bloch" width="100%" viewBox="0 0 200 250" style="max-width:240px" aria-label="a Bloch vector precessing">
+          <ellipse id="cone" cx="100" cy="0" rx="0" ry="0" fill="none" stroke="#3a6f78" stroke-width="1" stroke-dasharray="3 3"/>
+          <circle cx="100" cy="115" r="78" fill="none" stroke="#3a3550" stroke-width="1"/>
+          <ellipse cx="100" cy="115" rx="78" ry="27" fill="none" stroke="#3a3550" stroke-width="0.8" stroke-dasharray="3 3"/>
+          <line x1="100" y1="37" x2="100" y2="193" stroke="#3a3550" stroke-width="0.7"/>
+          <text x="100" y="30" text-anchor="middle" class="leg" fill="#8a85a3">|0⟩ · field axis</text>
+          <text x="100" y="208" text-anchor="middle" class="leg" fill="#8a85a3">|1⟩</text>
+          <line id="bvec" x1="100" y1="115" x2="100" y2="40" stroke="#6de0d0" stroke-width="2.6"/>
+          <circle id="btip" cx="100" cy="40" r="5" fill="#6de0d0"/>
+          <text x="100" y="238" text-anchor="middle" class="leg" fill="#8a85a3">center = maximally mixed (r = 0)</text>
+        </svg>
+      </div>
+      <div class="sub" style="margin-top:10px;color:#9a93b0;">Same precession, two systems — the gyro's axis and the qubit's Bloch vector sweep identical cones, locked to the same rate.</div>
+    </div>
+  </div>
+
+  <div class="note"><b>Read this:</b> the gyroscope's behavior here follows the real rule for precession — a spin axis swept around the vertical, the way an actual gyro behaves under torque. What's a <b>staging choice</b> is putting the ephemeral dot at the center: it's a fitting place (the still pivot), not a physical claim. The dot still inherits no physics of its own — it marks the origin, nothing more.</div>
+
+  <div class="cols">
+    <div class="mini">
+      <h3>What "0,0" means — it's two different centers</h3>
+      <p>In the <b>gyroscope</b>, the center is the <b>fixed pivot</b> — the point everything rotates around, the one place that stays still. That's where the dot sits.</p>
+      <p>In the <b>Bloch</b> picture, the center (r = 0) is the <b>maximally mixed state</b> — a qubit with no definite orientation at all. Same "middle," opposite meaning. Don't conflate them: one is a still point, the other is a state of total uncertainty.</p>
+    </div>
+    <div class="mini">
+      <h3>The real parallel — why this isn't a costume</h3>
+      <p>A spinning gyro has angular momentum along its axis; a torque makes the axis <b>precess</b> (sweep a cone) instead of toppling — dL/dt = torque.</p>
+      <p>A qubit in a field obeys dr/dt = r × (field): the <b>Bloch vector sweeps a cone</b> at the Larmor frequency, and a driving field gives Rabi oscillations. <b>Same equation</b> — a vector crossed with an axis. That's the genuine link behind running them side by side.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <b>Honest footing.</b> This is an illustration of precession, not a measurement of anything — the dot is a marker at the origin, and the gyro↔qubit correspondence is the real, well-known physics (Larmor / Rabi precession), drawn here to scale the analogy honestly. The ephemeral dot, as ever, only does what it's placed to do: hold the still center while the rest turns.
+  </div>
+</div>
+
+<script>
+// ---------- 3D rotation + projection ----------
+function rotX(p,a){const c=Math.cos(a),s=Math.sin(a);return[p[0],c*p[1]-s*p[2],s*p[1]+c*p[2]];}
+function rotY(p,a){const c=Math.cos(a),s=Math.sin(a);return[c*p[0]+s*p[2],p[1],-s*p[0]+c*p[2]];}
+function rotZ(p,a){const c=Math.cos(a),s=Math.sin(a);return[c*p[0]-s*p[1],s*p[0]+c*p[1],p[2]];}
+
+const GCX=160,GCY=150,VS=118;
+function project(p){
+  let q=rotY(p,0.38);      // turn for depth
+  q=rotX(q,-0.42);         // tilt down to reveal the cone
+  return[GCX+q[0]*VS, GCY-q[1]*VS];
+}
+
+// gimbal frames: world = Ry(a) Rx(b) Rz(g) · p   (apply Rz innermost)
+const G={a:0.0,b:0.36,g:0.0,speed:1,precess:true,playing:true};
+const tOuter =p=>rotY(p,G.a);
+const tMiddle=p=>rotY(rotX(p,G.b),G.a);
+const tInner =p=>rotY(rotX(rotZ(p,G.g),G.b),G.a);
+
+function ringPath(T,r,plane){
+  const N=64;let d='';
+  for(let i=0;i<=N;i++){const t=2*Math.PI*i/N;let p;
+    if(plane==='xz')p=[Math.cos(t)*r,0,Math.sin(t)*r];
+    else if(plane==='xy')p=[Math.cos(t)*r,Math.sin(t)*r,0];
+    else p=[0,Math.cos(t)*r,Math.sin(t)*r];
+    const w=project(T(p));
+    d+=(i===0?'M':'L')+w[0].toFixed(1)+' '+w[1].toFixed(1)+' ';
+  }
+  return d+'Z';
+}
+
+// ---------- Bloch parallel ----------
+const BCX=100,BCY=115,BR=78,Ab=0.5,TILTb=0.34;
+function blProj(x,y,z){return[BCX+BR*(x*Math.cos(Ab)+y*Math.sin(Ab)), BCY-BR*z+BR*(x*Math.sin(Ab)-y*Math.cos(Ab))*TILTb];}
+
+const $=id=>document.getElementById(id);
+
+function render(){
+  // rings
+  $('ringO').setAttribute('d',ringPath(tOuter,1.0,'xz'));
+  $('ringM').setAttribute('d',ringPath(tMiddle,0.82,'xy'));
+  $('ringI').setAttribute('d',ringPath(tInner,0.66,'yz'));
+  $('rotor').setAttribute('d',ringPath(tInner,0.5,'xy'));
+  // spokes (rotor face, spinning fast via g)
+  let sp='';for(let k=0;k<4;k++){const t=k*Math.PI/2;const rim=tInner([Math.cos(t)*0.5,Math.sin(t)*0.5,0]);const c=tInner([0,0,0]);const a=project(c),b=project(rim);sp+=`<line x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}"/>`;}
+  $('spokes').innerHTML=sp;
+  // spin axis (precesses; independent of roll g)
+  const a1=project(tMiddle([0,0,-1.28])),a2=project(tMiddle([0,0,1.28]));
+  $('axis').setAttribute('x1',a1[0]);$('axis').setAttribute('y1',a1[1]);$('axis').setAttribute('x2',a2[0]);$('axis').setAttribute('y2',a2[1]);
+  $('axisTip').setAttribute('cx',a2[0]);$('axisTip').setAttribute('cy',a2[1]);
+
+  // Bloch vector precessing by the SAME angle G.a (z up)
+  const th=0.92, phi=G.a;
+  const dir=[Math.sin(th)*Math.cos(phi),Math.sin(th)*Math.sin(phi),Math.cos(th)];
+  const tip=blProj(dir[0],dir[1],dir[2]);
+  $('bvec').setAttribute('x2',tip[0]);$('bvec').setAttribute('y2',tip[1]);
+  $('btip').setAttribute('cx',tip[0]);$('btip').setAttribute('cy',tip[1]);
+  // cone trace (circle the tip sweeps): ellipse at height z=cos th
+  const z=Math.cos(th), rxy=Math.sin(th);
+  const cy=BCY-BR*z - BR*Math.cos(Ab)*0*TILTb; // center y at this height
+  $('cone').setAttribute('cx',BCX);
+  $('cone').setAttribute('cy',(BCY-BR*z).toFixed(1));
+  $('cone').setAttribute('rx',(BR*rxy).toFixed(1));
+  $('cone').setAttribute('ry',(BR*rxy*TILTb).toFixed(1));
+}
+
+// ---------- loop ----------
+const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function frame(){
+  if(G.playing){G.g+=0.09*G.speed; if(G.precess)G.a+=0.013*G.speed;}
+  render();
+  if(!reduced)requestAnimationFrame(frame);
+}
+// controls
+$('playBtn').onclick=()=>{G.playing=!G.playing;$('playBtn').textContent=G.playing?'⏸ pause':'▸ play';$('playBtn').classList.toggle('on',G.playing);};
+$('precBtn').onclick=()=>{G.precess=!G.precess;$('precBtn').textContent='precession: '+(G.precess?'on':'off');$('precBtn').classList.toggle('on',G.precess);};
+$('speed').oninput=e=>{G.speed=+e.target.value;};
+
+if(reduced){G.a=0.7;G.g=0.5;G.playing=false;$('playBtn').textContent='▸ play';$('playBtn').classList.remove('on');render();}
+else{render();requestAnimationFrame(frame);}
+</script>
+</body>
+</html>
