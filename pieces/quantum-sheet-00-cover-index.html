@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheet 00 — Dimensional Rotation Architecture · Drawing Index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blueprint:#0d2440; --bp-deep:#081a30; --ink:#dcebff; --line:#7fb0e0;
+    --faint:rgba(127,176,224,0.18); --grid:rgba(127,176,224,0.10);
+    --chalk:#eaf4ff; --amber:#f2b24c; --accentdim:#9cc2ea;
+    --teal:#9bd0c4; --lilac:#c8b3e8;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:#06121f;color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.5;
+    background-image:radial-gradient(circle at 50% -5%, #123257 0%, #050f1b 72%);background-attachment:fixed;}
+  .sheet{max-width:1080px;margin:22px auto;background:var(--blueprint);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid var(--faint);box-shadow:0 30px 80px rgba(0,0,0,0.55);position:relative;}
+  .frame{position:absolute;inset:14px;border:1.5px solid var(--line);pointer-events:none;}
+  .frame::before,.frame::after{content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--line);}
+  .frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+  .frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+  .pad{padding:42px 46px 30px;position:relative;z-index:1;}
+  ::selection{background:var(--amber);color:#06121f;}
+
+  .head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;border-bottom:1px solid var(--line);padding-bottom:16px;flex-wrap:wrap;}
+  .head .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.34em;text-transform:uppercase;color:var(--accentdim);}
+  .head h1{font-family:"Spectral",serif;font-weight:700;font-size:clamp(28px,4.6vw,50px);line-height:1.02;margin:8px 0 0;letter-spacing:0.01em;}
+  .head h1 em{font-style:italic;color:var(--amber);}
+  .head .sub{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--accentdim);margin-top:9px;letter-spacing:0.04em;}
+  .idtag{font-family:"IBM Plex Mono",monospace;font-size:11px;text-align:right;color:var(--line);line-height:1.9;border:1px solid var(--faint);padding:9px 13px;background:rgba(8,26,48,0.5);}
+  .idtag b{color:var(--chalk);font-weight:600;}
+
+  .seclabel{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin:30px 0 12px;display:flex;align-items:center;gap:12px;}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--faint);}
+
+  /* progression hero */
+  .prog{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;}
+  @media (max-width:720px){.prog{grid-template-columns:1fr;gap:14px;}.prog .arrow{display:none;}}
+  .pcard{border:1px solid var(--faint);background:rgba(8,26,48,0.42);padding:16px 14px;text-align:center;}
+  .pcard .dim{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.16em;text-transform:uppercase;color:var(--accentdim);}
+  .pcard .nm{font-family:"Spectral",serif;font-weight:600;font-size:19px;color:var(--chalk);margin-top:4px;}
+  .pcard svg{display:block;margin:10px auto 8px;}
+  .pcard .stat{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--line);line-height:1.7;}
+  .pcard .stat b{color:var(--amber);}
+  .arrow{font-family:"IBM Plex Mono",monospace;font-size:20px;color:var(--accentdim);text-align:center;}
+
+  table.idx{width:100%;border-collapse:collapse;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;}
+  table.idx th{text-align:left;color:var(--amber);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:9.5px;border-bottom:1px solid var(--line);padding:8px 10px;}
+  table.idx td{border-bottom:1px solid var(--faint);padding:7px 10px;color:var(--ink);vertical-align:top;}
+  table.idx .div td{background:rgba(127,176,224,0.07);color:var(--amber);font-weight:600;letter-spacing:0.1em;text-transform:uppercase;font-size:10px;border-bottom:1px solid var(--line);}
+  table.idx .no{color:var(--chalk);font-weight:600;width:52px;}
+  table.idx .ti{color:var(--chalk);}
+  table.idx .su{color:var(--accentdim);}
+  table.idx .st{color:var(--teal);width:64px;text-transform:uppercase;font-size:10px;letter-spacing:0.06em;}
+  table.idx tr:hover td{background:rgba(127,176,224,0.05);}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:6px;}
+  @media (max-width:720px){.twocol{grid-template-columns:1fr;}}
+  .block{border:1px solid var(--faint);background:rgba(8,26,48,0.42);padding:15px 18px;}
+  .block .bh{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin-bottom:9px;}
+  .block ul{margin:0;padding-left:18px;}
+  .block li{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.75;color:var(--accentdim);margin-bottom:6px;}
+  .block li b{color:var(--chalk);font-weight:600;} .block li .am{color:var(--amber);}
+  .legend-row{display:flex;align-items:center;gap:9px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accentdim);margin-bottom:8px;}
+  .legend-row .sw{width:26px;height:0;flex:0 0 auto;border-top-width:3px;border-top-style:solid;}
+  .legend-row .dotsw{width:11px;height:11px;border-radius:50%;flex:0 0 auto;}
+
+  .titleblock{display:grid;grid-template-columns:1.4fr 1fr 1fr;margin-top:24px;border:1.5px solid var(--line);font-family:"IBM Plex Mono",monospace;}
+  .tb{border-right:1px solid var(--faint);padding:10px 13px;} .tb:last-child{border-right:none;}
+  .tb .k{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accentdim);}
+  .tb .v{font-size:12.5px;color:var(--chalk);margin-top:4px;font-weight:600;letter-spacing:0.03em;}
+  .tb.full{grid-column:1 / -1;border-right:none;border-top:1px solid var(--faint);}
+  .revrow{display:flex;gap:18px;flex-wrap:wrap;}
+  .revrow span{font-size:11px;color:var(--ink);} .revrow b{color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="frame"></div>
+  <div class="pad">
+
+    <header class="head">
+      <div>
+        <div class="eyebrow">Portfolio · Cover &amp; Drawing Index</div>
+        <h1>Dimensional Rotation <em>Architecture</em></h1>
+        <div class="sub">A drawing set in eleven sheets · from the fixed point to the maximal torus of SO(8)</div>
+      </div>
+      <div class="idtag">
+        SHEET &nbsp;<b>00</b><br>
+        OF &nbsp;<b>XI</b><br>
+        SET &nbsp;<b>DRA-2026</b><br>
+        STATUS &nbsp;<b>ISSUED</b>
+      </div>
+    </header>
+
+    <div class="seclabel">A · Progression — the spine of the set</div>
+    <div class="prog">
+      <div class="pcard">
+        <div class="dim">3-space</div>
+        <div class="nm">The Gimbal</div>
+        <svg width="70" height="60" viewBox="0 0 70 60" aria-hidden="true">
+          <circle cx="35" cy="30" r="22" fill="none" stroke="#7fb0e0" stroke-width="1.4"/>
+          <ellipse cx="35" cy="30" rx="22" ry="8" fill="none" stroke="#7fb0e0" stroke-width="1"/>
+          <line x1="13" y1="30" x2="57" y2="30" stroke="#7fb0e0" stroke-width="1"/>
+          <circle cx="35" cy="30" r="3" fill="#f2b24c"/>
+        </svg>
+        <div class="stat"><b>3</b> planes · <b>1</b> at once</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pcard">
+        <div class="dim">4-space</div>
+        <div class="nm">The Tesseract</div>
+        <svg width="70" height="60" viewBox="0 0 70 60" aria-hidden="true">
+          <rect x="13" y="13" width="34" height="34" fill="none" stroke="#7fb0e0" stroke-width="1.2"/>
+          <rect x="25" y="21" width="28" height="28" fill="none" stroke="#9bd0c4" stroke-width="1.2"/>
+          <line x1="13" y1="13" x2="25" y2="21" stroke="#c8b3e8" stroke-width="0.9"/>
+          <line x1="47" y1="13" x2="53" y2="21" stroke="#c8b3e8" stroke-width="0.9"/>
+          <line x1="13" y1="47" x2="25" y2="49" stroke="#c8b3e8" stroke-width="0.9"/>
+          <line x1="47" y1="47" x2="53" y2="49" stroke="#c8b3e8" stroke-width="0.9"/>
+          <circle cx="33" cy="31" r="3" fill="#f2b24c"/>
+        </svg>
+        <div class="stat"><b>6</b> planes · <b>2</b> at once</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pcard">
+        <div class="dim">8-space</div>
+        <div class="nm">Quarter-Planes</div>
+        <svg width="70" height="60" viewBox="0 0 70 60" aria-hidden="true">
+          <circle cx="35" cy="30" r="24" fill="none" stroke="rgba(127,176,224,0.3)" stroke-width="1"/>
+          <circle cx="35" cy="30" r="24" fill="none" stroke="#7fb0e0" stroke-width="3" stroke-dasharray="38 113" transform="rotate(-90 35 30)"/>
+          <circle cx="35" cy="30" r="17" fill="none" stroke="#9bd0c4" stroke-width="3" stroke-dasharray="27 80" transform="rotate(-90 35 30)"/>
+          <circle cx="35" cy="30" r="10" fill="none" stroke="#c8b3e8" stroke-width="3" stroke-dasharray="16 47" transform="rotate(-90 35 30)"/>
+          <circle cx="35" cy="30" r="3" fill="#f2b24c"/>
+        </svg>
+        <div class="stat"><b>28</b> planes · <b>4</b> at once = T⁴</div>
+      </div>
+    </div>
+
+    <div class="seclabel">B · Sheet Index</div>
+    <table class="idx">
+      <thead><tr><th>No.</th><th>Sheet Title</th><th>Subject</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr class="div"><td colspan="4">Division 0 — General</td></tr>
+        <tr><td class="no">00</td><td class="ti">Cover &amp; Drawing Index</td><td class="su">this sheet</td><td class="st">Issued</td></tr>
+
+        <tr class="div"><td colspan="4">Division 1 — Quantum Instruments</td></tr>
+        <tr><td class="no">01</td><td class="ti">Ephemeral Qubit Lab</td><td class="su">2-qubit density-matrix sandbox · entangle &amp; measure</td><td class="st">Issued</td></tr>
+
+        <tr class="div"><td colspan="4">Division 2 — Gyroscopic Studies · 3-Space</td></tr>
+        <tr><td class="no">02</td><td class="ti">The Dot at 0,0</td><td class="su">gyroscope ‖ qubit precession (Larmor / Rabi)</td><td class="st">Issued</td></tr>
+        <tr><td class="no">03</td><td class="ti">The Triad &amp; Its Shadow</td><td class="su">two dots · 3 axes + 3 shadow axes</td><td class="st">Issued</td></tr>
+        <tr><td class="no">04</td><td class="ti">The Chair &amp; the Sixth Turn</td><td class="su">NASA MASTIF (3-axis) vs the 4D rotor (6-plane)</td><td class="st">Issued</td></tr>
+
+        <tr class="div"><td colspan="4">Division 3 — Four-Space · The Tesseract</td></tr>
+        <tr><td class="no">05</td><td class="ti">The Hypercube · 6·0·0·6</td><td class="su">tesseract · mirror-vertex pair</td><td class="st">Issued</td></tr>
+        <tr><td class="no">06</td><td class="ti">The Tesseract — Accurate Picture</td><td class="su">16v / 32e · six rotation planes · w-depth</td><td class="st">Issued</td></tr>
+        <tr><td class="no">07</td><td class="ti">Two Dots, Entangled</td><td class="su">hypercube ⊃ gyro ⊃ Bell pair (real ρ)</td><td class="st">Issued</td></tr>
+        <tr><td class="no">08</td><td class="ti">Six Axes, One Center · 6·0·6</td><td class="su">4D gyro · 6 axes ⇄ 6 planes</td><td class="st">Issued</td></tr>
+        <tr><td class="no">09</td><td class="ti">Locked, Then Freed · 6·6·6·6</td><td class="su">simple → double → isoclinic → free</td><td class="st">Issued</td></tr>
+
+        <tr class="div"><td colspan="4">Division 4 — Higher Space</td></tr>
+        <tr><td class="no">10</td><td class="ti">The 4D Thing, Doubled &amp; Mirrored</td><td class="su">ℝ⁸ = ℝ⁴⊕ℝ⁴ · Cayley–Dickson ladder</td><td class="st">Issued</td></tr>
+        <tr><td class="no">11</td><td class="ti">Plate 8·IV — Quarter-Plane Decomposition</td><td class="su">¼ × 4 = 1 · T⁴ = SO(2)⁴ ⊂ SO(8)</td><td class="st">Issued</td></tr>
+      </tbody>
+    </table>
+
+    <div class="seclabel">C · Visual Language &amp; Method</div>
+    <div class="twocol">
+      <div class="block">
+        <div class="bh">Drawing Conventions</div>
+        <div class="legend-row"><span class="dotsw" style="background:#9b6cff"></span> fixed point — the center held still under every rotation</div>
+        <div class="legend-row"><span class="sw" style="border-top-color:#6de0d0"></span> near in w &nbsp;·&nbsp; <span class="sw" style="border-top-color:#3f5d8f"></span> far in w (the shadow)</div>
+        <div class="legend-row"><span class="sw" style="border-top-color:#ffb347"></span> axis = rotation plane (rotor coupled to geometry)</div>
+        <div class="legend-row"><span class="dotsw" style="border:2px solid #9b6cff;background:transparent"></span> projection / shadow of a real element</div>
+        <div class="legend-row" style="margin-bottom:0;color:var(--chalk)">dashed = staged or projected · solid = the real object</div>
+      </div>
+      <div class="block">
+        <div class="bh">Scope &amp; Method</div>
+        <ul>
+          <li><b>Researched before drawn.</b> Factual sheets (the NASA gimbal rig, the rotation-group counts, Cayley–Dickson) were verified against sources, not memory.</li>
+          <li><b>Each sheet a faithful schematic.</b> Real geometry and real physics are computed honestly; the one unavoidable liberty is flattening higher dimensions onto a screen.</li>
+          <li><b>Real vs. staging, kept apart.</b> Mathematics is labeled real; the recurring numeric motifs (<span class="am">6·0·0·6, 6·0·6, 6·6·6·6, 8,8, ¼×4=1</span>) are labeled as motifs laid over real structure.</li>
+          <li><b>Companion library, separate register.</b> The illustrated-pamphlet shelf (information theory, quantum dots, the figures, the workbench series) is a different publication set with its own index — not part of this drawing set.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="titleblock">
+      <div class="tb"><div class="k">Project</div><div class="v">Dimensional Rotation Architecture</div></div>
+      <div class="tb"><div class="k">Set</div><div class="v">DRA-2026 · Sheets 00–11</div></div>
+      <div class="tb"><div class="k">Scale</div><div class="v">N.T.S.</div></div>
+      <div class="tb"><div class="k">Drawn</div><div class="v">Studio Atelier</div></div>
+      <div class="tb"><div class="k">Discipline</div><div class="v">Geometry / Rotation</div></div>
+      <div class="tb"><div class="k">Revision</div><div class="v">— C —</div></div>
+      <div class="tb full"><div class="k">Revisions</div><div class="v"><div class="revrow"><span><b>A</b> · 3-axis baseline (the gimbal)</span><span><b>B</b> · 4D / 6-plane rotor</span><span><b>C</b> · 8-space · quarter-plane decomposition + set cover</span></div></div></div>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

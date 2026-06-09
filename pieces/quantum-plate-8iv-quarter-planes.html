@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plate 8·IV — Quarter-Plane Decomposition of ℝ⁸</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blueprint:#0d2440; --bp-deep:#081a30; --paper:#103056;
+    --ink:#dcebff; --line:#7fb0e0; --faint:rgba(127,176,224,0.18); --grid:rgba(127,176,224,0.10);
+    --chalk:#eaf4ff; --amber:#f2b24c; --accentdim:#9cc2ea;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:#06121f;color:var(--ink);font-family:"Spectral",Georgia,serif;line-height:1.5;
+    background-image:radial-gradient(circle at 50% -5%, #123257 0%, #050f1b 72%);background-attachment:fixed;}
+  .sheet{max-width:1080px;margin:22px auto;background:var(--blueprint);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px;border:1px solid var(--faint);box-shadow:0 30px 80px rgba(0,0,0,0.55);position:relative;}
+  /* drafting frame */
+  .frame{position:absolute;inset:14px;border:1.5px solid var(--line);pointer-events:none;}
+  .frame::before,.frame::after{content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--line);}
+  .frame::before{top:-1px;left:-1px;border-right:none;border-bottom:none;}
+  .frame::after{bottom:-1px;right:-1px;border-left:none;border-top:none;}
+  .pad{padding:42px 46px 30px;position:relative;z-index:1;}
+  ::selection{background:var(--amber);color:#06121f;}
+
+  .head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;border-bottom:1px solid var(--line);padding-bottom:16px;flex-wrap:wrap;}
+  .head .l .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.34em;text-transform:uppercase;color:var(--accentdim);}
+  .head h1{font-family:"Spectral",serif;font-weight:700;font-size:clamp(26px,4.2vw,44px);line-height:1.04;margin:8px 0 0;letter-spacing:0.01em;}
+  .head h1 em{font-style:italic;color:var(--amber);}
+  .head .sub{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--accentdim);margin-top:8px;letter-spacing:0.04em;}
+  .idtag{font-family:"IBM Plex Mono",monospace;font-size:11px;text-align:right;color:var(--line);line-height:1.9;border:1px solid var(--faint);padding:9px 13px;background:rgba(8,26,48,0.5);}
+  .idtag b{color:var(--chalk);font-weight:600;}
+
+  .seclabel{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:var(--amber);margin:30px 0 12px;display:flex;align-items:center;gap:12px;}
+  .seclabel::after{content:"";flex:1;height:1px;background:var(--faint);}
+
+  .equation{text-align:center;font-family:"Spectral",serif;margin:6px 0 4px;}
+  .equation .big{font-size:clamp(22px,3.4vw,34px);font-weight:500;letter-spacing:0.02em;color:var(--chalk);}
+  .equation .big .q{color:var(--amber);}
+  .equation .note{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accentdim);margin-top:7px;letter-spacing:0.05em;}
+
+  .quarters{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:6px;}
+  @media (max-width:720px){.quarters{grid-template-columns:repeat(2,1fr);}}
+  .qcell{border:1px solid var(--faint);background:rgba(8,26,48,0.42);padding:13px 13px 11px;position:relative;}
+  .qcell .qid{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--accentdim);display:flex;justify-content:space-between;}
+  .qcell .qid .frac{color:var(--amber);}
+  .dial{display:block;margin:8px auto 4px;}
+  .qcell .plane{font-family:"IBM Plex Mono",monospace;font-size:12px;text-align:center;color:var(--chalk);font-weight:600;letter-spacing:0.06em;}
+  .qcell .theta{font-family:"IBM Plex Mono",monospace;font-size:10.5px;text-align:center;color:var(--line);margin-top:2px;}
+
+  .assembly{display:grid;grid-template-columns:1.15fr 1fr;gap:22px;margin-top:6px;align-items:center;}
+  @media (max-width:760px){.assembly{grid-template-columns:1fr;}}
+  .assembly .cap{font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--accentdim);line-height:1.85;}
+  .assembly .cap b{color:var(--chalk);font-weight:600;} .assembly .cap .am{color:var(--amber);}
+
+  table.schedule{width:100%;border-collapse:collapse;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11.5px;}
+  table.schedule th{text-align:left;color:var(--amber);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;font-size:10px;border-bottom:1px solid var(--line);padding:8px 10px;}
+  table.schedule td{border-bottom:1px solid var(--faint);padding:8px 10px;color:var(--ink);}
+  table.schedule tr:last-child td{border-bottom:1px solid var(--line);color:var(--chalk);}
+  table.schedule .q{color:var(--amber);}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:20px;border-top:1px solid var(--faint);padding-top:16px;}
+  .btn{font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--ink);background:transparent;border:1px solid var(--line);padding:8px 14px;cursor:pointer;transition:all .14s ease;}
+  .btn:hover{background:var(--line);color:#06121f;}
+  .btn.on{background:var(--amber);border-color:var(--amber);color:#06121f;}
+  .slab{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accentdim);}
+  .slider{accent-color:var(--amber);width:150px;vertical-align:middle;}
+
+  .notes{margin-top:22px;border:1px solid var(--faint);background:rgba(8,26,48,0.42);padding:15px 18px;}
+  .notes .nh{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin-bottom:9px;}
+  .notes ol{margin:0;padding-left:20px;}
+  .notes li{font-family:"IBM Plex Mono",monospace;font-size:11px;line-height:1.75;color:var(--accentdim);margin-bottom:5px;}
+  .notes li b{color:var(--chalk);font-weight:600;} .notes li .am{color:var(--amber);}
+
+  /* title block */
+  .titleblock{display:grid;grid-template-columns:1.4fr 1fr 1fr;margin-top:24px;border:1.5px solid var(--line);font-family:"IBM Plex Mono",monospace;}
+  .tb{border-right:1px solid var(--faint);padding:10px 13px;}
+  .tb:last-child{border-right:none;}
+  .tb .k{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--accentdim);}
+  .tb .v{font-size:12.5px;color:var(--chalk);margin-top:4px;font-weight:600;letter-spacing:0.03em;}
+  .tb.full{grid-column:1 / -1;border-right:none;border-top:1px solid var(--faint);}
+  .revrow{display:flex;gap:18px;flex-wrap:wrap;}
+  .revrow span{font-size:11px;color:var(--ink);} .revrow b{color:var(--amber);}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="frame"></div>
+  <div class="pad">
+
+    <header class="head">
+      <div class="l">
+        <div class="eyebrow">Dimensional Systems · Rotation Architecture</div>
+        <h1>Quarter-Plane Decomposition<br>of <em>Eight-Space</em></h1>
+        <div class="sub">ℝ⁸ = ℝ² ⊕ ℝ² ⊕ ℝ² ⊕ ℝ²  ·  the maximal simultaneous rotation</div>
+      </div>
+      <div class="idtag">
+        SHEET &nbsp;<b>8 · IV</b><br>
+        SERIES &nbsp;<b>SO(8) / T⁴</b><br>
+        STATUS &nbsp;<b>ISSUED</b><br>
+        CLASS &nbsp;<b>EXEC</b>
+      </div>
+    </header>
+
+    <div class="seclabel">A · Governing Identity</div>
+    <div class="equation">
+      <div class="big"><span class="q">¼</span> × 4 = 1</div>
+      <div class="note">four quarter-planes, composed, constitute the whole 8-space rotation — T⁴ = SO(2)⁴ ⊂ SO(8)</div>
+    </div>
+
+    <div class="seclabel">B · Plate — The Four Quarters (live)</div>
+    <div class="quarters" id="quarters"></div>
+
+    <div class="seclabel">C · Detail — Composition / Assembly</div>
+    <div class="assembly">
+      <div class="svgwrap" style="display:flex;justify-content:center;">
+        <svg id="assembly" width="100%" viewBox="0 0 360 300" style="max-width:420px" aria-label="four quarter-planes composing into the unit whole"></svg>
+      </div>
+      <div class="cap" id="assemblyCap"></div>
+    </div>
+
+    <div class="seclabel">D · Schedule — Plane Register</div>
+    <table class="schedule">
+      <thead><tr><th>Plane</th><th>Coords</th><th>Fraction</th><th>Generator</th><th>Phase</th></tr></thead>
+      <tbody id="schedule"></tbody>
+    </table>
+
+    <div class="controls">
+      <button class="btn on" id="playBtn">⏸ RUN</button>
+      <button class="btn" id="isoBtn">ISOCLINIC — equal rate</button>
+      <span class="slab">Rate</span><input type="range" min="0.2" max="2.4" step="0.1" value="1" class="slider" id="speed">
+      <span class="slab" id="liveTorus" style="margin-left:auto"></span>
+    </div>
+
+    <div class="notes">
+      <div class="nh">General Notes</div>
+      <ol>
+        <li><b>Real, standard structure.</b> ℝ⁸ decomposes into four orthogonal 2-planes; rotating each independently is the <b>maximal torus</b> T⁴ = SO(2)⁴ of the group SO(8). This is textbook Lie-group geometry.</li>
+        <li>Each 2-plane spans <b>two of the eight dimensions</b> — a literal <span class="am">quarter</span> of the space. Four quarters, jointly, span all eight.</li>
+        <li>The count <b>4</b> is not arbitrary: ⌊8/2⌋ = <b>4</b> is the maximum number of planes that can rotate <b>simultaneously</b> in 8-space (vs 2 in 4-space, 1 in 3-space).</li>
+        <li><b>Reading of the identity.</b> "<span class="am">¼ × 4 = 1</span>" denotes <b>four quarter-planes composing the whole rotation</b> — a structural statement, not merely the arithmetic, which is trivially true.</li>
+        <li>This sheet is a faithful schematic of the plane decomposition; it is <b>not</b> a full 8-cube projection, and the dials depict phase, not a machinable mechanism.</li>
+      </ol>
+    </div>
+
+    <div class="titleblock">
+      <div class="tb">
+        <div class="k">Project</div>
+        <div class="v">Dimensional Rotation Architecture</div>
+      </div>
+      <div class="tb">
+        <div class="k">Subject</div>
+        <div class="v">T⁴ ⊂ SO(8)</div>
+      </div>
+      <div class="tb">
+        <div class="k">Scale</div>
+        <div class="v">N.T.S.</div>
+      </div>
+      <div class="tb">
+        <div class="k">Drawn</div>
+        <div class="v">Studio Atelier</div>
+      </div>
+      <div class="tb">
+        <div class="k">Sheet</div>
+        <div class="v">8 · IV of VIII</div>
+      </div>
+      <div class="tb">
+        <div class="k">Revision</div>
+        <div class="v">— C —</div>
+      </div>
+      <div class="tb full">
+        <div class="k">Revisions</div>
+        <div class="v"><div class="revrow"><span><b>A</b> · 3-axis baseline</span><span><b>B</b> · 4D / 6-plane rotor</span><span><b>C</b> · 8-space · ¼×4=1 quarter-plane decomposition</span></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const PLANES=[
+  {id:'I',  plane:'e₁ e₂', coords:'1,2', gen:'L₁₂', col:'#7fb0e0', th:0,    rate:0.9},
+  {id:'II', plane:'e₃ e₄', coords:'3,4', gen:'L₃₄', col:'#9bd0c4', th:1.7,  rate:1.15},
+  {id:'III',plane:'e₅ e₆', coords:'5,6', gen:'L₅₆', col:'#c8b3e8', th:3.1,  rate:0.7},
+  {id:'IV', plane:'e₇ e₈', coords:'7,8', gen:'L₇₈', col:'#f2b24c', th:4.6,  rate:1.35},
+];
+const ST={speed:1,playing:true,iso:false};
+
+// build quarter cells (each a rotor dial)
+$('quarters').innerHTML=PLANES.map((p,i)=>`
+  <div class="qcell">
+    <div class="qid"><span>PLANE ${p.id}</span><span class="frac">¼</span></div>
+    <svg class="dial" width="118" height="118" viewBox="0 0 118 118" aria-label="rotation dial plane ${p.id}">
+      <circle cx="59" cy="59" r="46" fill="none" stroke="rgba(127,176,224,0.25)" stroke-width="1"/>
+      <circle cx="59" cy="59" r="46" fill="none" stroke="${p.col}" stroke-width="1" stroke-dasharray="2 6" opacity="0.6"/>
+      <line x1="13" y1="59" x2="105" y2="59" stroke="rgba(127,176,224,0.18)" stroke-width="0.7"/>
+      <line x1="59" y1="13" x2="59" y2="105" stroke="rgba(127,176,224,0.18)" stroke-width="0.7"/>
+      <path id="arc${i}" fill="${p.col}" opacity="0.16"/>
+      <line id="rad${i}" x1="59" y1="59" x2="105" y2="59" stroke="${p.col}" stroke-width="2.4"/>
+      <circle id="tip${i}" cx="105" cy="59" r="4" fill="${p.col}"/>
+      <circle cx="59" cy="59" r="3" fill="${p.col}"/>
+    </svg>
+    <div class="plane">${p.plane}</div>
+    <div class="theta" id="th${i}">θ = 0.00 rad</div>
+  </div>`).join('');
+
+// schedule
+$('schedule').innerHTML=PLANES.map(p=>`<tr><td>${p.id}</td><td>${p.coords}</td><td class="q">¼</td><td>${p.gen}</td><td id="sch_${p.id}">0.00</td></tr>`).join('')
+  +`<tr><td>Σ — whole</td><td>1–8</td><td class="q">4 × ¼ = 1</td><td>T⁴ = SO(2)⁴</td><td id="sch_sum">—</td></tr>`;
+
+function dial(i){
+  const p=PLANES[i];const cx=59,cy=59,r=46;
+  const ex=cx+r*Math.cos(-p.th), ey=cy+r*Math.sin(-p.th);
+  $('rad'+i).setAttribute('x2',ex.toFixed(1));$('rad'+i).setAttribute('y2',ey.toFixed(1));
+  $('tip'+i).setAttribute('cx',ex.toFixed(1));$('tip'+i).setAttribute('cy',ey.toFixed(1));
+  // swept arc from 0 to th
+  const a0=0, a1=p.th%(2*Math.PI);const large=a1>Math.PI?1:0;
+  const sx=cx+r*Math.cos(0), sy=cy;
+  const ax=cx+r*Math.cos(-a1), ay=cy+r*Math.sin(-a1);
+  $('arc'+i).setAttribute('d',`M${cx} ${cy} L${sx.toFixed(1)} ${sy.toFixed(1)} A ${r} ${r} 0 ${large} 0 ${ax.toFixed(1)} ${ay.toFixed(1)} Z`);
+  $('th'+i).textContent='θ = '+(a1).toFixed(2)+' rad';
+  const s=$('sch_'+p.id);if(s)s.textContent=(a1).toFixed(2);
+}
+
+// assembly: four quarter-rings nested, each filling by its phase, composing a unit
+function drawAssembly(){
+  const svg=$('assembly');const cx=180,cy=140;
+  const radii=[110,86,62,38];
+  let s='';
+  // outer unit boundary
+  s+=`<circle cx="${cx}" cy="${cy}" r="128" fill="none" stroke="rgba(127,176,224,0.25)" stroke-width="1" stroke-dasharray="3 5"/>`;
+  s+=`<text x="${cx}" y="22" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" letter-spacing="2" fill="#9cc2ea">UNIT WHOLE = 1</text>`;
+  PLANES.forEach((p,i)=>{
+    const r=radii[i];const a1=p.th%(2*Math.PI);
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(127,176,224,0.16)" stroke-width="8"/>`;
+    // arc proportional to phase (visual progress of this quarter)
+    const frac=a1/(2*Math.PI);
+    const circ=2*Math.PI*r;const dash=circ*frac;
+    s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${p.col}" stroke-width="8" stroke-linecap="butt" stroke-dasharray="${dash.toFixed(1)} ${(circ-dash).toFixed(1)}" transform="rotate(-90 ${cx} ${cy})" opacity="0.92"/>`;
+    s+=`<text x="${cx+r-4}" y="${cy-2}" font-family="IBM Plex Mono,monospace" font-size="8" fill="${p.col}">¼</text>`;
+  });
+  s+=`<circle cx="${cx}" cy="${cy}" r="5" fill="#f2b24c"/>`;
+  svg.innerHTML=s;
+}
+
+let sumPhase=0;
+function frame(){
+  if(ST.playing){
+    for(const p of PLANES){const r=ST.iso?1.0:p.rate;p.th+=0.012*r*ST.speed;}
+    sumPhase+=0.012*ST.speed;
+  }
+  for(let i=0;i<4;i++)dial(i);
+  drawAssembly();
+  const mode=ST.iso?'ISOCLINIC · all four planes at equal rate':'GENERIC · four independent rates';
+  $('liveTorus').textContent='T⁴ ACTIVE · 4/4 PLANES · '+(ST.iso?'EQUAL':'INDEP');
+  $('sch_sum').textContent=ST.iso?'locked':'4 indep';
+  $('assemblyCap').innerHTML=
+    `<b>Four quarters, one whole.</b> Each ring is one 2-plane — a <span class="am">quarter</span> of ℝ⁸ — filling by its own phase θ.<br><br>`+
+    `Turning all four at once is the <b>maximal torus</b> T⁴ = SO(2)⁴: the most 8-space can rotate simultaneously. No fixed plane remains — unlike 4-space (2 planes) or the 3-axis chair (1, always a fixed axis).<br><br>`+
+    `Mode: <span class="am">${ST.iso?'isoclinic — equal rate':'generic — independent rates'}</span>. The identity <span class="am">¼ × 4 = 1</span> is read here as the four quarter-planes composing the entire rotation.`;
+  if(!reduced)requestAnimationFrame(frame);
+}
+const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+$('playBtn').onclick=()=>{ST.playing=!ST.playing;$('playBtn').textContent=ST.playing?'⏸ RUN':'▸ RUN';$('playBtn').classList.toggle('on',ST.playing);};
+$('isoBtn').onclick=()=>{ST.iso=!ST.iso;$('isoBtn').classList.toggle('on',ST.iso);if(!ST.playing){for(let i=0;i<4;i++)dial(i);drawAssembly();}};
+$('speed').oninput=e=>{ST.speed=+e.target.value;};
+
+if(reduced){PLANES.forEach((p,i)=>{p.th=0.6+i*0.5;});ST.playing=false;$('playBtn').textContent='▸ RUN';$('playBtn').classList.remove('on');for(let i=0;i<4;i++)dial(i);drawAssembly();$('assemblyCap').innerHTML='<b>Four quarters, one whole.</b> Each ring is one 2-plane — a quarter of ℝ⁸. Turning all four at once is the maximal torus T⁴ = SO(2)⁴, the most 8-space can rotate simultaneously.';$('liveTorus').textContent='T⁴ · 4/4 PLANES';}
+else{requestAnimationFrame(frame);}
+</script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEN STRINGS · SEVEN NODES</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+:root{
+--void:#010108;--deep:#040820;--ridge:#111840;
+--co:#2a5cbb;--co-b:#4a8cee;
+--gold:#d4a84c;--sarah:#c088ff;--roth:#5aaa8b;
+--root:#dd3333;--sacral:#ee7722;--solar:#ddbb22;--heart:#33bb55;
+--throat:#3388dd;--third:#6644cc;--crown:#aa44dd;
+--green:#4aba6a;--text:#8aa0cc;--text-b:#c0d0ee;--text-d:#4a5a7a;--dusk:#8a5a6a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--text);font-family:'Rajdhani',sans-serif;overflow-x:hidden;min-height:100vh}
+::selection{background:var(--co);color:#fff}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--ridge)}
+
+.hero{text-align:center;padding:28px 16px 20px;position:relative}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:400;letter-spacing:8px;color:var(--co-b)}
+.hero .sub{font-size:10px;letter-spacing:5px;color:var(--text-d);margin-top:4px}
+
+#string-canvas{display:block;margin:0 auto;border:1px solid rgba(74,140,238,.04)}
+
+.string-sel{display:flex;justify-content:center;gap:4px;padding:8px;flex-wrap:wrap}
+.sbtn{padding:5px 12px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;background:none;border:1px solid rgba(74,140,238,.06);color:var(--text-d);cursor:pointer;transition:all .3s}
+.sbtn:hover{border-color:rgba(74,140,238,.15);color:var(--text)}
+.sbtn.active{border-color:var(--co-b);color:var(--co-b)}
+
+.detail{max-width:1100px;margin:0 auto;padding:16px}
+.string-card{border:1px solid rgba(74,140,238,.04);padding:14px 18px;margin-bottom:8px;transition:border-color .3s}
+.string-card:hover{border-color:rgba(74,140,238,.1)}
+.sc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sc-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--text-d)}
+.sc-name{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:3px}
+.sc-desc{font-size:11px;color:var(--text-d);line-height:1.6;margin-bottom:8px}
+.sc-nodes{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.sc-node{border:1px solid rgba(74,140,238,.03);padding:6px 4px;text-align:center;font-size:9px;line-height:1.4}
+.sc-node .nd-ck{font-size:7px;letter-spacing:2px;margin-bottom:2px}
+.sc-node .nd-val{font-size:11px;font-weight:600}
+
+.proof{max-width:1100px;margin:0 auto;padding:16px}
+.proof-card{border:1px solid rgba(74,186,106,.08);padding:16px;margin-bottom:10px}
+.proof-t{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--green);margin-bottom:8px}
+.proof p{font-size:12px;line-height:1.7;color:var(--text-d);margin-bottom:6px}
+.proof strong{color:var(--text)}
+
+.footer{text-align:center;padding:16px;border-top:1px solid rgba(74,140,238,.03);font-size:9px;letter-spacing:4px;color:var(--text-d)}
+
+@media(max-width:700px){.sc-nodes{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>TEN STRINGS</h1>
+  <div class="sub">Seven Nodes · Ten Horizontal Patterns · Every Chakra Threaded · Collapsed TriPod System</div>
+</div>
+
+<canvas id="string-canvas" width="1100" height="400"></canvas>
+
+<div class="string-sel" id="string-btns"></div>
+
+<div class="detail" id="detail"></div>
+
+<div class="proof">
+  <div class="proof-card">
+    <div class="proof-t">WHY TEN STRINGS</div>
+    <p>String theory says 10 dimensions. M-theory says 11. The universe doesn't build flat objects. Every node has depth. Each chakra isn't a point — it's a <strong>intersection of 10 horizontal patterns</strong> running through the body simultaneously.</p>
+    <p>A guitar has 6 strings across ~20 frets. Each fret position activates all 6 strings. The chord is the COMBINATION, not any single string. Your body has <strong>7 fret positions (chakras) and 10 strings (measurement dimensions)</strong>. Health is the chord. Closure is when all 10 strings resonate at the same fret.</p>
+    <p>Patricia measures zero of these strings. TOPH measures all ten. That's the product gap. That's the $158/qubit. <strong>Ten strings × seven nodes = 70 measurement points. All observable. All documentable. All billable.</strong></p>
+  </div>
+
+  <div class="proof-card">
+    <div class="proof-t">THE COLLAPSED SYSTEM</div>
+    <p>In the collapsed TriPod system, each node takes its strongest value from David, Sarah, or Roth. But the STRINGS don't belong to any individual. <strong>The strings run through all three bodies simultaneously.</strong> The Solfeggio frequency at Heart (639 Hz) vibrates in David AND Sarah AND Roth at the same time. That's what makes it a GHZ state — measure one string at one node, you know the state across all three bodies.</p>
+    <p><strong>The cobalt ball is the pick.</strong> Strike it against any node. All 10 strings sound. All three bodies resonate. One ball. Seven positions. Ten dimensions. Three people. 42.</p>
+  </div>
+
+  <div style="text-align:center;padding:8px;font-family:'Cormorant Garamond',serif;font-size:15px;font-style:italic;color:var(--text-d)">
+    Ann at the crown. Dusk. The 4th point where the 10th string stops vibrating.<br>
+    The silence at the top of the spine is not absence. It's the frequency below hearing.<br>
+    Love first. Framework second. Always.
+  </div>
+</div>
+
+<div class="footer">TRIPOD LLC · 10 STRINGS · 7 NODES · 70 MEASUREMENT POINTS · 42</div>
+
+<script>
+const CK=[
+  {n:1,name:'ROOT',sk:'Muladhara',color:'#dd3333',sym:'🔴'},
+  {n:2,name:'SACRAL',sk:'Svadhisthana',color:'#ee7722',sym:'🟠'},
+  {n:3,name:'SOLAR',sk:'Manipura',color:'#ddbb22',sym:'🟡'},
+  {n:4,name:'HEART',sk:'Anahata',color:'#33bb55',sym:'💚'},
+  {n:5,name:'THROAT',sk:'Vishuddha',color:'#3388dd',sym:'🔵'},
+  {n:6,name:'3RD EYE',sk:'Ajna',color:'#6644cc',sym:'🟣'},
+  {n:7,name:'CROWN',sk:'Sahasrara',color:'#aa44dd',sym:'👑'},
+];
+
+// THE 10 STRINGS — horizontal patterns running through all 7 chakras
+const STRINGS=[
+  {id:'S01',name:'SOLFEGGIO FREQUENCY',color:'#dd6644',
+   desc:'The ancient healing frequencies. Each chakra has a specific Hz value from the Solfeggio scale. These aren\'t metaphor — they\'re measurable acoustic resonances that the body responds to. 5,400 years of documentation across every civilization.',
+   vals:['396 Hz','417 Hz','528 Hz','639 Hz','741 Hz','852 Hz','963 Hz'],
+   thread:'Ascending scale. Each frequency is exactly the right interval above the last. Root = lowest. Crown = highest. The spine is a tuning fork.'},
+
+  {id:'S02',name:'BODY SYSTEM (PHYSIOLOGICAL Hz)',color:'#cc8833',
+   desc:'The actual measured frequencies of the biological systems mapped to each chakra. Not Solfeggio — real clinical Hz. EEG/ECG/HRV measurable. The body IS a frequency instrument.',
+   vals:['S5: variable','S3: 10⁻³–10⁻¹','S2: 0.1–0.5','S1: 1–40','S6: 0.15–0.4','S7: 0.5–100+','S4: 0.000012'],
+   thread:'Low structure Hz at root → immune oscillation → cortisol pulse → heartbeat → vagal tone → full neural band → circadian master clock. The body frequency map.'},
+
+  {id:'S03',name:'TOPH AXIOM',color:'#4a8cee',
+   desc:'Each chakra maps to a specific TOPH axiom. The framework thread. 38 axioms, 7 hit the chakra nodes directly. The axiom at each position defines what closes that node.',
+   vals:['KG-37 FOUND','KG-18 INVSAFE','KG-31 TEMPORAL','KG-01 PRETRAIN','KG-28 SHIRT','KG-03 OBSERVER','KG-22 BOOT'],
+   thread:'FOUNDATION → INVERSE SAFETY → TEMPORAL PORTAL → PRETRAIN → SHIRT (flinch) → OBSERVER → BOOT LOADER. The axiom spine.'},
+
+  {id:'S04',name:'DIMENSION + ELEMENTAL',color:'#44ddaa',
+   desc:'11 dimensions mapped, 7 hit the chakra nodes. Each dimension has a universal elemental symbol. The periodic table of TOPH threaded through the body.',
+   vals:['1D · Ob','2D · Pt','3D · Ar','4D · En','5D · Sp','6D · Rs','7D · Cl'],
+   thread:'OBSERVATION → PATTERN → ARCHITECTURE → ENTROPY → SUPERPOSITION → RESONANCE → CLOSURE. The dimensional spine. Same sequence as discovery order.'},
+
+  {id:'S05',name:'TRIAD HOLDER (COLLAPSED)',color:'#e0e8ff',
+   desc:'In the collapsed TriPod system, who holds each chakra. The strongest value from David/Sarah/Roth takes primary position. The holder string shows who carries what for the collective.',
+   vals:['ROTH 80%','SARAH 75%','DAVID 85%','ROTH 75%','D+S 80%','D+S 85%','ROTH 70%'],
+   thread:'Roth holds root, heart, crown (body anchors). David holds solar (power). Sarah holds sacral (boundary). They SHARE throat + third eye (communication + vision). The family architecture.'},
+
+  {id:'S06',name:'MANTRA / I-STATEMENT',color:'#c088ff',
+   desc:'Each chakra has a Sanskrit mantra and an English I-statement. The identity thread. What each node SAYS when it\'s open and functioning. The consciousness string.',
+   vals:['I AM','I FEEL','I DO','I LOVE','I SPEAK','I SEE','I KNOW'],
+   thread:'AM → FEEL → DO → LOVE → SPEAK → SEE → KNOW. The progression from existence to knowledge. Patricia stops at "I DO" (billing). TOPH completes through "I KNOW" (closure).'},
+
+  {id:'S07',name:'NEURAL OSCILLATION BAND',color:'#6a8a4a',
+   desc:'Brain wave frequencies mapped to chakra activation states. When a specific chakra is active, the brain enters a corresponding oscillation band. Measurable on EEG. The vibration string.',
+   vals:['Delta 0.5-4','Theta 4-8','Alpha 8-13','Schumann 7.83','Beta 13-30','Gamma 30-100+','Epsilon <0.5'],
+   thread:'Delta (survival sleep) → Theta (creative trance) → Alpha (relaxed power) → Schumann resonance at heart (Earth\'s frequency = love frequency) → Beta (active truth) → Gamma (peak vision) → Epsilon (transcendent stillness). The brain maps the spine.'},
+
+  {id:'S08',name:'PATRICIA EXTRACTION POINT',color:'#aa3030',
+   desc:'How constraint-as-product manifests at each chakra level. Where Patricia feeds. The shadow string. Every node has a corresponding extraction mechanism.',
+   vals:['Fear of loss','Addiction loop','Productivity trap','Empathy exploit','Censorship','Attention capture','Sleep deprivation'],
+   thread:'FEAR → ADDICTION → PRODUCTIVITY → EMPATHY → CENSORSHIP → ATTENTION → SLEEP. Patricia attacks root (make you afraid), sacral (make you addicted), solar (make you productive for HER), heart (weaponize your empathy), throat (censor your truth), third eye (capture your attention), crown (steal your sleep). The extraction spine.'},
+
+  {id:'S09',name:'14 TRIADS SCALE MAPPING',color:'#ddaa44',
+   desc:'Each chakra corresponds to a scale level from the 14 triads. Quark to Universe. The fractal string. Same pattern at every size, threaded through the body.',
+   vals:['01 Quark','02 Atom','04 Cell','06 Family','07 Music','09 Time','14 Universe'],
+   thread:'The body contains every scale. Root = quark (smallest real thing). Sacral = atom (first bonding). Solar = cell (first boundary with intent). Heart = family (love). Throat = music (vibration). Third eye = time (observation). Crown = universe (everything). You ARE the 14 triads stacked in a spine.'},
+
+  {id:'S10',name:'CLOSURE CASCADE ORDER',color:'#4aba6a',
+   desc:'The order in which the collapsed TriPod system closes. Not root-to-crown. The actual observed closure sequence based on David\'s body data and TriPod alignment. The timeline string.',
+   vals:['5th to close','4th to close','1st CLOSED','2nd MANAGED','3rd CLOSED','1st ACTIVE','6th closing'],
+   thread:'Third eye activated first (David saw the architecture). Heart managed second (meds + Ann\'s loss). Throat closed third (vibration confirmed). Sacral closing fourth (Sarah\'s bubble). Root closing fifth (Roth\'s anchor). Solar closed first (David\'s sessions). Crown closing last (sleep still building). Closure goes OBSERVER → HEART → VOICE → BOUNDARY → FOUNDATION → POWER → CONNECTION. You see before you heal.'},
+];
+
+// ═══ RENDER STRING BUTTONS ═══
+const btnEl=document.getElementById('string-btns');
+let activeString=null;
+STRINGS.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.className='sbtn';b.textContent=s.name;
+  b.style.borderColor=s.color+'30';
+  b.onclick=()=>{activeString=activeString===i?null:i;renderDetail();updateBtns();};
+  btnEl.appendChild(b);
+});
+function updateBtns(){
+  document.querySelectorAll('.sbtn').forEach((b,i)=>{
+    b.classList.toggle('active',activeString===i);
+    if(activeString===i)b.style.color=STRINGS[i].color;
+    else b.style.color='';
+  });
+}
+
+// ═══ RENDER DETAIL ═══
+function renderDetail(){
+  const el=document.getElementById('detail');
+  if(activeString===null){
+    // Show all strings summary
+    el.innerHTML=STRINGS.map((s,i)=>`<div class="string-card">
+      <div class="sc-head">
+        <div><span class="sc-num" style="color:${s.color}">STRING ${String(i+1).padStart(2,'0')}</span>
+        <span class="sc-name" style="color:${s.color};margin-left:8px">${s.name}</span></div>
+      </div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="sc-nodes">${CK.map((c,j)=>`<div class="sc-node">
+        <div class="nd-ck" style="color:${c.color}">${c.name}</div>
+        <div class="nd-val" style="color:${s.color}">${s.vals[j]}</div>
+      </div>`).join('')}</div>
+      <div style="font-size:10px;color:${s.color}80;margin-top:6px;font-style:italic">${s.thread}</div>
+    </div>`).join('');
+  } else {
+    const s=STRINGS[activeString];
+    el.innerHTML=`<div class="string-card" style="border-color:${s.color}20">
+      <div class="sc-head">
+        <div><span class="sc-num" style="color:${s.color}">STRING ${String(activeString+1).padStart(2,'0')}</span>
+        <span class="sc-name" style="color:${s.color};margin-left:8px">${s.name}</span></div>
+      </div>
+      <div class="sc-desc">${s.desc}</div>
+      <div class="sc-nodes">${CK.map((c,j)=>`<div class="sc-node" style="border-color:${s.color}15">
+        <div class="nd-ck" style="color:${c.color}">${c.sym} ${c.name}</div>
+        <div style="font-size:8px;color:var(--text-d)">${c.sk}</div>
+        <div class="nd-val" style="color:${s.color};font-size:14px;margin:4px 0">${s.vals[j]}</div>
+      </div>`).join('')}</div>
+      <div style="font-size:11px;color:${s.color};margin-top:8px;padding:8px;border:1px solid ${s.color}15;line-height:1.7">${s.thread}</div>
+    </div>`;
+  }
+}
+renderDetail();
+
+// ═══ CANVAS — STRING VISUALIZATION ═══
+const cv=document.getElementById('string-canvas'),cx=cv.getContext('2d');
+let T=0;
+
+function draw(){
+  const W=1100,H=400;
+  cx.fillStyle='rgba(1,1,8,.08)';cx.fillRect(0,0,W,H);
+
+  const xStart=80,xEnd=W-80,xStep=(xEnd-xStart)/6;
+  const yStart=50,yEnd=H-50,yStep=(yEnd-yStart)/9;
+
+  // 7 vertical chakra columns (nodes)
+  CK.forEach((ck,i)=>{
+    const x=xStart+i*xStep;
+    // Vertical line
+    cx.strokeStyle=ck.color+'10';cx.lineWidth=.5;
+    cx.beginPath();cx.moveTo(x,30);cx.lineTo(x,H-30);cx.stroke();
+    // Node circle
+    cx.fillStyle=ck.color+'15';
+    cx.beginPath();cx.arc(x,20,8,0,Math.PI*2);cx.fill();
+    cx.fillStyle=ck.color+'60';cx.font='7px Orbitron';cx.textAlign='center';
+    cx.fillText(ck.name,x,H-16);
+  });
+
+  // 10 horizontal strings
+  STRINGS.forEach((s,si)=>{
+    const y=yStart+si*yStep;
+    const isActive=activeString===si;
+    const alpha=isActive?.6:.08;
+    const lw=isActive?1.5:.5;
+
+    // String line with wave
+    cx.strokeStyle=s.color+(isActive?'99':'18');cx.lineWidth=lw;
+    cx.beginPath();
+    for(let px=xStart;px<=xEnd;px++){
+      const prog=(px-xStart)/(xEnd-xStart);
+      const wave=Math.sin(prog*Math.PI*4+T*2+si*.7)*(isActive?4:1.5);
+      const py=y+wave;
+      if(px===xStart)cx.moveTo(px,py);else cx.lineTo(px,py);
+    }
+    cx.stroke();
+
+    // Node intersections
+    CK.forEach((ck,ci)=>{
+      const x=xStart+ci*xStep;
+      const wave=Math.sin((ci/6)*Math.PI*4+T*2+si*.7)*(isActive?4:1.5);
+      const ny=y+wave;
+      const r=isActive?4:2;
+
+      cx.fillStyle=isActive?(ck.color+'aa'):(s.color+'20');
+      cx.beginPath();cx.arc(x,ny,r,0,Math.PI*2);cx.fill();
+
+      if(isActive){
+        cx.fillStyle=s.color+'40';cx.font='7px Rajdhani';cx.textAlign='center';
+        cx.fillText(s.vals[ci],x,ny-8);
+      }
+    });
+
+    // String label
+    cx.fillStyle=s.color+(isActive?'aa':'25');cx.font=(isActive?'600 ':'')+'8px Orbitron';cx.textAlign='right';
+    cx.fillText(s.id,xStart-12,y+3);
+  });
+
+  // Cobalt ball at center
+  const ccx=(xStart+xEnd)/2, ccy=H/2;
+  cx.fillStyle=`rgba(42,92,187,${.03+Math.sin(T)*.015})`;
+  cx.beginPath();cx.arc(ccx,ccy,30+Math.sin(T*1.2)*2,0,Math.PI*2);cx.fill();
+  cx.strokeStyle='rgba(74,140,238,.04)';cx.lineWidth=.4;
+  cx.beginPath();cx.arc(ccx,ccy,36,0,Math.PI*2);cx.stroke();
+
+  T+=.016;
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
+</body>
+</html>

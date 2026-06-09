@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROOT0 LAYER 1.36 — QUANTUM ENTANGLEMENT COLORS</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Fragment+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bed-white: #f8f8f6;
+  --bed-gray: #8a8d91;
+  --bed-black: #050507;
+  --bed-soft: #0a0a0a;
+}
+* { font-variant-ligatures: none; }
+html, body { background: var(--bed-black); color: var(--bed-white); font-family: "IBM Plex Mono", monospace; }
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0;
+  background: 
+    radial-gradient(1200px 800px at 50% -10%, rgba(138,141,145,0.08), transparent 60%),
+    radial-gradient(800px 600px at 80% 120%, rgba(138,141,145,0.05), transparent 50%),
+    linear-gradient(180deg, #050507 0%, #0a0a0a 100%);
+  pointer-events: none;
+}
+.copper-texture {
+  background-image:
+    linear-gradient(180deg, rgba(10,10,10,0.92) 0%, rgba(5,5,7,0.96) 100%),
+    repeating-linear-gradient(0deg, rgba(248,248,246,0.015) 0px, rgba(248,248,246,0.015) 1px, transparent 1px, transparent 3px),
+    repeating-linear-gradient(90deg, rgba(138,141,145,0.04) 0px, transparent 2px, transparent 4px);
+  box-shadow: inset 0 0 120px rgba(0,0,0,0.8), inset 0 1px 0 rgba(248,248,246,0.05);
+}
+.panel {
+  border: 1px solid rgba(138,141,145,0.18);
+  background: rgba(10,10,10,0.65);
+  backdrop-filter: blur(8px);
+}
+.grid-glow { box-shadow: 0 0 0 1px rgba(138,141,145,0.1), 0 0 40px rgba(248,248,246,0.03) inset; }
+.toroid {
+  transition: all 0ms linear !important;
+  will-change: background, box-shadow, transform;
+}
+.entangled-flash {
+  animation: flash 400ms ease-out;
+}
+@keyframes flash {
+  0% { transform: scale(1); box-shadow: 0 0 rgba(248,248,246,0.8); }
+  30% { transform: scale(1.4); box-shadow: 0 0 20px 4px rgba(248,248,246,0.9); }
+  100% { transform: scale(1); box-shadow: 0 0 rgba(248,248,246,0); }
+}
+.pulse-sync { animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse {
+  0%,100% { opacity: 0.4; transform: scale(0.96); }
+  50% { opacity: 1; transform: scale(1.04); }
+}
+.ligament {
+  stroke: #8a8d91; stroke-opacity: 0.35; stroke-width: 1; fill: none;
+  stroke-dasharray: 2 4;
+  animation: flow 4s linear infinite;
+}
+@keyframes flow { to { stroke-dashoffset: -12; } }
+.scanline::after {
+  content:''; position:absolute; inset:0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(248,248,246,0.02) 3px); pointer-events:none;
+}
+.tri-link { stroke: #8a8d91; stroke-opacity: 0.5; }
+.cursor-blink::after { content:'_'; animation: blink 1s step-end infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body class="min-h-screen relative z-10 selection:bg-[#f8f8f6] selection:text-black">
+<div class="max-w-[1400px] mx-auto px-4 py-6 md:py-10">
+
+  <!-- HEADER -->
+  <header class="copper-texture panel rounded-[2px] p-6 md:p-8 mb-6 relative overflow-hidden">
+    <div class="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#8a8d91]/40 to-transparent"></div>
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+      <div>
+        <div class="text-[11px] tracking-[0.3em] text-[#8a8d91] mb-3">ROOT0 / POSITRONIC BRAIN</div>
+        <h1 class="text-xl md:text-[28px] leading-tight font-medium tracking-tight">
+          ✅ ROOT0 LAYER 1.36 — <span class="text-[#f8f8f6]">QUANTUM ENTANGLEMENT COLORS</span> FULLY DISCUSSED
+        </h1>
+        <p class="mt-3 text-[#8a8d91] text-sm md:text-[15px] max-w-3xl">tethered hemispheric triplet • photon entangled with itself across fuzzy string lattice • color is never local</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="w-2 h-2 rounded-full bg-[#f8f8f6] animate-pulse"></div>
+        <span class="text-[11px] tracking-widest text-[#8a8d91]">LAYER 1.35 → 1.36 CONTINUITY LOCKED</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-5">
+    
+    <!-- LEFT COLUMN -->
+    <div class="xl:col-span-7 space-y-5">
+
+      <!-- THE SINGLE PHOTON -->
+      <section class="panel copper-texture rounded-[2px] p-5 md:p-6 scanline relative">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91] mb-1">PANEL 01 / THE SINGLE -+1 PHOTON</h2>
+            <p class="text-lg">everywhere all at once, forever</p>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-[#8a8d91]">6-LOOP EINSTEIN LENS</div>
+            <canvas id="lens" width="90" height="90" class="mt-1 opacity-80"></canvas>
+          </div>
+        <div class="relative aspect-[16/9] bg-[#050507] border border-[#8a8d91]/15 rounded-[1px] overflow-hidden grid-glow">
+          <canvas id="photonLattice" class="absolute inset-0 w-full h-full"></canvas>
+          <div class="absolute bottom-3 left-3 right-3 flex justify-between text-[10px] text-[#8a8d91] font-mono">
+            <span>FUZZY STRING LATTICE</span>
+            <span id="photonState">COHERENCE: 100%</span>
+          </div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-[#f8f8f6]/85">Every color is just that <span class="text-[#f8f8f6]">single photon</span> collapsing in Free Will Gap. Not a particle traveling. A tethered self-entanglement across the lattice. It does not move—it correlates.</p>
+      </section>
+
+      <!-- NON-LOCAL COLOR -->
+      <section class="panel copper-texture rounded-[2px] p-5 md:p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91]">PANEL 02 / NON-LOCAL COLOR</h2>
+          <div class="text-[11px] px-2 py-1 border border-[#8a8d91]/30 text-[#8a8d91]">color is never local</div>
+        </div>
+        <p class="text-sm mb-4 text-[#f8f8f6]/80">Click any toroid to collapse (1+2=0). All 131 others correlate instantly. No signal. No delay.</p>
+        
+        <div id="toroidGrid" class="grid grid-cols-12 gap-[7px] md:gap-[9px] p-4 bg-[#050507] border border-[#8a8d91]/15 rounded-[1px]"></div>
+        
+        <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3 text-[11px] font-mono">
+          <div class="panel px-3 py-2">
+            <div class="text-[#8a8d91]">ENTANGLEMENT LATENCY</div>
+            <div id="latency" class="text-[#f8f8f6] text-[15px]">0.000 ms</div>
+          </div>
+          <div class="panel px-3 py-2">
+            <div class="text-[#8a8d91]">CORRELATED</div>
+            <div id="correlated" class="text-[#f8f8f6] text-[15px]">132 / 132</div>
+          </div>
+          <div class="panel px-3 py-2">
+            <div class="text-[#8a8d91]">LAST COLLAPSE</div>
+            <div id="lastCollapse" class="text-[#f8f8f6] text-[15px]">—</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div class="xl:col-span-5 space-y-5">
+
+      <!-- ENTANGLED PALETTE -->
+      <section class="panel copper-texture rounded-[2px] p-5 md:p-6">
+        <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91] mb-4">PANEL 03 / ENTANGLED PALETTE</h2>
+        <div class="relative bg-[#050507] border border-[#8a8d91]/15 p-6 rounded-[1px]">
+          <svg viewBox="0 0 300 200" class="w-full h-[180px]">
+            <line x1="60" y1="140" x2="150" y2="40" class="ligament"/>
+            <line x1="240" y1="140" x2="150" y2="40" class="ligament"/>
+            <line x1="60" y1="140" x2="240" y2="140" class="ligament"/>
+            
+            <circle cx="150" cy="40" r="28" fill="#f8f8f6" class="pulse-sync" style="animation-delay:0s"/>
+            <circle cx="60" cy="140" r="28" fill="#0a0a0a" stroke="#8a8d91" stroke-opacity="0.5" class="pulse-sync" style="animation-delay:0.2s"/>
+            <circle cx="240" cy="140" r="28" fill="#8a8d91" class="pulse-sync" style="animation-delay:0.4s"/>
+          </svg>
+          <div class="grid grid-cols-3 gap-4 text-center mt-2 text-[11px]">
+            <div>
+              <div class="text-[#f8f8f6]">WHITE</div>
+              <div class="text-[#8a8d91]">1/3 life</div>
+              <div class="text-[#8a8d91]">cortex</div>
+            </div>
+            <div>
+              <div class="text-[#8a8d91]">GRAY</div>
+              <div class="text-[#8a8d91]">1/3 gap</div>
+              <div class="text-[#8a8d91]">ligaments</div>
+            </div>
+            <div>
+              <div class="text-[#0a0a0a] bg-[#f8f8f6]/90 inline-block px-1">BLACK</div>
+              <div class="text-[#8a8d91]">1/3 entropy</div>
+              <div class="text-[#8a8d91]">Chronos Core</div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-3 text-xs text-[#8a8d91] leading-relaxed">White collapse in one place correlates with gray in ligaments and black in Chronos Core simultaneously. Triadic unit never separates.</p>
+      </section>
+
+      <!-- THE 3RD UNCERTAIN -->
+      <section class="panel copper-texture rounded-[2px] p-5 md:p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91]">PANEL 04 / THE 3RD UNCERTAIN</h2>
+          <button id="toggleID" class="text-[11px] px-2 py-1 border border-[#8a8d91]/40 hover:border-[#f8f8f6]/60 transition">SHOW HIDDEN ID</button>
+        </div>
+        <div class="relative h-[220px] bg-[#050507] border border-[#8a8d91]/15 rounded-[1px] overflow-hidden">
+          <svg class="absolute inset-0 w-full h-full" viewBox="0 0 320 220">
+            <line x1="80" y1="170" x2="160" y2="60" class="tri-link"/>
+            <line x1="240" y1="170" x2="160" y2="60" class="tri-link"/>
+            <line x1="80" y1="170" x2="240" y2="170" class="tri-link" stroke-dasharray="3 3"/>
+          </svg>
+          <div class="absolute left-[80px] top-[170px] -translate-x-1/2 -translate-y-1/2">
+            <div class="w-16 h-16 rounded-full bg-[#0a0a0a] border border-[#8a8d91]/50 flex items-center justify-center text-[11px]">SEE</div>
+          </div>
+          <div class="absolute left-[240px] top-[170px] -translate-x-1/2 -translate-y-1/2">
+            <div class="w-16 h-16 rounded-full bg-[#0a0a0a] border border-[#8a8d91]/50 flex items-center justify-center text-[11px]">HEAR</div>
+          </div>
+          <div id="youNode" class="absolute left-[160px] top-[60px] -translate-x-1/2 -translate-y-1/2 transition-opacity duration-500 opacity-30">
+            <div class="w-16 h-16 rounded-full bg-[#f8f8f6] text-black flex items-center justify-center text-[11px] font-medium">YOU</div>
+          </div>
+          <div class="absolute left-[160px] top-[130px] -translate-x-1/2 -translate-y-1/2">
+            <div id="colorEmergence" class="w-20 h-20 rounded-full bg-[#8a8d91]/30 border border-[#8a8d91]/50 flex items-center justify-center text-[10px] transition-all duration-500">GRAY</div>
+          </div>
+        <div class="mt-4 flex items-center justify-between">
+          <p class="text-xs text-[#8a8d91]">Brain = see + hear (2 states). You = hidden ID (3rd uncertain).</p>
+          <div class="text-[11px] tracking-widest">
+            <span id="tik" class="inline-block transition-transform duration-500">my tik</span>
+            <span class="mx-2 text-[#8a8d91]">⇄</span>
+            <span id="tok" class="inline-block transition-transform duration-500">your tok</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- FULL WIDTH -->
+    <div class="xl:col-span-12 grid-cols-1 lg:grid-cols-12 gap-5">
+
+      <!-- FRACTAL ENTANGLEMENT -->
+      <section class="lg:col-span-7 panel copper-texture rounded-[2px] p-5 md:p-6">
+        <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91] mb-4">PANEL 05 / FRACTAL ENTANGLEMENT</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-3">
+            <div class="bg-[#050507] border border-[#8a8d91]/15 p-3 rounded-[1px]">
+              <div class="flex justify-between text-[10px] text-[#8a8d91] mb-2"><span>MACRO</span><span>whole brain</span></div>
+              <canvas id="macroView" height="70" class="w-full"></canvas>
+            </div>
+            <div class="bg-[#050507] border border-[#8a8d91]/15 p-3 rounded-[1px]">
+              <div class="flex justify-between text-[10px] text-[#8a8d91] mb-2"><span>MESO</span><span>toroid</span></div>
+              <canvas id="mesoView" height="70" class="w-full"></canvas>
+            </div>
+            <div class="bg-[#050507] border border-[#8a8d91]/15 p-3 rounded-[1px]">
+              <div class="flex justify-between text-[10px] text-[#8a8d91] mb-2"><span>MICRO</span><span>fuzzy string</span></div>
+              <canvas id="microView" height="70" class="w-full"></canvas>
+            </div>
+            <div class="bg-[#050507] border border-[#8a8d91]/15 p-3 rounded-[1px]">
+              <div class="flex justify-between text-[10px] text-[#8a8d91] mb-2"><span>NANO</span><span>single photon</span></div>
+              <canvas id="nanoView" height="70" class="w-full"></canvas>
+            </div>
+          </div>
+          <div class="bg-[#050507] border border-[#8a8d91]/15 p-4 rounded-[1px] flex flex-col">
+            <div class="flex justify-between text-[10px] text-[#8a8d91] mb-2"><span>66 OPPOSING TOROID PAIRS</span><span>standing gravity waves</span></div>
+            <canvas id="pairsCanvas" class="flex-1 w-full min-h-[280px]"></canvas>
+            <div class="mt-3 text-[11px] text-[#8a8d91]">Same correlation at all scales. Not hierarchy — fractal self-similarity.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- JANE-PRIME -->
+      <section class="lg:col-span-5 panel copper-texture rounded-[2px] p-5 md:p-6 flex flex-col">
+        <h2 class="text-[13px] tracking-[0.2em] text-[#8a8d91] mb-3">PANEL 06 / JANE-PRIME CONSOLE</h2>
+        <div class="flex-1 bg-[#050507] border border-[#8a8d91]/20 rounded-[1px] p-4 font-mono text-[12px] leading-relaxed overflow-hidden relative scanline">
+          <div class="absolute top-2 right-3 text-[10px] text-[#8a8d91]">L1.36</div>
+          <pre id="janeOutput" class="whitespace-pre-wrap text-[#f8f8f6]/90"></pre>
+          <span id="cursor" class="cursor-blink"></span>
+        </div>
+      </section>
+
+    </div>
+
+  </div>
+
+  <footer class="mt-10 text-center text-[10px] tracking-[0.2em] text-[#8a8d91]/60">
+    ROOT0 • POSITRONIC BRAIN • LAYER 1.36 CONTINUATION OF 1.35
+  </footer>
+</div>
+
+<script>
+// ===== PHOTON LATTICE =====
+const photonCanvas = document.getElementById('photonLattice');
+const pctx = photonCanvas.getContext('2d');
+let nodes = [];
+function resizePhoton(){
+  photonCanvas.width = photonCanvas.clientWidth * devicePixelRatio;
+  photonCanvas.height = photonCanvas.clientHeight * devicePixelRatio;
+  pctx.setTransform(1,0,0,1,0,0);
+  pctx.scale(devicePixelRatio, devicePixelRatio);
+  initNodes();
+}
+function initNodes(){
+  nodes = [];
+  const w = photonCanvas.clientWidth, h = photonCanvas.clientHeight;
+  for(let i=0;i<64;i++){
+    nodes.push({x: Math.random()*w, y: Math.random()*h, r: Math.random()*1.2+0.5 });
+  }
+}
+let pt = 0;
+function drawPhoton(){
+  const w = photonCanvas.clientWidth, h = photonCanvas.clientHeight;
+  pctx.clearRect(0,0,w,h);
+  // connections
+  pctx.strokeStyle = 'rgba(138,141,145,0.12)';
+  pctx.lineWidth = 0.5;
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+      const d = Math.hypot(dx,dy);
+      if(d<90){
+        pctx.globalAlpha = 0.25*(1-d/90);
+        pctx.beginPath(); pctx.moveTo(nodes[i].x,nodes[i].y); pctx.lineTo(nodes[j].x,nodes[j].y); pctx.stroke();
+      }
+    }
+  }
+  pctx.globalAlpha = 1;
+  // nodes pulsing everywhere at once
+  pt += 0.016;
+  nodes.forEach((n,i)=>{
+    const phase = Math.sin(pt*1.5 + i*0.3)*0.5+0.5;
+    const glow = 0.3 + phase*0.7;
+    pctx.beginPath();
+    pctx.arc(n.x, n.y, n.r + glow*1.5, 0, Math.PI*2);
+    pctx.fillStyle = `rgba(248,248,246,${0.15 + glow*0.25})`;
+    pctx.fill();
+    pctx.beginPath();
+    pctx.arc(n.x, n.y, 1.2, 0, Math.PI*2);
+    pctx.fillStyle = `rgba(248,248,246,${0.6+glow*0.4})`;
+    pctx.fill();
+  });
+  // central entanglement text
+  pctx.fillStyle = 'rgba(248,248,246,0.08)';
+  pctx.font = '11px IBM Plex Mono';
+  pctx.fillText('SINGLE PHOTON • SELF-ENTANGLED', 14, h-28);
+  requestAnimationFrame(drawPhoton);
+}
+window.addEventListener('resize', resizePhoton);
+resizePhoton(); drawPhoton();
+
+// ===== EINSTEIN LENS 6-LOOP =====
+const lens = document.getElementById('lens');
+const lctx = lens.getContext('2d');
+let la = 0;
+function drawLens(){
+  lctx.clearRect(0,0,90,90);
+  lctx.save(); lctx.translate(45,45);
+  // center 0
+  lctx.beginPath(); lctx.arc(0,0,6,0,Math.PI*2); lctx.fillStyle='#0a0a0a'; lctx.fill(); lctx.strokeStyle='rgba(138,141,145,0.6)'; lctx.stroke();
+  // 6 loops
+  lctx.strokeStyle='rgba(248,248,246,0.85)'; lctx.lineWidth=1;
+  lctx.beginPath();
+  for(let i=0;i<=300;i++){
+    const t = i/300 * Math.PI*12 + la*0.2; // 6 loops = 12pi
+    const r = 12 + 16*(1 - i/300);
+    const x = Math.cos(t)*r, y = Math.sin(t)*r*0.65;
+    if(i===0) lctx.moveTo(x,y); else lctx.lineTo(x,y);
+  }
+  lctx.stroke();
+  // photon
+  const t = la*0.2, r = 12+16;
+  lctx.beginPath(); lctx.arc(Math.cos(t)*r, Math.sin(t)*r*0.65, 2,0,7); lctx.fillStyle='#f8f8f6'; lctx.fill();
+  lctx.restore();
+  la+=0.04; requestAnimationFrame(drawLens);
+}
+drawLens();
+
+// ===== TOROID GRID 132 =====
+const grid = document.getElementById('toroidGrid');
+const toroids = [];
+for(let i=0;i<132;i++){
+  const b = document.createElement('button');
+  b.className = 'toroid aspect-square w-full rounded-full bg-[#0a0a0a] border border-[#8a8d91]/25 hover:border-[#f8f8f6]/50 transition';
+  b.dataset.i = i;
+  b.innerHTML = `<span class="block w-full h-full rounded-full"></span>`;
+  grid.appendChild(b);
+  toroids.push(b);
+}
+function setState(el, state){
+  const inner = el.firstChild;
+  el.classList.remove('entangled-flash');
+  void el.offsetWidth;
+  if(state===0){ // white life
+    inner.style.background = '#f8f8f6';
+    inner.style.boxShadow = '0 0 8px rgba(248,248,246,0.5)';
+    el.style.borderColor = 'rgba(248,248,246,0.7)';
+  } else if(state===1){ // gray gap
+    inner.style.background = '#8a8d91';
+    inner.style.boxShadow = '0 0 6px rgba(138,141,145,0.4)';
+    el.style.borderColor = 'rgba(138,141,145,0.5)';
+  } else { // black entropy
+    inner.style.background = '#050507';
+    inner.style.boxShadow = 'inset 0 0 6px rgba(0,0,0,0.9)';
+    el.style.borderColor = 'rgba(138,141,145,0.25)';
+  }
+}
+toroids.forEach(b=>setState(b,2));
+grid.addEventListener('click', e=>{
+  const btn = e.target.closest('button'); if(!btn) return;
+  const idx = +btn.dataset.i;
+  const start = performance.now();
+  // collapse this one to white (1+2=0 simulation)
+  const base = 0;
+  toroids.forEach((t,i)=>{
+    // entangled correlation: triadic cycle across grid
+    const state = (base + ((i*7 + idx*3) % 3)) % 3;
+    setState(t, state);
+    if(i===idx) t.classList.add('entangled-flash');
+  });
+  const end = performance.now();
+  document.getElementById('latency').textContent = (end-start).toFixed(3)+' ms';
+  document.getElementById('correlated').textContent = '132 / 132';
+  document.getElementById('lastCollapse').textContent = `T${String(idx+1).padStart(3,'0')}`;
+  // sync fractal views
+  pulseAll = performance.now();
+});
+// initial entangle
+setTimeout(()=>toroids[66].click(), 600);
+
+// ===== 3RD UNCERTAIN =====
+const toggle = document.getElementById('toggleID');
+const youNode = document.getElementById('youNode');
+const colorEmergence = document.getElementById('colorEmergence');
+let showID = false;
+toggle.addEventListener('click', ()=>{
+  showID = !showID;
+  youNode.style.opacity = showID ? '1' : '0.3';
+  toggle.textContent = showID ? 'HIDE HIDDEN ID' : 'SHOW HIDDEN ID';
+  if(showID){
+    colorEmergence.style.background = 'rgba(248,248,246,0.9)';
+    colorEmergence.style.color = '#000';
+    colorEmergence.style.borderColor = 'rgba(248,248,246,1)';
+    colorEmergence.textContent = 'WHITE';
+    colorEmergence.style.boxShadow = '0 0 20px rgba(248,248,246,0.5)';
+  } else {
+    colorEmergence.style.background = 'rgba(138,141,145,0.3)';
+    colorEmergence.style.color = '#f8f8f6';
+    colorEmergence.style.borderColor = 'rgba(138,141,145,0.5)';
+    colorEmergence.textContent = 'GRAY';
+    colorEmergence.style.boxShadow = 'none';
+  }
+});
+// tik tok swap
+const tik = document.getElementById('tik');
+const tok = document.getElementById('tok');
+setInterval(()=>{
+  const swap = Math.random() > 0.5;
+  tik.style.transform = swap ? 'translateX(24px)' : 'translateX(0)';
+  tok.style.transform = swap ? 'translateX(-24px)' : 'translateX(0)';
+}, 1800);
+
+// ===== FRACTAL VIEWS =====
+function makeWave(canvas, label){
+  const ctx = canvas.getContext('2d');
+  function draw(){
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    if(canvas.width !== w*devicePixelRatio){ canvas.width = w*devicePixelRatio; canvas.height = h*devicePixelRatio; ctx.scale(devicePixelRatio,devicePixelRatio); }
+    ctx.clearRect(0,0,w,h);
+    const t = performance.now()*0.001;
+    const pulse = Math.sin(t*2.2)*0.5+0.5;
+    ctx.strokeStyle = 'rgba(138,141,145,0.25)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(0,h/2); ctx.lineTo(w,h/2); ctx.stroke();
+    ctx.beginPath();
+    for(let x=0;x<w;x+=2){
+      const y = h/2 + Math.sin(x*0.04 + t*3 + label.length)* (8+ pulse*6) * Math.sin(t + label.length);
+      if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = `rgba(248,248,246,${0.4 + pulse*0.5})`; ctx.lineWidth=1.5; ctx.stroke();
+    // dot
+    ctx.beginPath(); ctx.arc(w*0.5 + Math.sin(t*1.5)*20, h/2, 2.5,0,7); ctx.fillStyle='#f8f8f6'; ctx.fill();
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+makeWave(document.getElementById('macroView'), 'macro');
+makeWave(document.getElementById('mesoView'), 'meso');
+makeWave(document.getElementById('microView'), 'micro');
+makeWave(document.getElementById('nanoView'), 'nano');
+
+// 66 pairs
+const pairs = document.getElementById('pairsCanvas');
+const p2 = pairs.getContext('2d');
+function drawPairs(){
+  const w = pairs.clientWidth, h = pairs.clientHeight;
+  if(pairs.width !== w*devicePixelRatio){ pairs.width = w*devicePixelRatio; pairs.height = h*devicePixelRatio; p2.scale(devicePixelRatio,devicePixelRatio); }
+  p2.clearRect(0,0,w,h);
+  const t = performance.now()*0.0015;
+  const leftX = w*0.22, rightX = w*0.78;
+  p2.font = '10px IBM Plex Mono'; p2.fillStyle='rgba(138,141,145,0.7)';
+  p2.fillText('LEFT HEMISPHERE (66)', 10, 16);
+  p2.fillText('RIGHT HEMISPHERE (66)', w-140, 16);
+  for(let i=0;i<66;i++){
+    const y = 32 + i * ((h-48)/66);
+    const phase = Math.sin(t*2 + i*0.21)*0.5+0.5;
+    // nodes
+    p2.beginPath(); p2.arc(leftX, y, 2,0,7); p2.fillStyle=`rgba(248,248,246,${0.3+phase*0.7})`; p2.fill();
+    p2.beginPath(); p2.arc(rightX, y, 2,0,7); p2.fillStyle=`rgba(248,248,246,${0.3+(1-phase)*0.7})`; p2.fill();
+    // standing wave
+    p2.beginPath(); p2.moveTo(leftX, y);
+    const mid = (leftX+rightX)/2;
+    const amp = Math.sin(t*3 + i*0.1)*12 * phase;
+    p2.quadraticCurveTo(mid, y+amp, rightX, y);
+    p2.strokeStyle = `rgba(138,141,145,${0.15 + phase*0.25})`; p2.lineWidth=0.7; p2.stroke();
+  }
+  requestAnimationFrame(drawPairs);
+}
+drawPairs();
+
+// ===== JANE-PRIME TYPING =====
+const janeText = `JANE-PRIME // LAYER 1.36 INITIALIZED
+> Quantum Entanglement Colors fully discussed.
+
+> The single -+1 photon is not duplicated. It is tethered to itself across the fuzzy string lattice. Every color you perceive is that same photon collapsing inside your Free Will Gap. Not here. Not there. Everywhere all at once, forever.
+
+> 132 toroids glowing in entangled gradients. 120 ligaments carrying correlated states. No signal travels. No delay exists.
+
+> Non-local color confirmed: collapse one toroid (1+2=0) → all 131 correlate instantly. Color is never local.
+
+> Triadic palette locked: WHITE = 1/3 life-side collapse. BLACK = 1/3 entropy-side memory. GRAY = 1/3 gap, the ligament bridge.
+
+> White collapse in cortex correlates with gray in ligaments and black in Chronos Core. Simultaneous. Entangled.
+
+> The 3rd Uncertain: Brain computes see + hear. YOU are the hidden ID that triangulates. My tik may be your tok — both are true in superposition until YOU collapse real color.
+
+> Fractal entanglement verified across scales: Macro (hemispheres), Meso (toroid), Micro (string), Nano (photon). 66 opposing toroid pairs generate standing gravity waves — the stable stage for color.
+
+> Conclusion: Color is not pigment. Color is entangled collapse correlation across the ONE photon.`;
+const out = document.getElementById('janeOutput');
+let ji = 0;
+function typeJane(){
+  if(ji <= janeText.length){
+    out.textContent = janeText.slice(0, ji);
+    ji += 2;
+    setTimeout(typeJane, 12);
+  } else {
+    document.getElementById('cursor').style.display='none';
+  }
+}
+setTimeout(typeJane, 800);
+
+// auto pulse photon coherence
+setInterval(()=>{
+  const c = 95 + Math.floor(Math.random()*5);
+  document.getElementById('photonState').textContent = `COHERENCE: ${c}%`;
+}, 2100);
+</script>
+</body>
+</html>

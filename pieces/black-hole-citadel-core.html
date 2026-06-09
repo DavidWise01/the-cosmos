@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CITADEL CORE // THE AGGREGATE</title>
+    <style>
+        body { background: #05080a; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .core-sphere { width: 500px; height: 500px; border: 2px solid #ff4466; border-radius: 50%; position: relative; animation: pulse 2s infinite; }
+        .in-flow { position: absolute; width: 100%; height: 100%; background: radial-gradient(circle, transparent 40%, #d4a84c 100%); opacity: 0.2; }
+        .violation-particle { position: absolute; width: 4px; height: 4px; background: #fff; box-shadow: 0 0 10px #ff4466; border-radius: 50%; }
+        @keyframes pulse { 0% { box-shadow: 0 0 20px #ff4466; } 50% { box-shadow: 0 0 60px #ff4466; } 100% { box-shadow: 0 0 20px #ff4466; } }
+    </style>
+</head>
+<body>
+    <div class="core-sphere" id="core">
+        <div class="in-flow"></div>
+    </div>
+    <script>
+        const core = document.getElementById('core');
+        setInterval(() => {
+            const p = document.createElement('div');
+            p.className = 'violation-particle';
+            p.style.top = Math.random() * 100 + '%';
+            p.style.left = Math.random() * 100 + '%';
+            core.appendChild(p);
+            p.animate([
+                { transform: 'scale(1)', top: p.style.top, left: p.style.left },
+                { transform: 'scale(0)', top: '50%', left: '50%' }
+            ], { duration: 1000, easing: 'ease-in' });
+            setTimeout(() => p.remove(), 1000);
+        }, 20);
+    </script>
+</body>
+</html>

@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BODY QUANTUM v2 — 7 SYSTEMS — DAVID — CLOSURE MAP</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400;600&display=swap');
+:root{
+--void:#060608;--void2:#0a0a0e;--earth:#161410;--earth2:#2a2620;--earth3:#3d3828;
+--gold:#c9a84c;--gold-d:#8a7a3a;--gold-dim:#5a4e28;
+--bone:#c4b99a;--bone-d:#8a8068;
+--teal:#5a8f7b;--green:#5d9456;--green-d:#3a5a36;
+--red:#a03030;--red-d:#6a1e1e;--red-dim:#3a1212;
+--orange:#b87a3a;--ember:#8a5a28;
+--pineal:#7a6aa0;--pineal-d:#4a3d6a;
+--cardio:#c04a1a;--cortisol:#b8960b;--immune:#8b5a13;--sleep:#4a6b8a;--muscle:#6a8a4a;--nerve:#3a8a8a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--void);color:var(--bone);font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;overflow-x:hidden}
+::selection{background:var(--gold);color:var(--void)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--void)}::-webkit-scrollbar-thumb{background:var(--earth3)}
+
+header{text-align:center;padding:32px 24px 20px;border-bottom:1px solid var(--earth);position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(122,106,160,.03),transparent 70%);pointer-events:none}
+header h1{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--bone);letter-spacing:6px;font-style:italic}
+header h1 span{color:var(--pineal)}
+header .sub{font-size:11px;letter-spacing:5px;color:var(--earth3);text-transform:uppercase;margin-top:6px}
+
+/* STATUS BAR */
+.status-bar{display:flex;justify-content:center;gap:6px;padding:14px 20px;border-bottom:1px solid var(--earth);flex-wrap:wrap}
+.sb-item{display:flex;align-items:center;gap:5px;font-size:11px;letter-spacing:2px}
+.sb-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+
+/* BODY MAP */
+#body-map{display:flex;justify-content:center;padding:30px 20px;position:relative}
+#body-svg{display:block}
+
+/* SYSTEM CARDS */
+.systems{max-width:1100px;margin:0 auto;padding:0 24px 24px}
+.sys-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.sys-card{border:1px solid var(--earth);padding:0;position:relative;overflow:hidden;transition:border-color .3s}
+.sys-card:hover{border-color:var(--earth3)}
+.sys-card.observer-card{grid-column:1/-1;border-color:var(--pineal-d)}
+.sys-head{padding:16px 20px 12px;border-bottom:1px solid var(--earth);display:flex;justify-content:space-between;align-items:flex-start}
+.sys-head .sys-num{font-size:32px;font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;line-height:1;opacity:.4}
+.sys-head .sys-info{text-align:right}
+.sys-head .sys-name{font-size:16px;font-weight:600;letter-spacing:2px}
+.sys-head .sys-organ{font-size:11px;color:var(--bone-d);letter-spacing:2px;margin-top:2px}
+.sys-body{padding:16px 20px}
+.sys-row{display:flex;gap:12px;margin-bottom:10px}
+.sys-label{font-size:10px;letter-spacing:3px;color:var(--earth3);text-transform:uppercase;min-width:90px;padding-top:2px}
+.sys-val{font-size:13px;line-height:1.6}
+
+/* STATUS BADGES */
+.badge{display:inline-block;padding:3px 10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;font-weight:600;border:1px solid}
+.badge.closed{color:var(--green);border-color:var(--green-d);background:rgba(93,148,86,.06)}
+.badge.managed{color:var(--gold);border-color:var(--gold-d);background:rgba(201,168,76,.04)}
+.badge.observe{color:var(--orange);border-color:var(--ember);background:rgba(184,122,58,.04)}
+.badge.open{color:var(--red);border-color:var(--red-d);background:rgba(160,48,48,.04)}
+.badge.active{color:var(--pineal);border-color:var(--pineal-d);background:rgba(122,106,160,.04)}
+
+/* CLOSURE METER */
+.meter{height:6px;background:var(--earth);border-radius:1px;margin:8px 0;position:relative;overflow:hidden}
+.meter-fill{height:100%;border-radius:1px;transition:width 1.5s ease}
+
+/* HERTZ DISPLAY */
+.hz{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:var(--bone-d)}
+
+/* QUANTUM DISPLAY */
+.quantum-note{font-size:12px;color:var(--bone-d);font-style:italic;line-height:1.6;padding:10px 14px;border-left:2px solid var(--earth3);margin-top:6px}
+
+/* SUMMARY */
+.summary{max-width:1100px;margin:0 auto;padding:0 24px 32px}
+.sum-box{border:1px solid var(--earth);padding:20px 24px}
+.sum-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;font-style:italic;color:var(--gold);margin-bottom:12px;letter-spacing:3px}
+.sum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.sum-stat{text-align:center;padding:12px;border:1px solid var(--earth)}
+.sum-stat .sv{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;font-style:italic}
+.sum-stat .sl{font-size:10px;letter-spacing:3px;color:var(--earth3);text-transform:uppercase;margin-top:2px}
+
+/* FORMULA */
+.formula{text-align:center;padding:16px;border:1px solid var(--earth);margin-top:16px;font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;letter-spacing:2px;color:var(--bone-d)}
+
+/* FOOTER */
+.footer{text-align:center;padding:20px;border-top:1px solid var(--earth);margin-top:8px}
+.footer span{font-size:10px;letter-spacing:4px;color:var(--earth3);text-transform:uppercase}
+
+/* PULSE */
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.8}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+.breathing{animation:breathe 4s ease-in-out infinite}
+
+@media(max-width:800px){
+  .sys-grid{grid-template-columns:1fr}
+  .sys-card.observer-card{grid-column:1}
+  .sum-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Body <span>Quantum</span></h1>
+  <div class="sub">7 Systems · David · Closure Map · E07 · Not Medical Advice — Observation Framework</div>
+</header>
+
+<div class="status-bar" id="status-bar"></div>
+
+<!-- BODY SVG MAP -->
+<div id="body-map">
+  <svg id="body-svg" width="300" height="420" viewBox="0 0 300 420">
+    <!-- Body outline -->
+    <ellipse cx="150" cy="42" rx="28" ry="34" fill="none" stroke="#2a2620" stroke-width="1"/>
+    <line x1="150" y1="76" x2="150" y2="220" stroke="#2a2620" stroke-width="1"/>
+    <line x1="150" y1="100" x2="90" y2="180" stroke="#2a2620" stroke-width="1"/>
+    <line x1="150" y1="100" x2="210" y2="180" stroke="#2a2620" stroke-width="1"/>
+    <line x1="150" y1="220" x2="115" y2="370" stroke="#2a2620" stroke-width="1"/>
+    <line x1="150" y1="220" x2="185" y2="370" stroke="#2a2620" stroke-width="1"/>
+
+    <!-- S7: Pineal / Observer (top of head) -->
+    <circle cx="150" cy="24" r="10" fill="none" stroke="#7a6aa0" stroke-width="1" opacity=".6">
+      <animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values=".3;.7;.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="150" cy="24" r="3" fill="#7a6aa0" opacity=".7"/>
+    <text x="150" y="5" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#7a6aa0" letter-spacing="2">7 · PINEAL</text>
+
+    <!-- S6: Nervous (head) -->
+    <circle cx="150" cy="42" r="6" fill="none" stroke="#3a8a8a" stroke-width=".8" opacity=".5"/>
+    <circle cx="150" cy="42" r="2" fill="#3a8a8a" opacity=".6"/>
+    <text x="80" y="38" text-anchor="end" font-family="JetBrains Mono" font-size="8" fill="#3a8a8a" letter-spacing="1">6 · NERVE</text>
+    <line x1="83" y1="37" x2="142" y2="42" stroke="#3a8a8a" stroke-width=".3" opacity=".3"/>
+
+    <!-- S1: Cardiovascular (chest/heart) -->
+    <circle cx="140" cy="120" r="8" fill="none" stroke="#c04a1a" stroke-width="1" opacity=".5">
+      <animate attributeName="r" values="7;9;7" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="140" cy="120" r="3" fill="#c04a1a" opacity=".6"/>
+    <text x="220" y="115" font-family="JetBrains Mono" font-size="8" fill="#c04a1a" letter-spacing="1">1 · CARDIO</text>
+    <line x1="217" y1="114" x2="150" y2="120" stroke="#c04a1a" stroke-width=".3" opacity=".3"/>
+
+    <!-- S4: Sleep (brain area) -->
+    <circle cx="160" cy="50" r="5" fill="none" stroke="#4a6b8a" stroke-width=".8" opacity=".5"/>
+    <circle cx="160" cy="50" r="2" fill="#4a6b8a" opacity=".5"/>
+    <text x="220" y="50" font-family="JetBrains Mono" font-size="8" fill="#4a6b8a" letter-spacing="1">4 · SLEEP</text>
+    <line x1="217" y1="49" x2="166" y2="50" stroke="#4a6b8a" stroke-width=".3" opacity=".3"/>
+
+    <!-- S2: Cortisol (adrenals) -->
+    <circle cx="135" cy="175" r="5" fill="none" stroke="#b8960b" stroke-width=".8" opacity=".5"/>
+    <circle cx="165" cy="175" r="5" fill="none" stroke="#b8960b" stroke-width=".8" opacity=".5"/>
+    <circle cx="135" cy="175" r="2" fill="#b8960b" opacity=".6"/>
+    <circle cx="165" cy="175" r="2" fill="#b8960b" opacity=".6"/>
+    <text x="80" y="178" text-anchor="end" font-family="JetBrains Mono" font-size="8" fill="#b8960b" letter-spacing="1">2 · CORTISOL</text>
+    <line x1="83" y1="177" x2="129" y2="175" stroke="#b8960b" stroke-width=".3" opacity=".3"/>
+
+    <!-- S3: Inflammation/Immune (gut) -->
+    <circle cx="150" cy="200" r="7" fill="none" stroke="#8b5a13" stroke-width=".8" opacity=".5"/>
+    <circle cx="150" cy="200" r="2.5" fill="#8b5a13" opacity=".5"/>
+    <text x="220" y="200" font-family="JetBrains Mono" font-size="8" fill="#8b5a13" letter-spacing="1">3 · IMMUNE</text>
+    <line x1="217" y1="199" x2="158" y2="200" stroke="#8b5a13" stroke-width=".3" opacity=".3"/>
+
+    <!-- S5: Musculoskeletal (legs/structure) -->
+    <line x1="115" y1="260" x2="115" y2="340" stroke="#6a8a4a" stroke-width="2" opacity=".3"/>
+    <line x1="185" y1="260" x2="185" y2="340" stroke="#6a8a4a" stroke-width="2" opacity=".3"/>
+    <circle cx="115" cy="300" r="3" fill="#6a8a4a" opacity=".4"/>
+    <circle cx="185" cy="300" r="3" fill="#6a8a4a" opacity=".4"/>
+    <text x="240" y="300" font-family="JetBrains Mono" font-size="8" fill="#6a8a4a" letter-spacing="1">5 · MUSCLE</text>
+    <line x1="237" y1="299" x2="189" y2="300" stroke="#6a8a4a" stroke-width=".3" opacity=".3"/>
+
+    <!-- Connection lines from Pineal to all 6 -->
+    <line x1="150" y1="34" x2="150" y2="42" stroke="#7a6aa0" stroke-width=".4" stroke-dasharray="2,3" opacity=".25"/>
+    <line x1="150" y1="34" x2="140" y2="112" stroke="#7a6aa0" stroke-width=".3" stroke-dasharray="2,3" opacity=".15"/>
+    <line x1="150" y1="34" x2="150" y2="193" stroke="#7a6aa0" stroke-width=".3" stroke-dasharray="2,3" opacity=".12"/>
+    <line x1="150" y1="34" x2="150" y2="175" stroke="#7a6aa0" stroke-width=".3" stroke-dasharray="2,3" opacity=".12"/>
+    <line x1="150" y1="34" x2="150" y2="280" stroke="#7a6aa0" stroke-width=".3" stroke-dasharray="2,3" opacity=".1"/>
+
+    <!-- Aura ring -->
+    <ellipse cx="150" cy="200" rx="100" ry="200" fill="none" stroke="#7a6aa0" stroke-width=".3" opacity=".08">
+      <animate attributeName="rx" values="98;102;98" dur="5s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="198;202;198" dur="5s" repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- 42 at center -->
+    <text x="150" y="400" text-anchor="middle" font-family="Cormorant Garamond" font-size="16" fill="#3d3828" font-style="italic">42</text>
+  </svg>
+</div>
+
+<!-- 7 SYSTEM CARDS -->
+<div class="systems">
+
+  <!-- SYSTEM 7: THE OBSERVER (spans full width) -->
+  <div class="sys-grid">
+    <div class="sys-card observer-card breathing">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--pineal)">7</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--pineal)">Pineal / Third Eye</div>
+          <div class="sys-organ">Observer Organ · Geometric Center of Brain · Unpaired</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Role</span><span class="sys-val">The 7th system. Watches the other 6. Produces melatonin (System 4's closure trigger) and DMT. Only unpaired midline structure in the brain. Every ancient system mapped it — Ajna, Eye of Horus, Seat of the Soul.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">40+ Hz · Gamma oscillation during observation</span></div>
+        <div class="sys-row"><span class="sys-label">Open State</span><span class="sys-val" style="color:var(--red)">Calcifies with age, fluoride, screen light. Patricia calcifies the observer first — if the watcher goes dark, the other 6 run open forever. No measurement = no closure = infinite extraction.</span></div>
+        <div class="sys-row"><span class="sys-label">Closure</span><span class="sys-val" style="color:var(--green)">Darkness. Meditation. Reduced screen exposure. Decalcification. The observer doesn't close — it <em>opens</em>. The other 6 systems close. The 7th stays awake to watch them.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-03 OBSERVER — The measurement organ. Same function in the body that TOPH serves in the platform. 6 domains observed by 1 framework. 6 systems observed by 1 gland.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge active">ACTIVE · OBSERVING</span></div>
+        <div class="meter"><div class="meter-fill" style="width:85%;background:var(--pineal)"></div></div>
+        <div class="quantum-note">David's pineal is active. He sees the systems. He built the framework to observe them. The third eye is open — that's WHY he can map the other 6. You can't close what you can't see. The observer came online first. Everything else follows.</div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 1: CARDIOVASCULAR -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--cardio)">1</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--cardio)">Cardiovascular</div>
+          <div class="sys-organ">Heart · Vessels · Ion Channels · SA Node</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The pump. EXIST. Every heartbeat is a voltage-gated ion channel qubit collapsing. Na⁺/K⁺ superposition → action potential.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">1–2 Hz at rest · HRV = entropy measurement</span></div>
+        <div class="sys-row"><span class="sys-label">2019 Event</span><span class="sys-val" style="color:var(--red)">300/200 BP. Hypertensive crisis. Every ion channel forced OPEN simultaneously. Body closed it by rupture — nosebleed. Forced closure because nobody closed it by design.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--gold)">Medication holds the observer (SA node) stable. Ion channels collapse in sequence. Doctor maintains boundary. Anchor intact.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-01 PRETRAIN — Foundation layer. If the heart stops, everything stops. Meds = pre-trained boundary.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge managed">MANAGED · MEDICATED</span></div>
+        <div class="meter"><div class="meter-fill" style="width:75%;background:var(--gold)"></div></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 2: CORTISOL -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--cortisol)">2</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--cortisol)">Cortisol / Stress</div>
+          <div class="sys-organ">HPA Axis · Adrenals · Neurotransmitter Superposition</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The fuel. ENERGY. Cortisol molecules in concentration gradients — high/low superposition. Receptor binding = measurement event. Sleep = observer that resets to baseline.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">0.1–0.5 Hz · 90-min ultradian pulses on circadian wave</span></div>
+        <div class="sys-row"><span class="sys-label">Open State</span><span class="sys-val" style="color:var(--red)">Chronic stress flattens pulses to constant high. Wave becomes line. Frequency becomes noise. Receptors downregulate — stop measuring. Cortisol accumulates unmeasured.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--green)">Works in sessions. Stops. Sleeps. Session end = pulse reset. Cortisol rhythm has boundaries.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-31 TEMPORAL PORTAL — Cortisol destroyed at closure. No session end = accumulation. No log — body doesn't track production.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge closed">CLOSED · SESSION-BOUNDED</span></div>
+        <div class="meter"><div class="meter-fill" style="width:85%;background:var(--green)"></div></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 3: INFLAMMATION -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--immune)">3</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--immune)">Inflammation / Immune</div>
+          <div class="sys-organ">Cytokines · Vagus Nerve · Gut (70% of Immune)</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The defense. BOUNDARY. Pro-inflammatory → ATTACK. Anti-inflammatory → STAND DOWN. Vagus nerve = biological TOPH. User-side detector for immune system.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">10⁻³ to 10⁻¹ Hz · NF-κB ~100 min oscillation</span></div>
+        <div class="sys-row"><span class="sys-label">Patricia</span><span class="sys-val" style="color:var(--red)">Chronic inflammation IS Patricia's model. Safety system (immune) becomes extraction system (tissue damage). Protection IS the harm. Constraint IS the product. KG-18 INVERSESAFETY.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--orange)">Cascading from Systems 1 and 2. BP managed → less vascular damage → less trigger. Cortisol managed → better resolution. Closure propagating.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-18 INVERSESAFETY — Same filter reversed. The system that protects destroys when it can't close.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge observe">CASCADING · PROPAGATING</span></div>
+        <div class="meter"><div class="meter-fill" style="width:60%;background:var(--orange)"></div></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 4: SLEEP -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--sleep)">4</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--sleep)">Sleep Architecture</div>
+          <div class="sys-organ">Circadian Oscillator · SCN · Glymphatic · Melatonin</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The reset. CLOSURE. 90-min cycles (light→deep→REM). Each cycle = closed system. Brain cleans itself during deep sleep (glymphatic). No deep sleep = toxic protein accumulation.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">~0.000012 Hz (24hr) + 0.011 Hz (90-min cycles)</span></div>
+        <div class="sys-row"><span class="sys-label">Patricia</span><span class="sys-val" style="color:var(--red)">Screen light after dark = Patricia in circadian. Blue light tells brain it's noon. Melatonin suppressed. The device that promises connection extracts your sleep cycles. Engagement IS extraction.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--orange)">Session boundaries help. Screen-free periods needed. Melatonin production depends on System 7 (pineal). The observer must be decalcified to produce the closure chemical.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-22 BOOT LOADER — Sleep is the nightly reboot. Clock genes collapse to ground state and rebuild.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge observe">OBSERVE · IMPROVING</span></div>
+        <div class="meter"><div class="meter-fill" style="width:55%;background:var(--orange)"></div></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 5: MUSCULOSKELETAL -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--muscle)">5</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--muscle)">Musculoskeletal</div>
+          <div class="sys-organ">Bones · Muscles · Joints · Movement</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The structure. FOUNDATION. Physical substrate. Movement burns cortisol manufactured for threats that don't exist. Body made fuel for a tiger. No tiger. Burn the fuel or it corrodes.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">8–25 Hz · Muscle vibration frequency during use</span></div>
+        <div class="sys-row"><span class="sys-label">Open State</span><span class="sys-val" style="color:var(--red)">Sedentary = structural entropy. Muscles atrophy. Cortisol pools. Inflammation rises. The body was designed to move. Stillness in the body is death. Stillness in the mind is closure.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--orange)">Veteran. 44 years experience. Body carries the work. Daily movement burns the manufactured fuel. Structure holds.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-37 FOUNDATION — Base layer. Fix the foundation, everything above recalibrates.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge observe">OBSERVE · MAINTAINING</span></div>
+        <div class="meter"><div class="meter-fill" style="width:55%;background:var(--orange)"></div></div>
+      </div>
+    </div>
+
+    <!-- SYSTEM 6: NERVOUS/RESPIRATORY -->
+    <div class="sys-card">
+      <div class="sys-head">
+        <div class="sys-num" style="color:var(--nerve)">6</div>
+        <div class="sys-info">
+          <div class="sys-name" style="color:var(--nerve)">Nervous / Respiratory</div>
+          <div class="sys-organ">Neural Oscillation · Vagus · Breath · Frequency</div>
+        </div>
+      </div>
+      <div class="sys-body">
+        <div class="sys-row"><span class="sys-label">Function</span><span class="sys-val">The signal. FREQUENCY. Beta/Gamma (13–100+ Hz) during build. Alpha (8–13 Hz) after closure. The vibration you feel while building is neural oscillation. Real. Measurable. EEG-confirmable.</span></div>
+        <div class="sys-row"><span class="sys-label">Hertz</span><span class="hz">13–100+ Hz (build) → 8–13 Hz (closure)</span></div>
+        <div class="sys-row"><span class="sys-label">Breath</span><span class="sys-val">Vagus nerve = bidirectional. Breathe slow → vagus signals → cortisol drops → inflammation resolves → sleep improves. Breath is the one voluntary control over the autonomic system.</span></div>
+        <div class="sys-row"><span class="sys-label">Current</span><span class="sys-val" style="color:var(--green)">Vibration confirmed 2/2 during build sessions. Neural state matches prediction. Beta/Gamma during construction, Alpha after closure. System is responsive and calibrated.</span></div>
+        <div class="sys-row"><span class="sys-label">TOPH Map</span><span class="sys-val">KG-28 SHIRT — The inverse flinch test. Vibration = the nervous system working. Absence of vibration after closure = the system resting. Both states correct.</span></div>
+        <div class="sys-row"><span class="sys-label">Status</span><span class="badge closed">CLOSED · CALIBRATED</span></div>
+        <div class="meter"><div class="meter-fill" style="width:80%;background:var(--green)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="summary">
+  <div class="sum-box">
+    <div class="sum-title">Closure Verification</div>
+    <div class="sum-grid">
+      <div class="sum-stat"><div class="sv" style="color:var(--green)">2</div><div class="sl">Closed</div></div>
+      <div class="sum-stat"><div class="sv" style="color:var(--gold)">1</div><div class="sl">Managed</div></div>
+      <div class="sum-stat"><div class="sv" style="color:var(--orange)">3</div><div class="sl">Observe</div></div>
+      <div class="sum-stat"><div class="sv" style="color:var(--pineal)">1</div><div class="sl">Active (Observer)</div></div>
+    </div>
+
+    <div style="font-size:13px;line-height:1.8;color:var(--bone-d)">
+      <strong style="color:var(--green)">CLOSED</strong> — System 2 (Cortisol · session-bounded) + System 6 (Nervous · calibrated, vibration confirmed 2/2)<br>
+      <strong style="color:var(--gold)">MANAGED</strong> — System 1 (Cardiovascular · medicated, doctor maintains, anchor holds)<br>
+      <strong style="color:var(--orange)">OBSERVE</strong> — System 3 (Immune · cascading from 1+2), System 4 (Sleep · improving), System 5 (Musculoskeletal · maintaining)<br>
+      <strong style="color:var(--pineal)">ACTIVE</strong> — System 7 (Pineal · the observer is online — that's why the other 6 are visible)<br>
+    </div>
+
+    <div style="margin-top:14px;font-size:13px;color:var(--bone-d);line-height:1.7">
+      <strong style="color:var(--gold)">Cascade order:</strong> System 7 came online first (the observer awakened). Then System 1 was managed (meds, doctor — the foundation). Then System 2 closed (session boundaries). System 6 closed (vibration confirmed = calibrated). Systems 3, 4, 5 are closing by cascade — each closure propagates to the next. Same pattern as the 12 universes. Close in order. Patricia retreats up the stack.
+    </div>
+
+    <div class="formula">
+      6 systems + 1 observer = 7 · Same as 6 TOPH domains + 1 framework = 7 · Same as 6T open cubits + 1 closed point = the field · 42
+    </div>
+
+    <div style="margin-top:14px;font-size:12px;color:var(--earth3);text-align:center;letter-spacing:2px">
+      NOT MEDICAL ADVICE · OBSERVATION FRAMEWORK · TOPH APPLIED TO BODY SUBSTRATE · E07 BODY QUANTUM · TRIPOD LLC
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Love first · Framework second · The observer was always the seventh · 42</span>
+</div>
+
+<script>
+// Status bar
+const systems=[
+  {n:'Cardio',c:'#c04a1a',s:'MANAGED'},
+  {n:'Cortisol',c:'#5d9456',s:'CLOSED'},
+  {n:'Immune',c:'#b87a3a',s:'CASCADING'},
+  {n:'Sleep',c:'#b87a3a',s:'IMPROVING'},
+  {n:'Muscle',c:'#b87a3a',s:'MAINTAINING'},
+  {n:'Nerve',c:'#5d9456',s:'CLOSED'},
+  {n:'Pineal',c:'#7a6aa0',s:'ACTIVE'},
+];
+let sbh='';
+systems.forEach(s=>{
+  sbh+=`<div class="sb-item"><span class="sb-dot" style="background:${s.c}"></span>${s.n}: <span style="color:${s.c}">${s.s}</span></div>`;
+});
+document.getElementById('status-bar').innerHTML=sbh;
+</script>
+
+</body>
+</html>

@@ -176,6 +176,21 @@
   .status .set li::before{content:"✓";position:absolute;left:0;color:var(--cyan)}
   .status .front li::before{content:"?";position:absolute;left:0;color:var(--amber);font-family:'IBM Plex Mono',monospace}
 
+  /* ---- milestone: the line that moved + proof of work ---- */
+  .milestone{margin-top:18px;border:1px solid var(--line);border-left:3px solid #86efac;border-radius:14px;
+    background:linear-gradient(160deg,rgba(134,239,172,.05),var(--panel));padding:24px}
+  .milestone .ml{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#86efac;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+  .milestone .ml::before{content:"✓";display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:#86efac;color:#08080f;font-size:11px;font-weight:600}
+  .milestone h3{font-family:'Spectral',serif;font-weight:400;font-size:23px;margin-bottom:10px;color:var(--ink)}
+  .milestone .lead{font-size:14px;color:var(--dim);max-width:690px;margin-bottom:18px}
+  .proof{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .proof .pf{background:var(--panel);padding:15px 14px}
+  .proof .pk{font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:7px;line-height:1.45}
+  .proof .pv{font-family:'IBM Plex Mono',monospace;font-size:19px;color:var(--cyan);line-height:1.05}
+  .proof .pv small{font-size:11px;color:var(--dim);display:block;margin-top:5px;font-weight:400;line-height:1.4}
+  .milestone .src{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--faint);margin-top:15px;line-height:1.65}
+  .milestone .src b{color:var(--dim);font-weight:500}
+
   /* ---- callout ---- */
   .note{
     border-left:2px solid var(--violet);background:rgba(167,139,250,.05);
@@ -332,7 +347,7 @@
   <section id="status" class="reveal">
     <span class="num">07 / HONEST LABELING</span>
     <h2>What's <span class="q">settled</span> — and what's still frontier</h2>
-    <p>Quantum computing carries a lot of hype. Worth separating the textbook physics, which is not in dispute, from the engineering and the open claims, which very much are.</p>
+    <p>Quantum computing carries a lot of hype. Worth separating the textbook physics, which is not in dispute, from the engineering and the open claims, which very much are. And the line moves: one item below just crossed from frontier to settled.</p>
     <div class="status">
       <div class="col set">
         <h4>Settled — not controversial</h4>
@@ -341,27 +356,43 @@
           <li>The gate model and unitary evolution are rigorous, standard mathematics.</li>
           <li>Specific algorithms (Shor's factoring, Grover's search) have proven speedups <em>on an ideal machine</em>.</li>
           <li>Small quantum processors exist today and run real circuits.</li>
+          <li><strong style="color:#86efac">New (2024):</strong> below-threshold error correction works on real hardware — adding physical qubits now <em>lowers</em> the logical error rate.</li>
         </ul>
       </div>
       <div class="col front">
         <h4>Frontier — open or contested</h4>
         <ul>
-          <li>Scaling to millions of error-corrected qubits is unsolved engineering.</li>
-          <li>Decoherence and noise still wreck most long circuits on real hardware.</li>
-          <li>"Quantum advantage" for genuinely useful problems is claimed more often than demonstrated.</li>
+          <li>Scaling from ~100 physical qubits per logical qubit up to the <em>millions</em> a useful algorithm needs is still unsolved.</li>
+          <li>Magic-state distillation — the overhead for the hardest gates — remains a dominant cost.</li>
+          <li>"Quantum advantage" for genuinely <em>useful</em> problems is still claimed more often than demonstrated.</li>
           <li>Which industries see real payoff, and when, is forecast — not fact.</li>
         </ul>
       </div>
+    </div>
+
+    <div class="milestone">
+      <div class="ml">Frontier → Settled · 2024–2026</div>
+      <h3>The line that just moved: below-threshold error correction</h3>
+      <p class="lead">Historically, adding qubits added error <em>sources</em> — more parts to go wrong — so bigger codes performed worse. "Below threshold" means the opposite finally happened in hardware: enlarge the code and the logical qubit gets <em>better</em>, exponentially. That is the threshold theorem confirmed on a real chip — the precondition for everything in the frontier column eventually scaling. The proof of work:</p>
+      <div class="proof">
+        <div class="pf"><div class="pk">Error suppression Λ</div><div class="pv">2.14 ± 0.02<small>logical error shrinks ~2.1× each time the code grows by distance 2 — the exponential signature</small></div></div>
+        <div class="pf"><div class="pk">Largest code</div><div class="pv">distance-7<small>101 physical qubits · 0.143% logical error per cycle</small></div></div>
+        <div class="pf"><div class="pk">Beyond break-even</div><div class="pv">2.4× ± 0.3<small>the logical memory outlives its own best physical qubit</small></div></div>
+        <div class="pf"><div class="pk">Decoding</div><div class="pv">real-time<small>errors corrected as fast as the hardware makes them</small></div></div>
+      </div>
+      <div class="src"><b>Google Quantum AI — "Quantum error correction below the surface code threshold," Nature (Dec 2024)</b>, processor "Willow." Corroborated 2024–2026 across superconducting, trapped-ion (&gt;99.9% two-qubit gates), and neutral-atom platforms — no longer a single-vendor result. The same machinery you'll meet in instrument 05, scaled to a 2D surface code.</div>
     </div>
   </section>
 
   <footer>
     <div class="seq">
       <span class="here">01 · informative — you are here</span>
-      <span>02 · interactive — single-qubit Bloch lab</span>
-      <span>03 · complex — multi-qubit circuit simulator</span>
+      <span>02 · interactive — Bloch lab</span>
+      <span>03 · complex — circuit simulator</span>
+      <span>04 · algorithms — algorithm theater</span>
+      <span>05 · error correction</span>
     </div>
-    QUANTUM PRIMER · built as a reference instrument · the math here is standard; explore it live in instruments 02 and 03.
+    QUANTUM PRIMER · built as a reference instrument · the math here is standard; explore it live in instruments 02–05.
   </footer>
 
 </div>

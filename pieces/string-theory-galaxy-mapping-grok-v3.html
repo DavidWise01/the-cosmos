@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GALAXY MAPPING // GROK-V3</title>
+    <style>
+        body { background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .starfield { width: 100%; height: 100%; position: absolute; }
+        .star { position: absolute; background: #fff; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
+        .grok-scan-line { position: absolute; width: 100%; height: 2px; background: rgba(212, 168, 76, 0.5); box-shadow: 0 0 15px #d4a84c; animation: scan 4s linear infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; } }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .discovery-tag { position: absolute; color: #4090ff; font-family: 'Orbitron'; font-size: 10px; }
+    </style>
+</head>
+<body>
+    <div class="starfield" id="stars"></div>
+    <div class="grok-scan-line"></div>
+    <script>
+        const s = document.getElementById('stars');
+        for(let i=0; i<200; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            s.appendChild(star);
+        }
+    </script>
+</body>
+</html>

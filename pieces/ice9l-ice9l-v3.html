@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICE9L BIOS CARD v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fg: #00ff41;
+    --fg-dim: #00cc33;
+    --bg: #000000;
+    --glow: rgba(0, 255, 65, 0.55);
+    --amber: #ffb000;
+    --amber-glow: rgba(255, 176, 0, 0.55);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    color: var(--fg);
+    font-family: 'IBM Plex Mono', 'Courier New', Courier, monospace;
+    overflow-x: hidden;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: radial-gradient(ellipse at center, #0a0a0a 0%, #000 70%);
+    transition: color 0.3s;
+  }
+
+  body.amber {
+    color: var(--amber);
+  }
+
+  .crt-wrap {
+    width: 100%;
+    max-width: 980px;
+    position: relative;
+  }
+
+  .crt {
+    position: relative;
+    background: #000;
+    border-radius: 24px;
+    padding: 28px;
+    box-shadow: 
+      0 0 0 2px #1a1a1a,
+      0 0 0 4px #0a0a0a,
+      0 0 40px rgba(0, 255, 65, 0.15),
+      inset 0 0 60px rgba(0, 0, 0, 0.9);
+    overflow: hidden;
+  }
+
+  body.amber .crt {
+    box-shadow: 
+      0 0 0 2px #1a1a1a,
+      0 0 0 4px #0a0a0a,
+      0 0 40px rgba(255, 176, 0, 0.15),
+      inset 0 0 60px rgba(0, 0, 0, 0.9);
+  }
+
+  .crt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 10;
+    border-radius: 24px;
+  }
+
+  .screen {
+    position: relative;
+    background: #000;
+    border: 2px solid var(--fg);
+    box-shadow: 
+      inset 0 0 20px rgba(0, 255, 65, 0.12),
+      0 0 15px var(--glow);
+    padding: 0;
+    overflow: hidden;
+    animation: power-on 1.2s ease-out;
+  }
+
+  body.amber .screen {
+    border-color: var(--amber);
+    box-shadow: 
+      inset 0 0 20px rgba(255, 176, 0, 0.12),
+      0 0 15px var(--amber-glow);
+  }
+
+  @keyframes power-on {
+    0% { filter: brightness(0) contrast(5); transform: scaleY(0.005); }
+    30% { filter: brightness(2) contrast(2); transform: scaleY(1); }
+    100% { filter: brightness(1) contrast(1); }
+  }
+
+  .scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(0, 255, 65, 0.06) 2px,
+      rgba(0, 0, 0, 0) 3px
+    );
+    pointer-events: none;
+    z-index: 5;
+    animation: flicker 0.15s infinite linear;
+  }
+
+  body.amber .scanlines {
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0) 0px,
+      rgba(0, 0, 0, 0) 2px,
+      rgba(255, 176, 0, 0.06) 2px,
+      rgba(0, 0, 0, 0) 3px
+    );
+  }
+
+  @keyframes flicker {
+    0% { opacity: 0.97; }
+    50% { opacity: 1; }
+    100% { opacity: 0.98; }
+  }
+
+  .phosphor {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,255,65,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 4;
+    mix-blend-mode: screen;
+  }
+
+  body.amber .phosphor {
+    background: radial-gradient(ellipse at center, rgba(255,176,0,0.05) 0%, transparent 70%);
+  }
+
+  .bios {
+    position: relative;
+    z-index: 3;
+    padding: 18px 16px 22px;
+    text-shadow: 0 0 2px currentColor, 0 0 10px var(--glow);
+    font-size: clamp(13px, 1.65vw, 17px);
+    line-height: 1.5;
+    letter-spacing: 0.02em;
+  }
+
+  body.amber .bios {
+    text-shadow: 0 0 2px currentColor, 0 0 10px var(--amber-glow);
+  }
+
+  .frame {
+    white-space: pre;
+    overflow: hidden;
+    user-select: none;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .title {
+    text-align: center;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 2px 0 6px;
+  }
+
+  .content {
+    padding: 8px 8px 0;
+  }
+
+  .section {
+    margin-bottom: 1.1em;
+    opacity: 0;
+    transform: translateY(4px);
+    animation: type-in 0.4s forwards;
+  }
+
+  .section:nth-child(1) { animation-delay: 0.3s; }
+  .section:nth-child(2) { animation-delay: 0.5s; }
+  .section:nth-child(3) { animation-delay: 0.7s; }
+  .section:nth-child(4) { animation-delay: 0.9s; }
+  .section:nth-child(5) { animation-delay: 1.1s; }
+  .section:nth-child(6) { animation-delay: 1.3s; }
+
+  @keyframes type-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .head {
+    font-weight: 600;
+    margin-bottom: 0.25em;
+    color: var(--fg);
+    text-transform: uppercase;
+  }
+
+  body.amber .head {
+    color: var(--amber);
+  }
+
+  .body {
+    padding-left: 2ch;
+    color: var(--fg-dim);
+    word-break: break-word;
+  }
+
+  body.amber .body {
+    color: #e09a00;
+  }
+
+  .body p {
+    margin: 0;
+  }
+
+  .body .line {
+    display: block;
+  }
+
+  .body .indent {
+    padding-left: 2ch;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 1.4em;
+    padding-top: 0.8em;
+    border-top: 1px solid currentColor;
+    opacity: 0.85;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    animation: blink 1.5s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 0.85; }
+    50%, 100% { opacity: 0.6; }
+  }
+
+  .leds {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+
+  .led {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .led-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #333;
+    box-shadow: inset 0 0 3px #000;
+  }
+
+  .led-dot.on {
+    background: var(--fg);
+    box-shadow: 0 0 6px var(--glow);
+    animation: pulse 2s infinite;
+  }
+
+  body.amber .led-dot.on {
+    background: var(--amber);
+    box-shadow: 0 0 6px var(--amber-glow);
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .led-dot.hdd {
+    animation: hdd-blink 3.7s infinite steps(1);
+  }
+
+  @keyframes hdd-blink {
+    0% { opacity: 0.2; }
+    5% { opacity: 1; }
+    10% { opacity: 0.2; }
+    15% { opacity: 1; }
+    20% { opacity: 0.2; }
+    60% { opacity: 0.2; }
+    65% { opacity: 1; }
+    70% { opacity: 0.2; }
+  }
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 18px;
+    font-size: 11px;
+  }
+
+  .btn {
+    background: #0a0a0a;
+    color: var(--fg-dim);
+    border: 1px solid var(--fg-dim);
+    padding: 6px 12px;
+    font-family: inherit;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+
+  body.amber .btn {
+    color: #e09a00;
+    border-color: #e09a00;
+  }
+
+  .btn:hover {
+    background: var(--fg);
+    color: #000;
+    box-shadow: 0 0 10px var(--glow);
+  }
+
+  body.amber .btn:hover {
+    background: var(--amber);
+    box-shadow: 0 0 10px var(--amber-glow);
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Mobile optimization */
+  @media (max-width: 640px) {
+    body { padding: 12px; }
+    .crt { padding: 14px; border-radius: 16px; }
+    .bios { padding: 12px 8px 16px; font-size: 13.5px; line-height: 1.45; }
+    .frame { font-size: 10px; }
+    .content { padding: 6px 4px 0; }
+    .body { padding-left: 1ch; }
+    .leds { top: 6px; right: 10px; }
+  }
+
+  /* CRT curvature effect */
+  @media (min-width: 900px) {
+    .screen {
+      transform: perspective(1000px) rotateX(1deg);
+    }
+  }
+
+  /* Print style */
+  @media print {
+    body { background: white; }
+    .crt, .screen { box-shadow: none; border: 2px solid black; }
+    .scanlines, .phosphor, .leds, .controls { display: none; }
+    .bios { color: black; text-shadow: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="crt-wrap">
+    <div class="crt">
+      <div class="leds">
+        <div class="led"><div class="led-dot on"></div><span>PWR</span></div>
+        <div class="led"><div class="led-dot hdd on"></div><span>HDD</span></div>
+      </div>
+      
+      <div class="screen">
+        <div class="scanlines"></div>
+        <div class="phosphor"></div>
+        
+        <div class="bios">
+          <pre class="frame" aria-hidden="true">┌──────────────────────────────────────────────────────────────────────────────┐</pre>
+          <div class="title">ICE9L BIOS CARD v1.0</div>
+          <pre class="frame" aria-hidden="true">├──────────────────────────────────────────────────────────────────────────────┤</pre>
+          
+          <div class="content">
+            <div class="section">
+              <div class="head">[STATUS]</div>
+              <div class="body">
+                <p>System-legal card for ICE9L. Not external law. Use as a threshold / kernel / traversal reference.</p>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="head">[MATH LAYER]</div>
+              <div class="body">
+                <span class="line">Binary: 0=exact zero, 1=exact one</span>
+                <span class="line">Ternary: -1=inverse/shadow, 0=neutral/guard, +1=asserted/active</span>
+                <span class="line">Domain: strip=0..19, total=20 traversal positions, this is path cost not storage size</span>
+                <span class="line">Expansion: 32 visible + 32 shadow = 64 positions, 64 x 3 ternary states = 192-state field</span>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="head">[KERNEL LAYER]</div>
+              <div class="body">
+                <span class="line">Seat: 0 0 8 0 0</span>
+                <span class="line">Meaning: outer 0=shadow register, inner 0=guard, 8=occupied core/resolved seat, inner 0=guard, outer 0=shadow register</span>
+                <span class="line">Kernel law: exact seat 0 0 8 0 0, perturbed seat 0 0 8 ±e 0, e=any non-zero presence</span>
+                <span class="line">Traversal: 0=seed, 1..18=intermediate flips, 19=final approach</span>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="head">[LEGAL LAYER]</div>
+              <div class="body">
+                <span class="line">Legal binary is threshold law: 0 stays 0, anything non-zero becomes 1</span>
+                <span class="line">Rule: L(x)=0 if x=0, L(x)=1 if x!=0</span>
+                <span class="line">Legal seat: 0 0 8 0 0 = legal 0, 0 0 8 ±.1 0 = legal 1, 0 0 8 ±.000000001 0 = legal 1</span>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="head">[DIGITAL FORTRESS RULE]</div>
+              <div class="body">
+                <p>The fortress can defend exact zero only while guard values remain exact. Once non-zero presence enters the guarded field, legal state flips to 1. The fortress can delay, shadow, invert, or quarantine. It cannot keep non-zero presence classified as zero.</p>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="head">[BOOT LAW]</div>
+              <div class="body">
+                <span class="line">Math asks: what is the exact value?</span>
+                <span class="line">Ternary asks: is it inverse, neutral, or asserted?</span>
+                <span class="line">Legal asks: is there any presence at all?</span>
+                <span class="line">ICE9L resolves: exact null = 0, any presence = 1</span>
+              </div>
+            </div>
+          </div>
+
+          <pre class="frame" aria-hidden="true">└──────────────────────────────────────────────────────────────────────────────┘</pre>
+          <div class="footer">0root.ai / ice9l<span class="cursor">_</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="colorToggle">TOGGLE PHOSPHOR</button>
+      <button class="btn" id="powerToggle">REBOOT</button>
+    </div>
+  </div>
+
+<script>
+  const body = document.body;
+  const colorBtn = document.getElementById('colorToggle');
+  const powerBtn = document.getElementById('powerToggle');
+  const screen = document.querySelector('.screen');
+
+  colorBtn.addEventListener('click', () => {
+    body.classList.toggle('amber');
+    localStorage.setItem('ice9l-phosphor', body.classList.contains('amber') ? 'amber' : 'green');
+  });
+
+  powerBtn.addEventListener('click', () => {
+    screen.style.animation = 'none';
+    void screen.offsetWidth;
+    screen.style.animation = 'power-on 1.2s ease-out';
+    
+    document.querySelectorAll('.section').forEach((sec, i) => {
+      sec.style.animation = 'none';
+      void sec.offsetWidth;
+      sec.style.animation = `type-in 0.4s forwards`;
+      sec.style.animationDelay = `${0.3 + i * 0.2}s`;
+    });
+  });
+
+  // Restore phosphor preference
+  if (localStorage.getItem('ice9l-phosphor') === 'amber') {
+    body.classList.add('amber');
+  }
+
+  // Subtle random flicker
+  setInterval(() => {
+    if (Math.random() > 0.97) {
+      document.querySelector('.scanlines').style.opacity = '0.85';
+      setTimeout(() => {
+        document.querySelector('.scanlines').style.opacity = '1';
+      }, 50 + Math.random() * 100);
+    }
+  }, 200);
+
+  // Cursor blink
+  const cursor = document.querySelector('.cursor');
+  setInterval(() => {
+    cursor.style.visibility = cursor.style.visibility === 'hidden' ? 'visible' : 'hidden';
+  }, 530);
+</script>
+</body>
+</html>

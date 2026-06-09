@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>QUANTUM GAP BIOMETRICS | David</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+:root{--dk:#020810;--dk2:#061222;--dk3:#0a1a30;--cobalt:#4a8abf;--cobalt2:#3a7aaf;--cobaltDim:#2a5a8a;--green:#00ff88;--red:#ff4455;--gold:#ffd740;--cyan:#00eeff;--neon:#bb55ff;--warm:#e8a860;--white:#e4eaf0;--gray:#556677;--pulse:rgba(74,138,191,0.08);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dk);color:var(--white);font-family:'JetBrains Mono',monospace;overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 0%,rgba(74,138,191,0.06) 0%,transparent 60%);z-index:0;}
+
+.container{max-width:1200px;margin:0 auto;padding:12px;position:relative;z-index:1;}
+
+/* HEADER */
+.hdr{text-align:center;padding:16px 0 12px;position:relative;}
+.hdr::after{content:'';display:block;width:200px;height:1px;background:linear-gradient(90deg,transparent,var(--cobalt),transparent);margin:12px auto 0;}
+.hdr h1{font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;color:var(--cobalt);letter-spacing:8px;text-shadow:0 0 40px rgba(74,138,191,0.3),0 0 80px rgba(74,138,191,0.1);}
+.hdr .sub{font-size:9px;color:var(--gray);letter-spacing:4px;margin-top:4px;}
+.hdr .id{font-size:10px;color:var(--warm);letter-spacing:2px;margin-top:6px;font-family:'Orbitron',sans-serif;}
+
+/* MAIN LAYOUT */
+.main{display:grid;grid-template-columns:380px 1fr;gap:16px;margin-top:16px;}
+
+/* VIDEO PANEL */
+.vid-panel{position:relative;}
+.vid-wrap{position:relative;width:100%;aspect-ratio:4/3;border-radius:12px;overflow:hidden;border:2px solid rgba(74,138,191,0.2);background:#000;}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
+canvas.overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1);}
+.vid-status{position:absolute;top:10px;left:10px;font-size:9px;letter-spacing:2px;padding:4px 10px;border-radius:20px;z-index:2;}
+.vid-status.off{background:rgba(255,68,85,0.2);color:var(--red);border:1px solid rgba(255,68,85,0.3);}
+.vid-status.on{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid rgba(0,255,136,0.3);animation:pulse-glow 2s infinite;}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 5px rgba(0,255,136,0.2);}50%{box-shadow:0 0 15px rgba(0,255,136,0.4);}}
+.vid-controls{display:flex;gap:8px;margin-top:10px;}
+.btn{flex:1;padding:10px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;border:1px solid var(--cobalt);background:linear-gradient(180deg,rgba(74,138,191,0.15),rgba(74,138,191,0.05));color:var(--cobalt);border-radius:8px;cursor:pointer;transition:all 0.3s;text-align:center;}
+.btn:hover{background:linear-gradient(180deg,rgba(74,138,191,0.3),rgba(74,138,191,0.1));box-shadow:0 0 20px rgba(74,138,191,0.2);}
+.btn.active{border-color:var(--green);color:var(--green);background:linear-gradient(180deg,rgba(0,255,136,0.15),rgba(0,255,136,0.05));}
+.btn.stop{border-color:var(--red);color:var(--red);}
+
+/* ROI INDICATOR */
+.roi-info{margin-top:10px;padding:10px;border-radius:8px;background:rgba(74,138,191,0.04);border:1px solid rgba(74,138,191,0.1);font-size:9px;color:var(--gray);line-height:1.7;}
+
+/* METRICS PANEL */
+.metrics{display:flex;flex-direction:column;gap:10px;}
+
+/* BIG NUMBER CARDS */
+.vital-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.vital{padding:16px;border-radius:12px;border:1px solid;position:relative;overflow:hidden;}
+.vital::before{content:'';position:absolute;inset:0;opacity:0.03;background:radial-gradient(circle at 80% 20%,currentColor,transparent 60%);}
+.vital .label{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;opacity:0.6;}
+.vital .value{font-family:'Orbitron',sans-serif;font-size:32px;font-weight:800;line-height:1;margin:6px 0 2px;}
+.vital .unit{font-size:10px;opacity:0.5;}
+.vital .sub-val{font-size:9px;margin-top:4px;opacity:0.7;}
+
+.vital.hr{border-color:rgba(255,68,85,0.3);color:var(--red);background:linear-gradient(135deg,rgba(255,68,85,0.06),transparent);}
+.vital.rr{border-color:rgba(0,238,255,0.3);color:var(--cyan);background:linear-gradient(135deg,rgba(0,238,255,0.06),transparent);}
+.vital.hrv{border-color:rgba(0,255,136,0.3);color:var(--green);background:linear-gradient(135deg,rgba(0,255,136,0.06),transparent);}
+.vital.stress{border-color:rgba(255,215,64,0.3);color:var(--gold);background:linear-gradient(135deg,rgba(255,215,64,0.06),transparent);}
+.vital.spo2{border-color:rgba(74,138,191,0.3);color:var(--cobalt);background:linear-gradient(135deg,rgba(74,138,191,0.06),transparent);}
+.vital.coher{border-color:rgba(187,85,255,0.3);color:var(--neon);background:linear-gradient(135deg,rgba(187,85,255,0.06),transparent);}
+
+/* WAVEFORM */
+.wave-section{padding:14px;border-radius:12px;border:1px solid rgba(74,138,191,0.12);background:var(--dk2);}
+.wave-section .title{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--cobalt);margin-bottom:8px;}
+canvas.wave{width:100%;height:80px;border-radius:6px;display:block;background:rgba(0,0,0,0.3);}
+
+/* SYSTEM STATUS */
+.sys-bar{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-top:10px;}
+.sys-dot{text-align:center;padding:8px 4px;border-radius:8px;border:1px solid rgba(74,138,191,0.1);background:rgba(0,0,0,0.2);font-size:8px;transition:all 0.3s;}
+.sys-dot .icon{font-size:16px;display:block;margin-bottom:2px;}
+.sys-dot .nm{letter-spacing:1px;color:var(--gray);}
+.sys-dot .sc{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;margin-top:2px;}
+
+/* SESSION */
+.session{padding:12px;border-radius:8px;border:1px solid rgba(74,138,191,0.1);background:rgba(0,0,0,0.2);font-size:9px;color:var(--gray);line-height:1.8;margin-top:10px;}
+.session span{color:var(--cobalt);}
+
+.footer{text-align:center;padding:12px;font-size:8px;color:var(--gray);letter-spacing:2px;margin-top:16px;}
+.footer span{color:var(--cobalt);}
+
+@media(max-width:900px){.main{grid-template-columns:1fr;}.vital-grid{grid-template-columns:1fr 1fr;}.sys-bar{grid-template-columns:repeat(4,1fr);}}
+</style></head><body>
+<div class="container">
+  <div class="hdr">
+    <h1>QUANTUM GAP</h1>
+    <div class="sub">BIOMETRIC HEALTH SUITE &bull; CAMERA-BASED &bull; REAL-TIME</div>
+    <div class="id">DAVID LEE WISE &bull; D20 × 2 = GAP</div>
+  </div>
+
+  <div class="main">
+    <!-- LEFT: VIDEO -->
+    <div class="vid-panel">
+      <div class="vid-wrap">
+        <video id="video" autoplay playsinline></video>
+        <canvas class="overlay" id="overlay"></canvas>
+        <div class="vid-status off" id="vidStatus">◉ CAMERA OFF</div>
+      </div>
+      <div class="vid-controls">
+        <button class="btn" id="btnStart" onclick="startCamera()">▶ START</button>
+        <button class="btn stop" id="btnStop" onclick="stopCamera()" style="display:none;">■ STOP</button>
+        <button class="btn" onclick="captureSnapshot()">◎ SNAPSHOT</button>
+      </div>
+      <div class="roi-info">
+        <strong style="color:var(--cobalt);">HOW IT WORKS:</strong> Camera reads subtle color changes in your skin caused by blood flow (rPPG — remote photoplethysmography). Green channel fluctuations correlate with pulse. Chest/shoulder motion tracks breathing. No contact sensors needed. Just sit still, face the camera, and let the light do the work.<br><br>
+        <strong style="color:var(--gold);">+1</strong> (your pulse) · <strong style="color:var(--warm);">GAP</strong> (between beats) · <strong style="color:var(--cyan);">-1</strong> (next beat) = <strong style="color:var(--green);">heart rate</strong>
+      </div>
+    </div>
+
+    <!-- RIGHT: METRICS -->
+    <div class="metrics">
+      <div class="vital-grid">
+        <div class="vital hr">
+          <div class="label">HEART RATE</div>
+          <div class="value" id="hrValue">--</div>
+          <div class="unit">BPM</div>
+          <div class="sub-val" id="hrSub">awaiting signal...</div>
+        </div>
+        <div class="vital rr">
+          <div class="label">RESPIRATORY</div>
+          <div class="value" id="rrValue">--</div>
+          <div class="unit">BPM</div>
+          <div class="sub-val" id="rrSub">awaiting signal...</div>
+        </div>
+        <div class="vital hrv">
+          <div class="label">HRV</div>
+          <div class="value" id="hrvValue">--</div>
+          <div class="unit">MS</div>
+          <div class="sub-val" id="hrvSub">beat-to-beat variance</div>
+        </div>
+        <div class="vital stress">
+          <div class="label">STRESS INDEX</div>
+          <div class="value" id="stressValue">--</div>
+          <div class="unit">/ 100</div>
+          <div class="sub-val" id="stressSub">LF/HF ratio</div>
+        </div>
+        <div class="vital spo2">
+          <div class="label">SIGNAL QUALITY</div>
+          <div class="value" id="sqValue">--</div>
+          <div class="unit">%</div>
+          <div class="sub-val" id="sqSub">rPPG confidence</div>
+        </div>
+        <div class="vital coher">
+          <div class="label">COHERENCE</div>
+          <div class="value" id="cohValue">--</div>
+          <div class="unit">/ 10</div>
+          <div class="sub-val" id="cohSub">cardiac-respiratory sync</div>
+        </div>
+      </div>
+
+      <div class="wave-section">
+        <div class="title">PULSE WAVEFORM — rPPG SIGNAL</div>
+        <canvas class="wave" id="pulseWave" height="80"></canvas>
+      </div>
+
+      <div class="wave-section">
+        <div class="title">RESPIRATORY WAVEFORM</div>
+        <canvas class="wave" id="respWave" height="80"></canvas>
+      </div>
+
+      <div class="sys-bar">
+        <div class="sys-dot" id="sd-0"><span class="icon">❤️</span><span class="nm">CARD</span><div class="sc" id="ss-0">--</div></div>
+        <div class="sys-dot" id="sd-1"><span class="icon">🫁</span><span class="nm">RESP</span><div class="sc" id="ss-1">--</div></div>
+        <div class="sys-dot" id="sd-2"><span class="icon">⚡</span><span class="nm">NERV</span><div class="sc" id="ss-2">--</div></div>
+        <div class="sys-dot" id="sd-3"><span class="icon">🦴</span><span class="nm">SKEL</span><div class="sc" id="ss-3">--</div></div>
+        <div class="sys-dot" id="sd-4"><span class="icon">💧</span><span class="nm">DGST</span><div class="sc" id="ss-4">--</div></div>
+        <div class="sys-dot" id="sd-5"><span class="icon">🛡️</span><span class="nm">IMMN</span><div class="sc" id="ss-5">--</div></div>
+        <div class="sys-dot" id="sd-6"><span class="icon">🧬</span><span class="nm">ENDO</span><div class="sc" id="ss-6">--</div></div>
+        <div class="sys-dot" id="sd-7"><span class="icon">👁️</span><span class="nm">OCUL</span><div class="sc" id="ss-7">--</div></div>
+      </div>
+
+      <div class="session">
+        <span>SESSION:</span> <span id="sessionTime">00:00</span> &bull;
+        <span>SAMPLES:</span> <span id="sampleCount">0</span> &bull;
+        <span>FPS:</span> <span id="fpsCount">0</span> &bull;
+        <span>STATE:</span> <span id="brainState">IDLE</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== rPPG ENGINE =====
+const video = document.getElementById('video');
+const overlay = document.getElementById('overlay');
+const octx = overlay.getContext('2d');
+let stream = null;
+let running = false;
+let samplingCanvas, samplingCtx;
+let pulseBuffer = [];
+let respBuffer = [];
+let rawGreen = [];
+let peakTimes = [];
+let rrIntervals = [];
+let frameCount = 0;
+let startTime = 0;
+let lastFrameTime = 0;
+let animId = null;
+
+// Waveform canvases
+const pulseCV = document.getElementById('pulseWave');
+const pctx = pulseCV.getContext('2d');
+const respCV = document.getElementById('respWave');
+const rctx = respCV.getContext('2d');
+
+const BUFFER_SIZE = 300; // ~10 seconds at 30fps
+const ROI_SCALE = 0.3; // forehead region size
+
+async function startCamera() {
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 30 } }
+    });
+    video.srcObject = stream;
+    await video.play();
+
+    // Setup sampling canvas
+    samplingCanvas = document.createElement('canvas');
+    samplingCanvas.width = video.videoWidth || 640;
+    samplingCanvas.height = video.videoHeight || 480;
+    samplingCtx = samplingCanvas.getContext('2d', { willReadFrequently: true });
+
+    // Setup overlay
+    overlay.width = samplingCanvas.width;
+    overlay.height = samplingCanvas.height;
+
+    running = true;
+    startTime = performance.now();
+    frameCount = 0;
+    pulseBuffer = [];
+    respBuffer = [];
+    rawGreen = [];
+    peakTimes = [];
+    rrIntervals = [];
+
+    document.getElementById('vidStatus').className = 'vid-status on';
+    document.getElementById('vidStatus').textContent = '◉ READING';
+    document.getElementById('btnStart').style.display = 'none';
+    document.getElementById('btnStop').style.display = 'block';
+
+    processFrame();
+  } catch (e) {
+    alert('Camera access needed. Please allow camera permissions.\n\n' + e.message);
+  }
+}
+
+function stopCamera() {
+  running = false;
+  if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+  if (animId) cancelAnimationFrame(animId);
+  document.getElementById('vidStatus').className = 'vid-status off';
+  document.getElementById('vidStatus').textContent = '◉ CAMERA OFF';
+  document.getElementById('btnStart').style.display = 'block';
+  document.getElementById('btnStop').style.display = 'none';
+}
+
+function processFrame() {
+  if (!running) return;
+  animId = requestAnimationFrame(processFrame);
+
+  const now = performance.now();
+  if (now - lastFrameTime < 30) return; // cap ~33fps
+  lastFrameTime = now;
+  frameCount++;
+
+  const w = samplingCanvas.width, h = samplingCanvas.height;
+  samplingCtx.drawImage(video, 0, 0, w, h);
+
+  // ROI: forehead region (upper center of frame)
+  const roiX = Math.floor(w * 0.35);
+  const roiY = Math.floor(h * 0.08);
+  const roiW = Math.floor(w * ROI_SCALE);
+  const roiH = Math.floor(h * 0.12);
+
+  // Secondary ROI: cheek region
+  const cheekX = Math.floor(w * 0.3);
+  const cheekY = Math.floor(h * 0.4);
+  const cheekW = Math.floor(w * 0.15);
+  const cheekH = Math.floor(h * 0.12);
+
+  // Chest ROI for respiration
+  const chestX = Math.floor(w * 0.25);
+  const chestY = Math.floor(h * 0.65);
+  const chestW = Math.floor(w * 0.5);
+  const chestH = Math.floor(h * 0.2);
+
+  // Extract green channel from forehead
+  let foreheadData = samplingCtx.getImageData(roiX, roiY, roiW, roiH).data;
+  let cheekData = samplingCtx.getImageData(cheekX, cheekY, cheekW, cheekH).data;
+  let chestData = samplingCtx.getImageData(chestX, chestY, chestW, chestH).data;
+
+  // Average green channel (pulse signal)
+  let gSum = 0, rSum = 0, bSum = 0, count = 0;
+  for (let i = 0; i < foreheadData.length; i += 4) {
+    rSum += foreheadData[i];
+    gSum += foreheadData[i + 1];
+    bSum += foreheadData[i + 2];
+    count++;
+  }
+  // Add cheek data
+  for (let i = 0; i < cheekData.length; i += 4) {
+    rSum += cheekData[i];
+    gSum += cheekData[i + 1];
+    bSum += cheekData[i + 2];
+    count++;
+  }
+  let avgG = gSum / count;
+  let avgR = rSum / count;
+  let avgB = bSum / count;
+
+  // Chest brightness for respiration
+  let chestBright = 0, chestCount = 0;
+  for (let i = 0; i < chestData.length; i += 4) {
+    chestBright += (chestData[i] + chestData[i + 1] + chestData[i + 2]) / 3;
+    chestCount++;
+  }
+  let avgChest = chestBright / chestCount;
+
+  // Store raw signal
+  rawGreen.push({ g: avgG, r: avgR, b: avgB, t: now });
+  if (rawGreen.length > BUFFER_SIZE) rawGreen.shift();
+
+  // Bandpass filter (simple moving average subtraction)
+  let filtered = 0;
+  if (rawGreen.length > 10) {
+    let shortMA = 0, longMA = 0;
+    let shortN = Math.min(5, rawGreen.length);
+    let longN = Math.min(30, rawGreen.length);
+    for (let i = rawGreen.length - shortN; i < rawGreen.length; i++) shortMA += rawGreen[i].g;
+    for (let i = rawGreen.length - longN; i < rawGreen.length; i++) longMA += rawGreen[i].g;
+    shortMA /= shortN;
+    longMA /= longN;
+    filtered = shortMA - longMA;
+  }
+
+  pulseBuffer.push(filtered);
+  if (pulseBuffer.length > BUFFER_SIZE) pulseBuffer.shift();
+
+  respBuffer.push(avgChest);
+  if (respBuffer.length > BUFFER_SIZE) respBuffer.shift();
+
+  // Peak detection for HR
+  if (pulseBuffer.length > 20) {
+    let recent = pulseBuffer.slice(-3);
+    let prev = pulseBuffer.slice(-6, -3);
+    let recentAvg = recent.reduce((a, b) => a + b, 0) / 3;
+    let prevAvg = prev.reduce((a, b) => a + b, 0) / 3;
+
+    // Simple threshold crossing
+    let threshold = getStdDev(pulseBuffer.slice(-60)) * 0.6;
+    if (recentAvg > threshold && prevAvg <= threshold) {
+      let lastPeak = peakTimes.length ? peakTimes[peakTimes.length - 1] : 0;
+      if (now - lastPeak > 400) { // min 400ms between beats (~150 BPM max)
+        peakTimes.push(now);
+        if (peakTimes.length > 1) {
+          let rr = now - peakTimes[peakTimes.length - 2];
+          if (rr > 400 && rr < 2000) { // valid range
+            rrIntervals.push(rr);
+            if (rrIntervals.length > 30) rrIntervals.shift();
+          }
+        }
+        if (peakTimes.length > 60) peakTimes.shift();
+      }
+    }
+  }
+
+  // Calculate metrics
+  let hr = '--', hrv = '--', stress = '--', rr = '--', sq = '--', coh = '--';
+  let hrNum = 0, hrvNum = 0;
+
+  if (rrIntervals.length >= 3) {
+    let avgRR = rrIntervals.reduce((a, b) => a + b, 0) / rrIntervals.length;
+    hrNum = Math.round(60000 / avgRR);
+    if (hrNum >= 40 && hrNum <= 180) {
+      hr = hrNum;
+
+      // HRV (RMSSD)
+      let diffs = [];
+      for (let i = 1; i < rrIntervals.length; i++) {
+        diffs.push(Math.pow(rrIntervals[i] - rrIntervals[i - 1], 2));
+      }
+      hrvNum = Math.round(Math.sqrt(diffs.reduce((a, b) => a + b, 0) / diffs.length));
+      hrv = hrvNum;
+
+      // Stress index (simplified: inverse of HRV normalized)
+      let stressNum = Math.max(0, Math.min(100, Math.round(100 - (hrvNum / 1.5))));
+      stress = stressNum;
+
+      // Signal quality
+      let sqNum = Math.min(99, Math.round(Math.min(rrIntervals.length / 10, 1) * 70 + getSignalSNR(pulseBuffer) * 30));
+      sq = Math.max(0, sqNum);
+    }
+  }
+
+  // Respiratory rate from chest motion
+  if (respBuffer.length > 90) {
+    let respFiltered = [];
+    for (let i = 15; i < respBuffer.length; i++) {
+      let short = respBuffer.slice(i - 5, i).reduce((a, b) => a + b, 0) / 5;
+      let long = respBuffer.slice(Math.max(0, i - 30), i).reduce((a, b) => a + b, 0) / Math.min(30, i);
+      respFiltered.push(short - long);
+    }
+    let respPeaks = 0;
+    for (let i = 2; i < respFiltered.length - 2; i++) {
+      if (respFiltered[i] > respFiltered[i - 1] && respFiltered[i] > respFiltered[i + 1] &&
+          respFiltered[i] > getStdDev(respFiltered) * 0.3) {
+        respPeaks++;
+        i += 15; // skip ahead
+      }
+    }
+    let respDuration = (respBuffer.length / 30); // seconds
+    if (respDuration > 3) {
+      let rrCalc = Math.round((respPeaks / respDuration) * 60);
+      if (rrCalc >= 6 && rrCalc <= 40) rr = rrCalc;
+    }
+  }
+
+  // Coherence (HR-RR coupling)
+  if (hr !== '--' && rr !== '--') {
+    let ratio = hr / rr;
+    let idealRatio = 4.5; // ~4-5:1 is physiological
+    let cohNum = Math.max(0, Math.min(10, (10 - Math.abs(ratio - idealRatio) * 2))).toFixed(1);
+    coh = cohNum;
+  }
+
+  // Update UI
+  document.getElementById('hrValue').textContent = hr;
+  document.getElementById('rrValue').textContent = rr;
+  document.getElementById('hrvValue').textContent = hrv;
+  document.getElementById('stressValue').textContent = stress;
+  document.getElementById('sqValue').textContent = sq;
+  document.getElementById('cohValue').textContent = coh;
+
+  // Sub labels
+  if (hr !== '--') {
+    let zone = hr < 60 ? 'BRADYCARDIA' : hr < 100 ? 'NORMAL' : 'ELEVATED';
+    let zCol = hr < 60 ? '#00eeff' : hr < 100 ? '#00ff88' : '#ff4455';
+    document.getElementById('hrSub').innerHTML = `<span style="color:${zCol}">${zone}</span> · ${rrIntervals.length} beats`;
+  }
+  if (hrv !== '--') {
+    let hrvZone = hrvNum > 50 ? 'GOOD RECOVERY' : hrvNum > 25 ? 'MODERATE' : 'LOW — STRESS';
+    document.getElementById('hrvSub').innerHTML = `<span style="color:${hrvNum > 50 ? '#00ff88' : hrvNum > 25 ? '#ffd740' : '#ff4455'}">${hrvZone}</span>`;
+  }
+  if (stress !== '--') {
+    let sLvl = stress > 70 ? 'HIGH — GAD ACTIVE' : stress > 40 ? 'MODERATE' : 'LOW — ALPHA STATE';
+    document.getElementById('stressSub').innerHTML = `<span style="color:${stress > 70 ? '#ff4455' : stress > 40 ? '#ffd740' : '#00ff88'}">${sLvl}</span>`;
+  }
+
+  // Brain state estimate
+  let brainState = 'IDLE';
+  if (stress !== '--') {
+    let s = parseInt(stress);
+    brainState = s > 75 ? 'GAMMA BURST' : s > 55 ? 'HIGH BETA' : s > 35 ? 'BETA' : s > 15 ? 'ALPHA ✦' : 'THETA';
+  }
+  document.getElementById('brainState').textContent = brainState;
+
+  // Update 8 system dots
+  updateSystemDots(hrNum, hrvNum);
+
+  // Session info
+  let elapsed = Math.floor((now - startTime) / 1000);
+  document.getElementById('sessionTime').textContent = `${Math.floor(elapsed / 60).toString().padStart(2, '0')}:${(elapsed % 60).toString().padStart(2, '0')}`;
+  document.getElementById('sampleCount').textContent = rawGreen.length;
+  document.getElementById('fpsCount').textContent = (frameCount / Math.max(1, elapsed)).toFixed(1);
+
+  // Draw overlay ROIs
+  octx.clearRect(0, 0, overlay.width, overlay.height);
+  // Forehead
+  octx.strokeStyle = 'rgba(0,255,136,0.4)';
+  octx.lineWidth = 1;
+  octx.strokeRect(roiX, roiY, roiW, roiH);
+  octx.fillStyle = 'rgba(0,255,136,0.06)';
+  octx.fillRect(roiX, roiY, roiW, roiH);
+  // Cheek
+  octx.strokeStyle = 'rgba(0,238,255,0.3)';
+  octx.strokeRect(cheekX, cheekY, cheekW, cheekH);
+  // Chest
+  octx.strokeStyle = 'rgba(74,138,191,0.25)';
+  octx.setLineDash([4, 4]);
+  octx.strokeRect(chestX, chestY, chestW, chestH);
+  octx.setLineDash([]);
+  // Labels
+  octx.font = '9px Orbitron';
+  octx.fillStyle = 'rgba(0,255,136,0.7)';
+  octx.fillText('PULSE ROI', roiX, roiY - 3);
+  octx.fillStyle = 'rgba(74,138,191,0.5)';
+  octx.fillText('RESP ROI', chestX, chestY - 3);
+
+  // Pulse beat indicator
+  if (peakTimes.length > 0 && now - peakTimes[peakTimes.length - 1] < 150) {
+    octx.beginPath();
+    octx.arc(roiX + roiW / 2, roiY + roiH / 2, 20, 0, Math.PI * 2);
+    octx.fillStyle = 'rgba(255,68,85,0.15)';
+    octx.fill();
+  }
+
+  // Draw waveforms
+  drawWave(pctx, pulseCV, pulseBuffer, '#ff4455', '#ff445530');
+  drawWave(rctx, respCV, respBuffer, '#00eeff', '#00eeff30');
+}
+
+function drawWave(ctx, cv, buffer, color, fillColor) {
+  let W = cv.width = cv.offsetWidth;
+  let H = 80;
+  ctx.fillStyle = 'rgba(2,8,16,0.3)';
+  ctx.fillRect(0, 0, W, H);
+
+  if (buffer.length < 2) return;
+
+  let min = Math.min(...buffer);
+  let max = Math.max(...buffer);
+  let range = max - min || 1;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(74,138,191,0.06)';
+  ctx.lineWidth = 0.5;
+  for (let y = 0; y < H; y += 20) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+  // Wave fill
+  ctx.beginPath();
+  ctx.moveTo(0, H);
+  for (let i = 0; i < buffer.length; i++) {
+    let x = (i / buffer.length) * W;
+    let y = H - ((buffer[i] - min) / range) * (H - 10) - 5;
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(W, H);
+  ctx.closePath();
+  ctx.fillStyle = fillColor;
+  ctx.fill();
+
+  // Wave line
+  ctx.beginPath();
+  for (let i = 0; i < buffer.length; i++) {
+    let x = (i / buffer.length) * W;
+    let y = H - ((buffer[i] - min) / range) * (H - 10) - 5;
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  }
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+}
+
+function updateSystemDots(hr, hrv) {
+  const scores = [
+    hr ? Math.max(0, Math.min(20, Math.round(20 - Math.abs(hr - 72) / 3))) : null, // cardiac
+    null, // resp - from rr
+    hrv ? Math.max(0, Math.min(20, Math.round(hrv / 4))) : null, // nervous
+    null, // skeletal
+    null, // digestive
+    hrv ? Math.max(0, Math.min(20, Math.round(hrv / 3.5))) : null, // immune
+    null, // endocrine
+    null  // ocular
+  ];
+  const colors = ['#ff6666', '#00eeff', '#ffd700', '#00ff88', '#00ddff', '#4a8abf', '#bb55ff', '#e8a860'];
+
+  scores.forEach((s, i) => {
+    let el = document.getElementById('ss-' + i);
+    if (s !== null) {
+      el.textContent = s;
+      el.style.color = s > 14 ? '#00ff88' : s > 8 ? '#ffd740' : '#ff4455';
+      document.getElementById('sd-' + i).style.borderColor = colors[i] + '44';
+      document.getElementById('sd-' + i).style.background = colors[i] + '08';
+    }
+  });
+}
+
+function getStdDev(arr) {
+  if (arr.length < 2) return 0;
+  let mean = arr.reduce((a, b) => a + b, 0) / arr.length;
+  return Math.sqrt(arr.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / arr.length);
+}
+
+function getSignalSNR(buf) {
+  if (buf.length < 30) return 0;
+  let recent = buf.slice(-30);
+  let std = getStdDev(recent);
+  let mean = Math.abs(recent.reduce((a, b) => a + b, 0) / recent.length);
+  return mean > 0 ? Math.min(1, std / (mean + 0.001)) : 0;
+}
+
+function captureSnapshot() {
+  let data = {
+    time: new Date().toISOString(),
+    hr: document.getElementById('hrValue').textContent,
+    rr: document.getElementById('rrValue').textContent,
+    hrv: document.getElementById('hrvValue').textContent,
+    stress: document.getElementById('stressValue').textContent,
+    sq: document.getElementById('sqValue').textContent,
+    coherence: document.getElementById('cohValue').textContent,
+    session: document.getElementById('sessionTime').textContent,
+    samples: document.getElementById('sampleCount').textContent
+  };
+  let existing = JSON.parse(localStorage.getItem('qg-snapshots') || '[]');
+  existing.push(data);
+  localStorage.setItem('qg-snapshots', JSON.stringify(existing));
+
+  // Flash effect
+  let el = document.querySelector('.vid-wrap');
+  el.style.boxShadow = '0 0 30px rgba(0,255,136,0.4)';
+  setTimeout(() => el.style.boxShadow = '', 300);
+
+  console.log('Snapshot saved:', data);
+  alert(`Snapshot saved!\nHR: ${data.hr} | RR: ${data.rr} | HRV: ${data.hrv} | Stress: ${data.stress}`);
+}
+</script>
+</body></html>

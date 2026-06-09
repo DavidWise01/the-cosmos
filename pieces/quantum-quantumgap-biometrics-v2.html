@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>QUANTUM GAP v2 | Biometrics | David</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500&display=swap');
+:root{--dk:#010610;--dk2:#051018;--dk3:#0a1828;--cobalt:#4a8abf;--cobaltBright:#5ea0dd;--cobaltDim:#2a5a8a;--green:#00ff88;--greenDim:#00aa55;--red:#ff3344;--redDim:#cc2233;--gold:#ffd740;--cyan:#00eeff;--neon:#bb55ff;--warm:#e8a860;--white:#e4eaf0;--gray:#445566;--grayLight:#778899;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--dk);color:var(--white);font-family:'JetBrains Mono',monospace;overflow-x:hidden;}
+
+/* PARTICLE CANVAS */
+#particles{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+.app{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:10px;}
+
+/* HEADER */
+.hdr{text-align:center;padding:14px 0 10px;position:relative;}
+.hdr h1{font-family:'Orbitron',sans-serif;font-size:22px;font-weight:900;background:linear-gradient(90deg,var(--cobalt),var(--cyan),var(--cobalt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:10px;filter:drop-shadow(0 0 20px rgba(74,138,191,0.3));}
+.hdr .sub{font-size:8px;color:var(--gray);letter-spacing:5px;margin-top:4px;}
+.hdr .line{width:300px;height:1px;margin:8px auto 0;background:linear-gradient(90deg,transparent,var(--cobalt),var(--cyan),var(--cobalt),transparent);}
+
+/* LAYOUT */
+.grid{display:grid;grid-template-columns:400px 1fr;gap:14px;margin-top:12px;}
+
+/* VIDEO */
+.vid-col{display:flex;flex-direction:column;gap:10px;}
+.vid-wrap{position:relative;border-radius:14px;overflow:hidden;border:2px solid rgba(74,138,191,0.15);background:#000;aspect-ratio:4/3;box-shadow:0 0 40px rgba(74,138,191,0.05);}
+video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
+canvas.ovl{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform:scaleX(-1);}
+
+/* PULSE RING */
+.pulse-ring{position:absolute;bottom:14px;right:14px;width:60px;height:60px;z-index:3;}
+.pulse-ring svg{width:100%;height:100%;}
+.pulse-ring .bpm-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-size:16px;font-weight:800;color:var(--red);}
+
+/* STATUS */
+.status-bar{position:absolute;top:0;left:0;right:0;padding:8px 12px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(0,0,0,0.7),transparent);z-index:2;}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+.status-dot.off{background:var(--red);box-shadow:0 0 6px var(--red);}
+.status-dot.on{background:var(--green);box-shadow:0 0 6px var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.5;}}
+.status-text{font-size:9px;letter-spacing:2px;color:var(--grayLight);}
+.sq-badge{font-family:'Orbitron';font-size:10px;padding:3px 8px;border-radius:10px;border:1px solid rgba(74,138,191,0.3);color:var(--cyan);}
+
+/* CONTROLS */
+.controls{display:flex;gap:6px;}
+.cbtn{flex:1;padding:11px;font-family:'Orbitron';font-size:10px;font-weight:600;letter-spacing:2px;border:none;border-radius:10px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;}
+.cbtn::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
+.cbtn:hover::before{opacity:1;}
+.cbtn.start{background:linear-gradient(135deg,rgba(0,255,136,0.12),rgba(0,255,136,0.04));color:var(--green);border:1px solid rgba(0,255,136,0.25);}
+.cbtn.start:hover{box-shadow:0 0 20px rgba(0,255,136,0.15);}
+.cbtn.stop{background:linear-gradient(135deg,rgba(255,51,68,0.12),rgba(255,51,68,0.04));color:var(--red);border:1px solid rgba(255,51,68,0.25);display:none;}
+.cbtn.snap{background:linear-gradient(135deg,rgba(74,138,191,0.12),rgba(74,138,191,0.04));color:var(--cobalt);border:1px solid rgba(74,138,191,0.25);}
+.cbtn.breath{background:linear-gradient(135deg,rgba(187,85,255,0.12),rgba(187,85,255,0.04));color:var(--neon);border:1px solid rgba(187,85,255,0.25);}
+
+/* BREATHING GUIDE */
+.breath-guide{display:none;padding:14px;border-radius:12px;border:1px solid rgba(187,85,255,0.15);background:rgba(187,85,255,0.03);text-align:center;}
+.breath-circle{width:80px;height:80px;border-radius:50%;border:2px solid var(--neon);margin:8px auto;display:flex;align-items:center;justify-content:center;font-family:'Orbitron';font-size:11px;color:var(--neon);transition:all 4s ease-in-out;}
+.breath-circle.inhale{transform:scale(1.4);background:rgba(187,85,255,0.08);box-shadow:0 0 30px rgba(187,85,255,0.2);}
+.breath-circle.exhale{transform:scale(0.8);background:transparent;box-shadow:none;}
+
+/* RIGHT PANEL */
+.data-col{display:flex;flex-direction:column;gap:10px;}
+
+/* VITAL CARDS */
+.vitals{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.v-card{padding:14px 10px;border-radius:12px;position:relative;overflow:hidden;text-align:center;}
+.v-card::before{content:'';position:absolute;inset:0;opacity:0.04;background:radial-gradient(circle at 70% 20%,currentColor,transparent 70%);}
+.v-card .lbl{font-family:'Orbitron';font-size:7px;letter-spacing:3px;opacity:0.5;text-transform:uppercase;}
+.v-card .num{font-family:'Orbitron';font-size:34px;font-weight:900;line-height:1;margin:6px 0 2px;}
+.v-card .unit{font-size:9px;opacity:0.4;letter-spacing:1px;}
+.v-card .tag{font-size:8px;margin-top:4px;padding:2px 8px;border-radius:8px;display:inline-block;letter-spacing:1px;}
+
+.v-card.c-hr{border:1px solid rgba(255,51,68,0.2);color:var(--red);background:linear-gradient(135deg,rgba(255,51,68,0.06),rgba(255,51,68,0.01));}
+.v-card.c-rr{border:1px solid rgba(0,238,255,0.2);color:var(--cyan);background:linear-gradient(135deg,rgba(0,238,255,0.06),rgba(0,238,255,0.01));}
+.v-card.c-hrv{border:1px solid rgba(0,255,136,0.2);color:var(--green);background:linear-gradient(135deg,rgba(0,255,136,0.06),rgba(0,255,136,0.01));}
+.v-card.c-stress{border:1px solid rgba(255,215,64,0.2);color:var(--gold);background:linear-gradient(135deg,rgba(255,215,64,0.06),rgba(255,215,64,0.01));}
+.v-card.c-coh{border:1px solid rgba(187,85,255,0.2);color:var(--neon);background:linear-gradient(135deg,rgba(187,85,255,0.06),rgba(187,85,255,0.01));}
+.v-card.c-gap{border:1px solid rgba(232,168,96,0.2);color:var(--warm);background:linear-gradient(135deg,rgba(232,168,96,0.06),rgba(232,168,96,0.01));}
+
+/* WAVEFORMS */
+.wave-box{padding:12px;border-radius:12px;border:1px solid rgba(74,138,191,0.1);background:var(--dk2);}
+.wave-title{font-family:'Orbitron';font-size:8px;letter-spacing:3px;color:var(--cobalt);margin-bottom:6px;display:flex;justify-content:space-between;}
+canvas.wv{width:100%;height:70px;display:block;border-radius:6px;}
+
+/* 8 SYSTEMS */
+.systems{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;}
+.sdot{text-align:center;padding:6px 2px;border-radius:8px;border:1px solid rgba(74,138,191,0.08);background:rgba(0,0,0,0.2);transition:all 0.5s;}
+.sdot .si{font-size:16px;display:block;}
+.sdot .sn{font-size:7px;letter-spacing:1px;color:var(--gray);}
+.sdot .sv{font-family:'Orbitron';font-size:13px;font-weight:700;margin-top:2px;color:var(--cobalt);}
+
+/* D20 GAP */
+.gap-bar{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:1px solid rgba(232,168,96,0.15);background:rgba(232,168,96,0.03);}
+.gap-bar .d20-icon{font-size:28px;cursor:pointer;user-select:none;filter:drop-shadow(0 0 8px rgba(232,168,96,0.3));}
+.gap-bar .gap-data{flex:1;}
+.gap-bar .gap-label{font-family:'Orbitron';font-size:8px;letter-spacing:3px;color:var(--gray);}
+.gap-bar .gap-nums{font-family:'Orbitron';font-size:14px;color:var(--warm);margin-top:2px;}
+.gap-bar .gap-meaning{font-size:9px;color:var(--grayLight);margin-top:2px;}
+
+/* SESSION BAR */
+.session-bar{display:flex;gap:16px;padding:8px 12px;border-radius:8px;background:rgba(0,0,0,0.2);font-size:9px;color:var(--gray);}
+.session-bar span{color:var(--cobalt);}
+
+/* HISTORY */
+.history{max-height:120px;overflow-y:auto;font-size:9px;padding:8px;border-radius:8px;background:rgba(0,0,0,0.2);border:1px solid rgba(74,138,191,0.06);line-height:1.8;}
+.h-entry{display:flex;gap:10px;border-bottom:1px solid rgba(255,255,255,0.02);padding:3px 0;}
+.h-entry .h-time{color:var(--gray);min-width:60px;}
+.h-entry .h-hr{color:var(--red);}
+.h-entry .h-hrv{color:var(--green);}
+.h-entry .h-stress{color:var(--gold);}
+
+.footer{text-align:center;padding:10px;margin-top:10px;font-size:7px;color:var(--gray);letter-spacing:3px;}
+.footer span{color:var(--cobalt);}
+
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr;}
+  .vitals{grid-template-columns:repeat(2,1fr);}
+  .systems{grid-template-columns:repeat(4,1fr);}
+}
+</style></head><body>
+<canvas id="particles"></canvas>
+<div class="app">
+  <div class="hdr">
+    <h1>QUANTUM GAP</h1>
+    <div class="sub">BIOMETRIC HEALTH &bull; rPPG CAMERA &bull; BIOTUNED: DAVID</div>
+    <div class="line"></div>
+  </div>
+
+  <div class="grid">
+    <!-- LEFT -->
+    <div class="vid-col">
+      <div class="vid-wrap" id="vidWrap">
+        <video id="video" autoplay playsinline></video>
+        <canvas class="ovl" id="overlay"></canvas>
+        <div class="status-bar">
+          <div><span class="status-dot off" id="statusDot"></span><span class="status-text" id="statusText">OFFLINE</span></div>
+          <div class="sq-badge" id="sqBadge">SQ: --</div>
+        </div>
+        <div class="pulse-ring" id="pulseRing">
+          <svg viewBox="0 0 60 60">
+            <circle cx="30" cy="30" r="26" fill="none" stroke="rgba(255,51,68,0.15)" stroke-width="2"/>
+            <circle cx="30" cy="30" r="26" fill="none" stroke="var(--red)" stroke-width="2.5"
+              stroke-dasharray="163.36" stroke-dashoffset="163.36" stroke-linecap="round"
+              id="pulseArc" style="transition:stroke-dashoffset 0.1s;"/>
+          </svg>
+          <div class="bpm-num" id="bpmRing">--</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="cbtn start" id="btnStart" onclick="startCamera()">▶ START</button>
+        <button class="cbtn stop" id="btnStop" onclick="stopCamera()">■ STOP</button>
+        <button class="cbtn snap" onclick="snapshot()">◎ SNAP</button>
+        <button class="cbtn breath" onclick="toggleBreath()">◉ BREATHE</button>
+      </div>
+      <div class="breath-guide" id="breathGuide">
+        <div style="font-family:Orbitron;font-size:8px;letter-spacing:3px;color:var(--gray);">COHERENCE BREATHING · 4-7-8</div>
+        <div class="breath-circle" id="breathCircle">READY</div>
+        <div style="font-size:9px;color:var(--grayLight);margin-top:6px;">Syncs cardiac-respiratory coherence. Drops Beta → Alpha.</div>
+      </div>
+      <div class="gap-bar">
+        <div class="d20-icon" onclick="rollGap()">🎲</div>
+        <div class="gap-data">
+          <div class="gap-label">D20 × 2 — QUANTUM GAP</div>
+          <div class="gap-nums" id="gapNums">click to roll</div>
+          <div class="gap-meaning" id="gapMeaning">+1 · GAP · -1 = measurement</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="data-col">
+      <div class="vitals">
+        <div class="v-card c-hr"><div class="lbl">HEART RATE</div><div class="num" id="vHR">--</div><div class="unit">BPM</div><div class="tag" id="tHR">awaiting</div></div>
+        <div class="v-card c-rr"><div class="lbl">RESPIRATORY</div><div class="num" id="vRR">--</div><div class="unit">BPM</div><div class="tag" id="tRR">awaiting</div></div>
+        <div class="v-card c-hrv"><div class="lbl">HRV · RMSSD</div><div class="num" id="vHRV">--</div><div class="unit">MS</div><div class="tag" id="tHRV">awaiting</div></div>
+        <div class="v-card c-stress"><div class="lbl">STRESS</div><div class="num" id="vStress">--</div><div class="unit">/ 100</div><div class="tag" id="tStress">awaiting</div></div>
+        <div class="v-card c-coh"><div class="lbl">COHERENCE</div><div class="num" id="vCoh">--</div><div class="unit">/ 10</div><div class="tag" id="tCoh">awaiting</div></div>
+        <div class="v-card c-gap"><div class="lbl">QUANTUM GAP</div><div class="num" id="vGap">--</div><div class="unit">Δ</div><div class="tag" id="tGap">D20 × 2</div></div>
+      </div>
+
+      <div class="wave-box">
+        <div class="wave-title"><span>PULSE · rPPG GREEN CHANNEL</span><span id="pulseHz" style="color:var(--red);">-- Hz</span></div>
+        <canvas class="wv" id="cvPulse" height="70"></canvas>
+      </div>
+      <div class="wave-box">
+        <div class="wave-title"><span>RESPIRATORY · CHEST MOTION</span><span id="respHz" style="color:var(--cyan);">-- Hz</span></div>
+        <canvas class="wv" id="cvResp" height="70"></canvas>
+      </div>
+      <div class="wave-box">
+        <div class="wave-title"><span>HRV · BEAT-TO-BEAT INTERVAL</span><span id="hrvTrend" style="color:var(--green);">--</span></div>
+        <canvas class="wv" id="cvHRV" height="70"></canvas>
+      </div>
+
+      <div class="systems">
+        <div class="sdot"><span class="si">❤️</span><span class="sn">CARDIAC</span><div class="sv" id="s0">--</div></div>
+        <div class="sdot"><span class="si">🫁</span><span class="sn">RESP</span><div class="sv" id="s1">--</div></div>
+        <div class="sdot"><span class="si">⚡</span><span class="sn">NERVE</span><div class="sv" id="s2">--</div></div>
+        <div class="sdot"><span class="si">🦴</span><span class="sn">SKEL</span><div class="sv" id="s3">--</div></div>
+        <div class="sdot"><span class="si">💧</span><span class="sn">DIGEST</span><div class="sv" id="s4">--</div></div>
+        <div class="sdot"><span class="si">🛡️</span><span class="sn">IMMUN</span><div class="sv" id="s5">--</div></div>
+        <div class="sdot"><span class="si">🧬</span><span class="sn">ENDO</span><div class="sv" id="s6">--</div></div>
+        <div class="sdot"><span class="si">👁️</span><span class="sn">OCULAR</span><div class="sv" id="s7">--</div></div>
+      </div>
+
+      <div class="session-bar">
+        <div><span>SESSION</span> <span id="sesTime">00:00</span></div>
+        <div><span>SAMPLES</span> <span id="sesSamp">0</span></div>
+        <div><span>FPS</span> <span id="sesFps">0</span></div>
+        <div><span>BRAIN</span> <span id="sesBrain">IDLE</span></div>
+        <div><span>BEATS</span> <span id="sesBeats">0</span></div>
+      </div>
+
+      <div class="history" id="history">
+        <div style="color:var(--gray);text-align:center;padding:8px;">Session snapshots appear here</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer"><span>QUANTUM GAP v2.0</span> &bull; KG-23 BODY QUANTUM &bull; TriPod LLC &bull; +1 · GAP · -1 = HEALTH</div>
+</div>
+
+<script>
+// ===== PARTICLES =====
+const pCanvas = document.getElementById('particles');
+const pCtx = pCanvas.getContext('2d');
+let particles = [];
+function initParticles(){
+  pCanvas.width = window.innerWidth;
+  pCanvas.height = window.innerHeight;
+  particles = [];
+  for(let i=0;i<60;i++){
+    particles.push({
+      x:Math.random()*pCanvas.width,
+      y:Math.random()*pCanvas.height,
+      vx:(Math.random()-0.5)*0.3,
+      vy:(Math.random()-0.5)*0.3,
+      r:Math.random()*1.5+0.5,
+      a:Math.random()*0.3+0.05
+    });
+  }
+}
+function drawParticles(){
+  pCtx.clearRect(0,0,pCanvas.width,pCanvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x=pCanvas.width;if(p.x>pCanvas.width)p.x=0;
+    if(p.y<0)p.y=pCanvas.height;if(p.y>pCanvas.height)p.y=0;
+    pCtx.beginPath();
+    pCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    pCtx.fillStyle=`rgba(74,138,191,${p.a})`;
+    pCtx.fill();
+    // Connect nearby
+    for(let j=i+1;j<particles.length;j++){
+      let dx=p.x-particles[j].x,dy=p.y-particles[j].y;
+      let d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){
+        pCtx.beginPath();
+        pCtx.moveTo(p.x,p.y);
+        pCtx.lineTo(particles[j].x,particles[j].y);
+        pCtx.strokeStyle=`rgba(74,138,191,${0.06*(1-d/120)})`;
+        pCtx.lineWidth=0.5;
+        pCtx.stroke();
+      }
+    }
+  });
+  requestAnimationFrame(drawParticles);
+}
+initParticles();drawParticles();
+window.addEventListener('resize',initParticles);
+
+// ===== rPPG ENGINE v2 =====
+const video = document.getElementById('video');
+const ovl = document.getElementById('overlay');
+const octx = ovl.getContext('2d');
+let stream=null,running=false,sampCV,sampCtx;
+let startTime=0,frameCount=0,lastFrame=0;
+
+// Signal buffers
+const BUF = 512;
+let greenBuf=[], redBuf=[], blueBuf=[];
+let filteredPulse=[], respBuf=[], rriBuf=[], hrvBuf=[];
+let peakTimes=[], beatCount=0;
+
+// Adaptive ROI
+let faceROI = null;
+let roiHistory = [];
+let luminanceBaseline = 0;
+
+// ===== Improved bandpass via cascaded EMA =====
+class EMAFilter{
+  constructor(alpha){this.alpha=alpha;this.prev=0;this.init=false;}
+  filter(x){if(!this.init){this.prev=x;this.init=true;return x;}
+    this.prev=this.prev+this.alpha*(x-this.prev);return this.prev;}
+}
+
+// Bandpass: high-pass(0.7Hz) minus high-pass(4Hz) at 30fps
+// Using difference of two low-pass filters
+let lpSlow = new EMAFilter(0.04);  // ~0.6 Hz cutoff
+let lpFast = new EMAFilter(0.4);   // ~6 Hz cutoff  
+let lpResp = new EMAFilter(0.015); // ~0.2 Hz for respiration
+
+// Detrend filter
+let lpDetrend = new EMAFilter(0.01);
+
+async function startCamera(){
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({
+      video:{facingMode:'user',width:{ideal:640},height:{ideal:480},frameRate:{ideal:30}}
+    });
+    video.srcObject=stream;
+    await video.play();
+    sampCV=document.createElement('canvas');
+    sampCV.width=video.videoWidth||640;
+    sampCV.height=video.videoHeight||480;
+    sampCtx=sampCV.getContext('2d',{willReadFrequently:true});
+    ovl.width=sampCV.width;ovl.height=sampCV.height;
+
+    running=true;startTime=performance.now();frameCount=0;
+    greenBuf=[];redBuf=[];blueBuf=[];filteredPulse=[];respBuf=[];
+    rriBuf=[];hrvBuf=[];peakTimes=[];beatCount=0;faceROI=null;
+    lpSlow=new EMAFilter(0.04);lpFast=new EMAFilter(0.4);
+    lpResp=new EMAFilter(0.015);lpDetrend=new EMAFilter(0.01);
+
+    document.getElementById('statusDot').className='status-dot on';
+    document.getElementById('statusText').textContent='READING';
+    document.getElementById('btnStart').style.display='none';
+    document.getElementById('btnStop').style.display='block';
+    tick();
+  }catch(e){alert('Camera required.\n'+e.message);}
+}
+
+function stopCamera(){
+  running=false;
+  if(stream){stream.getTracks().forEach(t=>t.stop());stream=null;}
+  document.getElementById('statusDot').className='status-dot off';
+  document.getElementById('statusText').textContent='OFFLINE';
+  document.getElementById('btnStart').style.display='block';
+  document.getElementById('btnStop').style.display='none';
+}
+
+function tick(){
+  if(!running)return;
+  requestAnimationFrame(tick);
+  const now=performance.now();
+  if(now-lastFrame<28)return;
+  lastFrame=now;frameCount++;
+  const w=sampCV.width,h=sampCV.height;
+  sampCtx.drawImage(video,0,0,w,h);
+
+  // === Adaptive face ROI via luminance center-of-mass ===
+  let scanData = sampCtx.getImageData(0,0,w,h).data;
+  let lumSum=0,lumX=0,lumY=0,skinCount=0;
+  for(let y=0;y<h;y+=4){
+    for(let x=0;x<w;x+=4){
+      let i=(y*w+x)*4;
+      let r=scanData[i],g=scanData[i+1],b=scanData[i+2];
+      // Simple skin detection: R>80, G>50, R>G, R>B, abs(R-G)<80
+      if(r>80&&g>50&&r>g&&r>b&&Math.abs(r-g)<80){
+        lumSum+=r+g;lumX+=x*(r+g);lumY+=y*(r+g);skinCount++;
+      }
+    }
+  }
+  if(lumSum>0){
+    let cx=lumX/lumSum,cy=lumY/lumSum;
+    let roiW=w*0.2,roiH=h*0.1;
+    // Forehead: above center of skin mass
+    let fx=cx-roiW/2, fy=Math.max(10,cy-h*0.18);
+    // Smooth ROI position
+    if(!faceROI){faceROI={x:fx,y:fy,w:roiW,h:roiH,cx:cx,cy:cy};}
+    else{
+      faceROI.x+=(fx-faceROI.x)*0.1;
+      faceROI.y+=(fy-faceROI.y)*0.1;
+      faceROI.cx+=(cx-faceROI.cx)*0.1;
+      faceROI.cy+=(cy-faceROI.cy)*0.1;
+    }
+  }
+
+  if(!faceROI)return;
+
+  // === Extract signals ===
+  let rx=Math.floor(Math.max(0,faceROI.x));
+  let ry=Math.floor(Math.max(0,faceROI.y));
+  let rw=Math.floor(Math.min(faceROI.w,w-rx));
+  let rh=Math.floor(Math.min(faceROI.h,h-ry));
+
+  // Cheek ROI
+  let ckx=Math.floor(Math.max(0,faceROI.cx-w*0.08));
+  let cky=Math.floor(Math.min(h-30,faceROI.cy+h*0.05));
+  let ckw=Math.floor(w*0.16);
+  let ckh=Math.floor(h*0.08);
+
+  // Chest ROI
+  let chx=Math.floor(w*0.2),chy=Math.floor(h*0.6);
+  let chw=Math.floor(w*0.6),chh=Math.floor(h*0.25);
+
+  let foreheadPx=sampCtx.getImageData(rx,ry,rw,rh).data;
+  let cheekPx=sampCtx.getImageData(ckx,cky,ckw,ckh).data;
+  let chestPx=sampCtx.getImageData(chx,chy,chw,chh).data;
+
+  // Average channels
+  let gF=0,rF=0,bF=0,nF=0;
+  for(let i=0;i<foreheadPx.length;i+=4){gF+=foreheadPx[i+1];rF+=foreheadPx[i];bF+=foreheadPx[i+2];nF++;}
+  for(let i=0;i<cheekPx.length;i+=4){gF+=cheekPx[i+1];rF+=cheekPx[i];bF+=cheekPx[i+2];nF++;}
+  gF/=nF;rF/=nF;bF/=nF;
+
+  // CHROM method: simplified chrominance
+  // S = 3*R - 2*G (reduces motion artifacts)
+  let chrom = 3*rF - 2*gF;
+  let detrended = chrom - lpDetrend.filter(chrom);
+
+  // Bandpass: pulse band 0.7–4 Hz
+  let slow = lpSlow.filter(detrended);
+  let fast = lpFast.filter(detrended);
+  let bp = fast - slow;
+
+  greenBuf.push(gF);redBuf.push(rF);blueBuf.push(bF);
+  filteredPulse.push(bp);
+  if(greenBuf.length>BUF){greenBuf.shift();redBuf.shift();blueBuf.shift();filteredPulse.shift();}
+
+  // Chest for respiration
+  let chestLum=0,chN=0;
+  for(let i=0;i<chestPx.length;i+=4){chestLum+=(chestPx[i]+chestPx[i+1]+chestPx[i+2])/3;chN++;}
+  let chestAvg=chestLum/chN;
+  let respFiltered = chestAvg - lpResp.filter(chestAvg);
+  respBuf.push(respFiltered);
+  if(respBuf.length>BUF)respBuf.shift();
+
+  // === Peak detection (adaptive threshold) ===
+  if(filteredPulse.length>60){
+    let window = filteredPulse.slice(-60);
+    let std = getStd(window);
+    let mean = window.reduce((a,b)=>a+b,0)/window.length;
+    let thresh = mean + std * 0.5;
+    let len = filteredPulse.length;
+
+    // Zero-crossing + peak
+    if(len>=3){
+      let a=filteredPulse[len-3],b=filteredPulse[len-2],c=filteredPulse[len-1];
+      if(b>a && b>=c && b>thresh){
+        let lastPk = peakTimes.length?peakTimes[peakTimes.length-1]:0;
+        let dt = now - lastPk;
+        if(dt>350 && dt<1800){
+          peakTimes.push(now);
+          beatCount++;
+          rriBuf.push(dt);
+          if(rriBuf.length>40)rriBuf.shift();
+          if(peakTimes.length>80)peakTimes.shift();
+          // Pulse ring animation
+          pulseFlash();
+        }else if(dt>=1800){
+          peakTimes.push(now);
+        }
+      }
+    }
+  }
+
+  // === Calculate vitals ===
+  let hr='--',hrv='--',stress='--',rr='--',coh='--',sq='--';
+  let hrN=0,hrvN=0,stressN=0;
+
+  if(rriBuf.length>=5){
+    // Remove outliers (Malik method)
+    let validRR = [];
+    for(let i=1;i<rriBuf.length;i++){
+      let diff=Math.abs(rriBuf[i]-rriBuf[i-1]);
+      if(diff<rriBuf[i]*0.3)validRR.push(rriBuf[i]);
+    }
+    if(validRR.length<3)validRR=rriBuf.slice(-10);
+
+    let avgRR=validRR.reduce((a,b)=>a+b,0)/validRR.length;
+    hrN=Math.round(60000/avgRR);
+    if(hrN>=40&&hrN<=180){
+      hr=hrN;
+
+      // RMSSD
+      let diffs2=[];
+      for(let i=1;i<validRR.length;i++){
+        diffs2.push(Math.pow(validRR[i]-validRR[i-1],2));
+      }
+      hrvN=Math.round(Math.sqrt(diffs2.reduce((a,b)=>a+b,0)/diffs2.length));
+      hrv=hrvN;
+      hrvBuf.push(hrvN);if(hrvBuf.length>120)hrvBuf.shift();
+
+      // Stress (Baevsky's stress index approximation)
+      let modeRR=avgRR;
+      let amo=validRR.filter(r=>Math.abs(r-modeRR)<50).length/validRR.length*100;
+      let mxDmn=Math.max(...validRR)-Math.min(...validRR);
+      stressN=mxDmn>0?Math.round(Math.min(100,amo/(2*modeRR/1000*mxDmn/1000)*0.5)):50;
+      stress=Math.max(0,Math.min(100,stressN));
+    }
+  }
+
+  // Respiratory rate
+  if(respBuf.length>120){
+    let rSlice=respBuf.slice(-180);
+    let rPeaks=0,rStd=getStd(rSlice),rThresh=rStd*0.3;
+    for(let i=2;i<rSlice.length-2;i++){
+      if(rSlice[i]>rSlice[i-1]&&rSlice[i]>rSlice[i+1]&&rSlice[i]>rThresh){rPeaks++;i+=20;}
+    }
+    let dur=rSlice.length/30;
+    if(dur>3){let rrCalc=Math.round((rPeaks/dur)*60);if(rrCalc>=6&&rrCalc<=35)rr=rrCalc;}
+  }
+
+  // Coherence
+  if(hr!=='--'&&rr!=='--'){
+    let ratio=hr/rr;
+    coh=Math.max(0,Math.min(10,(10-Math.abs(ratio-4.5)*1.5))).toFixed(1);
+  }
+
+  // Signal quality
+  if(filteredPulse.length>60){
+    let snr=getSignalQuality(filteredPulse.slice(-90));
+    let beatConf=Math.min(1,rriBuf.length/15);
+    sq=Math.round(Math.min(99,snr*40+beatConf*60));
+  }
+
+  // === Update UI ===
+  document.getElementById('vHR').textContent=hr;
+  document.getElementById('vRR').textContent=rr;
+  document.getElementById('vHRV').textContent=hrv;
+  document.getElementById('vStress').textContent=stress;
+  document.getElementById('vCoh').textContent=coh;
+  document.getElementById('bpmRing').textContent=hr;
+  document.getElementById('sqBadge').textContent=`SQ: ${sq}%`;
+
+  // Tags
+  if(hr!=='--'){
+    let z=hr<60?['ATHLETE/LOW','rgba(0,238,255,0.15)','var(--cyan)']:hr<85?['OPTIMAL','rgba(0,255,136,0.15)','var(--green)']:hr<100?['NORMAL','rgba(255,215,64,0.1)','var(--gold)']:['ELEVATED','rgba(255,51,68,0.15)','var(--red)'];
+    document.getElementById('tHR').innerHTML=z[0];document.getElementById('tHR').style.cssText=`background:${z[1]};color:${z[2]}`;
+  }
+  if(hrv!=='--'){
+    let z=hrvN>60?['RECOVERY','rgba(0,255,136,0.15)','var(--green)']:hrvN>30?['MODERATE','rgba(255,215,64,0.1)','var(--gold)']:['STRESS','rgba(255,51,68,0.15)','var(--red)'];
+    document.getElementById('tHRV').innerHTML=z[0];document.getElementById('tHRV').style.cssText=`background:${z[1]};color:${z[2]}`;
+  }
+  if(stress!=='--'){
+    let z=stressN>70?['GAD ACTIVE','rgba(255,51,68,0.15)','var(--red)']:stressN>40?['BETA','rgba(255,215,64,0.1)','var(--gold)']:['ALPHA ✦','rgba(0,255,136,0.15)','var(--green)'];
+    document.getElementById('tStress').innerHTML=z[0];document.getElementById('tStress').style.cssText=`background:${z[1]};color:${z[2]}`;
+  }
+  if(rr!=='--'){
+    let z=rr<12?['SLOW','rgba(0,238,255,0.15)','var(--cyan)']:rr<20?['NORMAL','rgba(0,255,136,0.15)','var(--green)']:['ELEVATED','rgba(255,215,64,0.1)','var(--gold)'];
+    document.getElementById('tRR').innerHTML=z[0];document.getElementById('tRR').style.cssText=`background:${z[1]};color:${z[2]}`;
+  }
+  if(coh!=='--'){
+    let c=parseFloat(coh);
+    let z=c>7?['COHERENT','rgba(187,85,255,0.15)','var(--neon)']:c>4?['PARTIAL','rgba(74,138,191,0.15)','var(--cobalt)']:['LOW','rgba(255,215,64,0.1)','var(--gold)'];
+    document.getElementById('tCoh').innerHTML=z[0];document.getElementById('tCoh').style.cssText=`background:${z[1]};color:${z[2]}`;
+  }
+
+  // Brain state
+  let brain=stress!=='--'?(stressN>75?'GAMMA':stressN>55?'HI-BETA':stressN>35?'BETA':stressN>15?'ALPHA ✦':'THETA'):'IDLE';
+  document.getElementById('sesBrain').textContent=brain;
+
+  // Pulse frequency
+  if(hr!=='--')document.getElementById('pulseHz').textContent=(hr/60).toFixed(2)+' Hz';
+  if(rr!=='--')document.getElementById('respHz').textContent=(rr/60).toFixed(3)+' Hz';
+  if(hrvBuf.length>1){
+    let trend=hrvBuf[hrvBuf.length-1]-hrvBuf[Math.max(0,hrvBuf.length-10)];
+    document.getElementById('hrvTrend').textContent=trend>0?'↑ improving':'↓ declining';
+    document.getElementById('hrvTrend').style.color=trend>0?'var(--green)':'var(--red)';
+  }
+
+  // Session
+  let elapsed=Math.floor((now-startTime)/1000);
+  document.getElementById('sesTime').textContent=`${String(Math.floor(elapsed/60)).padStart(2,'0')}:${String(elapsed%60).padStart(2,'0')}`;
+  document.getElementById('sesSamp').textContent=greenBuf.length;
+  document.getElementById('sesFps').textContent=(frameCount/Math.max(1,elapsed)).toFixed(1);
+  document.getElementById('sesBeats').textContent=beatCount;
+
+  // Update 8 systems from real data
+  updateSystems(hrN,hrvN,stressN);
+
+  // Pulse arc
+  if(hr!=='--'){
+    let pct=Math.min(1,(hr-40)/120);
+    document.getElementById('pulseArc').style.strokeDashoffset=163.36*(1-pct);
+  }
+
+  // === Draw overlay ===
+  octx.clearRect(0,0,ovl.width,ovl.height);
+  if(faceROI){
+    // Forehead ROI
+    drawROI(octx,rx,ry,rw,rh,'rgba(0,255,136,0.35)','PULSE',true);
+    // Cheek ROI
+    drawROI(octx,ckx,cky,ckw,ckh,'rgba(0,238,255,0.25)','',false);
+    // Chest ROI
+    octx.setLineDash([3,3]);
+    drawROI(octx,chx,chy,chw,chh,'rgba(74,138,191,0.2)','RESP',false);
+    octx.setLineDash([]);
+
+    // Face center dot
+    let fcx=w-faceROI.cx, fcy=faceROI.cy;
+    octx.beginPath();octx.arc(fcx,fcy,3,0,Math.PI*2);
+    octx.fillStyle='rgba(232,168,96,0.5)';octx.fill();
+  }
+
+  // Draw waveforms
+  drawWave(document.getElementById('cvPulse'),filteredPulse,'#ff3344','#ff334418',true);
+  drawWave(document.getElementById('cvResp'),respBuf,'#00eeff','#00eeff18',false);
+  drawWave(document.getElementById('cvHRV'),hrvBuf,'#00ff88','#00ff8818',false);
+}
+
+function drawROI(ctx,x,y,w,h,color,label,glow){
+  ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.strokeRect(x,y,w,h);
+  ctx.fillStyle=color.replace(/[\d.]+\)$/,'0.04)');ctx.fillRect(x,y,w,h);
+  if(label){ctx.font='8px Orbitron';ctx.fillStyle=color;ctx.fillText(label,x,y-3);}
+  if(glow&&peakTimes.length&&performance.now()-peakTimes[peakTimes.length-1]<120){
+    ctx.fillStyle=color.replace(/[\d.]+\)$/,'0.1)');ctx.fillRect(x-4,y-4,w+8,h+8);
+  }
+}
+
+function drawWave(cv,buf,color,fill,showPeaks){
+  let ctx=cv.getContext('2d');
+  let W=cv.width=cv.offsetWidth,H=70;
+  ctx.fillStyle='rgba(1,6,16,0.4)';ctx.fillRect(0,0,W,H);
+  if(buf.length<3)return;
+
+  // Grid
+  ctx.strokeStyle='rgba(74,138,191,0.04)';ctx.lineWidth=0.5;
+  for(let y=0;y<H;y+=H/4){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  let min=Math.min(...buf),max=Math.max(...buf),range=max-min||1;
+
+  // Fill
+  ctx.beginPath();ctx.moveTo(0,H);
+  for(let i=0;i<buf.length;i++){
+    let x=(i/buf.length)*W,y=H-((buf[i]-min)/range)*(H-8)-4;
+    ctx.lineTo(x,y);
+  }
+  ctx.lineTo(W,H);ctx.closePath();
+  let grad=ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,fill);grad.addColorStop(1,'transparent');
+  ctx.fillStyle=grad;ctx.fill();
+
+  // Line
+  ctx.beginPath();
+  for(let i=0;i<buf.length;i++){
+    let x=(i/buf.length)*W,y=H-((buf[i]-min)/range)*(H-8)-4;
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle=color;ctx.lineWidth=1.5;ctx.stroke();
+
+  // Glow on latest
+  if(buf.length>1){
+    let lx=W,ly=H-((buf[buf.length-1]-min)/range)*(H-8)-4;
+    ctx.beginPath();ctx.arc(lx-2,ly,3,0,Math.PI*2);
+    ctx.fillStyle=color;ctx.fill();
+    ctx.beginPath();ctx.arc(lx-2,ly,6,0,Math.PI*2);
+    ctx.fillStyle=color.replace(')',',0.15)').replace('rgb','rgba');
+    ctx.fill();
+  }
+}
+
+function pulseFlash(){
+  let el=document.getElementById('vidWrap');
+  el.style.boxShadow='inset 0 0 30px rgba(255,51,68,0.1)';
+  setTimeout(()=>el.style.boxShadow='0 0 40px rgba(74,138,191,0.05)',150);
+}
+
+function updateSystems(hr,hrv,stress){
+  let scores=[
+    hr?Math.max(0,Math.min(20,20-Math.abs(hr-70)/3)):null,
+    null,
+    hrv?Math.max(0,Math.min(20,Math.round(hrv/4))):null,
+    null,null,
+    hrv?Math.max(0,Math.min(20,Math.round(hrv/3))):null,
+    stress?Math.max(0,Math.min(20,20-stress/5)):null,
+    null
+  ];
+  let cols=['#ff4455','#00eeff','#ffd740','#00ff88','#00ddff','#4a8abf','#bb55ff','#e8a860'];
+  scores.forEach((s,i)=>{
+    let el=document.getElementById('s'+i);
+    if(s!==null){
+      el.textContent=s;
+      el.style.color=s>14?'var(--green)':s>8?'var(--gold)':'var(--red)';
+    }
+  });
+}
+
+function getStd(a){if(a.length<2)return 0;let m=a.reduce((s,v)=>s+v,0)/a.length;return Math.sqrt(a.reduce((s,v)=>s+(v-m)**2,0)/a.length);}
+function getSignalQuality(buf){
+  if(buf.length<30)return 0;
+  let std=getStd(buf);
+  let absMax=Math.max(...buf.map(Math.abs));
+  return absMax>0?Math.min(1,std/absMax):0;
+}
+
+// ===== D20 GAP =====
+function rollGap(){
+  let r1=Math.ceil(Math.random()*20),r2=Math.ceil(Math.random()*20);
+  let gap=Math.abs(r1-r2);
+  let dir=r2>r1?'↑':r2<r1?'↓':'=';
+  document.getElementById('gapNums').innerHTML=
+    `<span style="color:var(--green)">${r1}</span> · <span style="color:var(--gold)">${gap}</span> · <span style="color:var(--cyan)">${r2}</span> ${dir}`;
+  document.getElementById('vGap').textContent=gap;
+  let meaning=gap===0?'PERFECT BALANCE':gap<5?'STABLE':gap<10?'DYNAMIC':gap<15?'VOLATILE':'CRITICAL';
+  document.getElementById('gapMeaning').textContent=`${meaning} · avg ${((r1+r2)/2).toFixed(0)}`;
+  document.getElementById('tGap').innerHTML=meaning;
+  document.getElementById('tGap').style.cssText=`background:rgba(232,168,96,0.1);color:var(--warm)`;
+}
+
+// ===== BREATHING GUIDE =====
+let breathRunning=false,breathTimer=null;
+function toggleBreath(){
+  let bg=document.getElementById('breathGuide');
+  if(breathRunning){breathRunning=false;clearTimeout(breathTimer);bg.style.display='none';return;}
+  bg.style.display='block';breathRunning=true;breathCycle();
+}
+function breathCycle(){
+  if(!breathRunning)return;
+  let bc=document.getElementById('breathCircle');
+  bc.className='breath-circle inhale';bc.textContent='INHALE';
+  breathTimer=setTimeout(()=>{
+    bc.textContent='HOLD';
+    breathTimer=setTimeout(()=>{
+      bc.className='breath-circle exhale';bc.textContent='EXHALE';
+      breathTimer=setTimeout(()=>{
+        if(breathRunning)breathCycle();
+      },8000);
+    },7000);
+  },4000);
+}
+
+// ===== SNAPSHOT =====
+function snapshot(){
+  let data={
+    time:new Date().toISOString(),
+    hr:document.getElementById('vHR').textContent,
+    rr:document.getElementById('vRR').textContent,
+    hrv:document.getElementById('vHRV').textContent,
+    stress:document.getElementById('vStress').textContent,
+    coh:document.getElementById('vCoh').textContent,
+    sq:document.getElementById('sqBadge').textContent,
+    brain:document.getElementById('sesBrain').textContent,
+    beats:beatCount
+  };
+  let hist=JSON.parse(localStorage.getItem('qg-hist')||'[]');
+  hist.push(data);localStorage.setItem('qg-hist',JSON.stringify(hist));
+  renderHistory();
+  // Flash
+  document.getElementById('vidWrap').style.boxShadow='0 0 30px rgba(0,255,136,0.3)';
+  setTimeout(()=>document.getElementById('vidWrap').style.boxShadow='',300);
+}
+
+function renderHistory(){
+  let hist=JSON.parse(localStorage.getItem('qg-hist')||'[]');
+  let el=document.getElementById('history');
+  if(!hist.length){el.innerHTML='<div style="color:var(--gray);text-align:center">No snapshots yet</div>';return;}
+  el.innerHTML=hist.slice().reverse().slice(0,20).map(h=>{
+    let t=new Date(h.time);
+    let ts=t.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    return `<div class="h-entry">
+      <span class="h-time">${ts}</span>
+      <span class="h-hr">HR:${h.hr}</span>
+      <span class="h-hrv">HRV:${h.hrv}</span>
+      <span class="h-stress">STR:${h.stress}</span>
+      <span style="color:var(--cyan)">RR:${h.rr}</span>
+      <span style="color:var(--neon)">COH:${h.coh}</span>
+      <span style="color:var(--grayLight)">${h.brain}</span>
+    </div>`;
+  }).join('');
+}
+renderHistory();
+</script>
+</body></html>

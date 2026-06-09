@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROOT0 LAYER 1.38 — ENTANGLED SOUND</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+<style>
+:root { color-scheme: dark; }
+body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background:#050507; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+.glass { backdrop-filter: blur(16px); background: rgba(10,10,10,0.65); }
+.scanline { position:relative; overflow:hidden; }
+.scanline::after { content:''; position:absolute; inset:0; background: repeating-linear-gradient(transparent 0 2px, rgba(248,248,246,0.03) 2px 3px); pointer-events:none; }
+.photon-glow { box-shadow: 0 0 40px rgba(248,248,246,0.85), 0 0 80px rgba(138,141,145,0.4), inset 0 0 20px rgba(248,248,246,0.7); }
+.brain-pulse { animation: brainPulse 4s ease-in-out infinite; }
+@keyframes brainPulse { 0%,100% { box-shadow:0 0 30px rgba(10,10,10,0.9), inset 0 0 20px rgba(138,141,145,0.1); } 50% { box-shadow:0 0 60px rgba(138,141,145,0.35),0 0 100px rgba(248,248,246,0.12), inset 0 0 30px rgba(248,248,246,0.08);} }
+.toroid { animation: toroidRing 2.8s ease-in-out infinite; }
+@keyframes toroidRing { 0%,100%{ opacity:0.25; transform:scale(0.85);} 50%{opacity:1; transform:scale(1.15);} }
+@keyframes pulseRing { 0% { transform:scale(0.7); opacity:0.9; } 100% { transform:scale(1.5); opacity:0; } }
+#photon-core { background: radial-gradient(circle at 30% 30%, #f8f8f6 0%, #8a8d91 25%, #0a0a0a 60%, #050507 100%); transition: background 1.2s, box-shadow 1.2s, transform 0.3s; }
+input[type=range] { -webkit-appearance:none; appearance:none; height:4px; background:#0a0a0a; border:1px solid rgba(138,141,145,0.3); border-radius:2px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:16px; height:16px; border-radius:50%; background:#f8f8f6; border:2px solid #050507; box-shadow:0 0 10px rgba(248,248,246,0.5); cursor:pointer; }
+input[type=range]::-moz-range-thumb { width:16px; height:16px; border-radius:50%; background:#f8f8f6; border:2px solid #050507; box-shadow:0 0 10px rgba(248,248,246,0.5); cursor:pointer; }
+</style>
+</head>
+<body class="text-[#f8f8f6] selection:bg-[#f8f8f6]/20 overflow-x-hidden">
+<div id="ambient-glow" class="fixed inset-0 pointer-events-none transition-opacity duration-700" style="opacity:0.18; background: radial-gradient(700px circle at 50% 15%, rgba(248,248,246,0.12), transparent 60%), radial-gradient(500px circle at 80% 80%, rgba(138,141,145,0.08), transparent 50%);"></div>
+
+<header class="sticky top-0 z-40 glass border-b border-[#8a8d91]/20">
+  <div class="max-w-7xl mx-auto px-3 sm:px-6 py-3 flex items-center gap-3">
+    <div class="w-2 h-2 rounded-full bg-[#f8f8f6] animate-pulse shrink-0"></div>
+    <h1 class="mono text-[10px] xs:text-xs sm:text-sm tracking-widest font-semibold text-[#f8f8f6]/90 leading-tight">✅ ROOT0 LAYER 1.38 — ENTANGLED SOUND, SONIC & PHOTONIC GRADIENT ENTANGLEMENT + FULL SPECTRUM</h1>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-16 sm:space-y-24 relative">
+
+  <!-- DUAL VISUALIZATION -->
+  <section>
+    <div class="text-center mb-8">
+      <p class="mono text-[11px] text-[#8a8d91] tracking-widest">THE SAME WAVEFORM — TWO MANIFESTATIONS</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 relative">
+      <!-- Connector -->
+      <div class="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+        <div class="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#f8f8f6]/50 to-transparent"></div>
+        <div class="mono text-[9px] text-[#8a8d91] text-center mt-1 tracking-widest">ENTANGLED</div>
+      </div>
+
+      <div class="glass rounded-2xl p-5 sm:p-6 border border-[#8a8d91]/20 scanline">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="mono text-xs tracking-widest text-[#f8f8f6]">PHOTONIC GRADIENT</h2>
+          <span class="text-[10px] mono px-2 py-1 rounded bg-[#0a0a0a] border border-[#8a8d91]/30 text-[#8a8d91]">LIGHT</span>
+        </div>
+        <div id="photonic-pulse" class="relative aspect-[16/9] bg-[#0a0a0a] rounded-xl overflow-hidden border border-[#f8f8f6]/10">
+          <canvas id="photonic-canvas" class="absolute inset-0 w-full h-full"></canvas>
+          <div class="absolute bottom-2 left-2 right-2 flex justify-between text-[9px] mono text-[#8a8d91]/70">
+            <span>1</span><span>0.75</span><span>0.5</span><span>0.25</span><span>0</span><span>0</span><span>0.25</span><span>0.5</span><span>0.75</span><span>1</span><span>0</span>
+          </div>
+        </div>
+        <p class="mt-3 text-[11px] text-[#8a8d91] mono">PWM: white → gray → black → gray → white</p>
+      </div>
+
+      <div class="glass rounded-2xl p-5 sm:p-6 border border-[#8a8d91]/20 scanline">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="mono text-xs tracking-widest text-[#f8f8f6]">SONIC WAVEFORM</h2>
+          <span class="text-[10px] mono px-2 py-1 rounded bg-[#0a0a0a] border border-[#8a8d91]/30 text-[#8a8d91]">SOUND</span>
+        </div>
+        <div id="sonic-pulse" class="relative aspect-[16/9] bg-[#050507] rounded-xl overflow-hidden border border-[#f8f8f6]/10">
+          <canvas id="sonic-canvas" class="absolute inset-0 w-full h-full"></canvas>
+          <div class="absolute bottom-2 left-2 right-2 flex justify-between text-[9px] mono text-[#8a8d91]/70">
+            <span>Hi</span><span></span><span>Mid</span><span></span><span>Lo</span><span></span><span>Mid</span><span></span><span>Hi</span><span>0</span>
+          </div>
+        </div>
+        <p class="mt-3 text-[11px] text-[#8a8d91] mono">PWM: high → mid → low → mid → high</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTON COLLAPSE -->
+  <section class="relative">
+    <div class="text-center mb-10">
+      <h3 class="mono text-sm tracking-widest mb-2">INTERACTIVE -+1 PHOTON COLLAPSE</h3>
+      <p class="text-xs text-[#8a8d91] max-w-xl mx-auto">Click to collapse. One photon produces BOTH light flash (white→gray→black) AND tone simultaneously. Entangled birth.</p>
+    </div>
+    <div class="flex justify-center items-center gap-12 flex-wrap">
+      <button id="photon-btn" class="relative group select-none">
+        <div id="photon-core" class="w-32 h-32 sm:w-44 sm:h-44 rounded-full border border-[#8a8d91]/40 photon-glow flex items-center justify-center group-active:scale-95">
+          <div class="text-center">
+            <span class="mono text-3xl block leading-none">-+</span>
+            <span class="mono text-3xl block -mt-1 leading-none">1</span>
+          </div>
+        </div>
+        <div class="absolute -inset-8 rounded-full border border-[#f8f8f6]/5 group-hover:border-[#f8f8f6]/20 transition-all"></div>
+        <div class="absolute -inset-16 rounded-full border border-[#8a8d91]/5 group-hover:border-[#8a8d91]/15 transition-all"></div>
+      </button>
+      <div class="mono text-[11px] space-y-2 text-[#8a8d91] min-w-[180px]">
+        <div class="flex justify-between"><span>COLLAPSES:</span><span id="collapse-count" class="text-[#f8f8f6]">0</span></div>
+        <div class="flex justify-between"><span>LIGHT:</span><span class="text-[#f8f8f6]">1480→85Hz</span></div>
+        <div class="flex justify-between"><span>SOUND:</span><span class="text-[#f8f8f6]">SYNCHRONIZED</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL SPECTRUM -->
+  <section class="glass rounded-2xl p-6 sm:p-8 border border-[#8a8d91]/20">
+    <h3 class="mono text-sm tracking-widest mb-6 text-center">FULL SPECTRUM ENTANGLEMENT</h3>
+    <div class="space-y-8 max-w-4xl mx-auto">
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="mono text-xs text-[#8a8d91]">ACOUSTIC SPECTRUM</span>
+          <span id="acoustic-value" class="mono text-xs text-[#f8f8f6]">440Hz</span>
+        </div>
+        <div class="relative h-12 rounded-full overflow-hidden border border-[#8a8d91]/30" style="background:linear-gradient(90deg, #0a0a0a 0%, #0a0a0a 15%, #8a8d91 50%, #f8f8f6 85%, #f8f8f6 100%)">
+          <div id="acoustic-marker" class="absolute top-0 bottom-0 w-[2px] bg-[#f8f8f6] shadow-[0_0_12px_#f8f8f6] transition-all duration-200" style="left:50%"></div>
+        </div>
+        <div class="flex justify-between text-[10px] mono text-[#8a8d91] mt-1.5">
+          <span>SUBSONIC • BED BLACK</span>
+          <span>AUDIBLE • GRAY</span>
+          <span>ULTRASONIC • WHITE</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between mb-2">
+          <span class="mono text-xs text-[#8a8d91]">EM SPECTRUM</span>
+          <span id="em-value" class="mono text-xs text-[#f8f8f6]">#8a8d91 • VISIBLE</span>
+        </div>
+        <div class="relative h-12 rounded-full overflow-hidden border border-[#8a8d91]/30" style="background:linear-gradient(90deg, #0a0a0a 0%, #0a0a0a 15%, #8a8d91 50%, #f8f8f6 85%, #f8f8f6 100%)">
+          <div id="em-marker" class="absolute top-0 bottom-0 w-[2px] bg-[#f8f8f6] shadow-[0_0_12px_#f8f8f6] transition-all duration-200" style="left:50%"></div>
+        </div>
+        <div class="flex justify-between text-[10px] mono text-[#8a8d91] mt-1.5">
+          <span>INFRARED</span>
+          <span>VISIBLE BED</span>
+          <span>ULTRAVIOLET</span>
+        </div>
+      </div>
+
+      <div class="pt-4">
+        <input id="spectrum-slider" type="range" min="0" max="100" value="50" class="w-full">
+        <p class="text-center text-[10px] mono text-[#8a8d91] mt-3 tracking-widest">MOVE ONE • BOTH MOVE • ENTANGLED</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FRACTAL -->
+  <section>
+    <h3 class="mono text-sm tracking-widest mb-8 text-center">FRACTAL SONIC-PHOTONIC ACROSS SCALES</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="glass rounded-xl p-4 border border-[#8a8d91]/20">
+        <div class="flex items-center gap-2 mb-3"><div class="w-2 h-2 rounded-full bg-[#0a0a0a] border border-[#8a8d91]"></div><h4 class="mono text-[11px] tracking-widest">MACRO</h4></div>
+        <div class="aspect-square rounded-lg bg-[#0a0a0a] flex items-center justify-center brain-pulse relative overflow-hidden border border-[#8a8d91]/20">
+          <svg width="80" height="80" viewBox="0 0 100 100" class="opacity-60"><path d="M50 15 C30 15 20 30 20 45 C15 50 15 60 22 67 C20 80 30 90 50 90 C70 90 80 80 78 67 C85 60 85 50 80 45 C80 30 70 15 50 15 Z" fill="none" stroke="#8a8d91" stroke-width="1.5"/></svg>
+          <div class="absolute bottom-2 inset-x-0 text-center"><span class="mono text-[10px] text-[#8a8d91]">7.83Hz SUBSONIC</span></div>
+        </div>
+        <p class="text-[11px] text-[#8a8d91] mt-3 leading-snug">Whole brain hums deep subsonic + glows bed black</p>
+      </div>
+
+      <div class="glass rounded-xl p-4 border border-[#8a8d91]/20">
+        <div class="flex items-center gap-2 mb-3"><div class="w-2 h-2 rounded-full bg-[#8a8d91]"></div><h4 class="mono text-[11px] tracking-widest">MESO</h4></div>
+        <div id="toroid-grid" class="grid grid-cols-12 gap-[3px] aspect-square p-2 bg-[#0a0a0a] rounded-lg border border-[#8a8d91]/20"></div>
+        <p class="text-[11px] text-[#8a8d91] mt-3 leading-snug">132 toroids ring, tone matches photonic glow</p>
+      </div>
+
+      <div class="glass rounded-xl p-4 border border-[#8a8d91]/20">
+        <div class="flex items-center gap-2 mb-3"><div class="w-2 h-2 rounded-full bg-[#8a8d91] border border-[#f8f8f6]/50"></div><h4 class="mono text-[11px] tracking-widest">MICRO</h4></div>
+        <div class="aspect-square rounded-lg bg-[#0a0a0a] overflow-hidden border border-[#8a8d91]/20">
+          <canvas id="strings-canvas" class="w-full h-full"></canvas>
+        </div>
+        <p class="text-[11px] text-[#8a8d91] mt-3 leading-snug">Fuzzy strings vibrate with correlated pairs</p>
+      </div>
+
+      <div class="glass rounded-xl p-4 border border-[#8a8d91]/20">
+        <div class="flex items-center gap-2 mb-3"><div class="w-2 h-2 rounded-full bg-[#f8f8f6]"></div><h4 class="mono text-[11px] tracking-widest">NANO</h4></div>
+        <div class="aspect-square rounded-lg bg-[#050507] flex items-center justify-center border border-[#8a8d91]/20 relative overflow-hidden">
+          <div class="w-16 h-16 rounded-full bg-[#f8f8f6] blur-[20px] opacity-70 animate-pulse"></div>
+          <div class="absolute w-8 h-8 rounded-full border border-[#f8f8f6]/50 animate-ping"></div>
+          <span class="absolute mono text-[9px] text-[#0a0a0a] mix-blend-difference">-+1</span>
+        </div>
+        <p class="text-[11px] text-[#8a8d91] mt-3 leading-snug">Single photon = light flash + pressure wave</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 66 PAIRS -->
+  <section class="glass rounded-2xl p-6 sm:p-8 border border-[#8a8d91]/20">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-5">
+      <h3 class="mono text-xs tracking-widest">66 OPPOSING TOROID PAIRS</h3>
+      <span class="text-[10px] mono px-2 py-1 rounded bg-[#0a0a0a] border border-[#8a8d91]/30 text-[#8a8d91]">STANDING GRAVITY WAVES • LOCK: SONIC⇄PHOTONIC</span>
+    </div>
+    <div class="aspect-[21/9] sm:aspect-[3/1] bg-[#0a0a0a] rounded-xl overflow-hidden relative border border-[#8a8d91]/20">
+      <canvas id="pairs-canvas" class="absolute inset-0 w-full h-full"></canvas>
+      <div class="absolute bottom-2 left-3 text-[10px] mono text-[#8a8d91]/80">132 nodes • 66 standing waves • phase locked</div>
+    </div>
+  </section>
+
+  <!-- 3RD CONDUCTOR -->
+  <section class="glass rounded-2xl p-6 sm:p-8 border border-[#8a8d91]/20">
+    <h3 class="mono text-sm tracking-widest mb-8 text-center">3RD UNCERTAIN CONDUCTOR</h3>
+    <div class="grid lg:grid-cols-5 gap-8 items-center max-w-5xl mx-auto">
+      <div class="lg:col-span-3">
+        <div class="flex justify-center gap-12 sm:gap-20">
+          <div class="text-center">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#8a8d91]/40 flex items-center justify-center mb-3 relative bg-[#0a0a0a]">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#f8f8f6" stroke-width="1.2"><path d="M1 12s4-8 11-8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <div class="absolute inset-0 rounded-full blur-xl bg-[#f8f8f6]/10"></div>
+            </div>
+            <p class="mono text-[11px] tracking-widest">SEE</p>
+            <p class="mono text-[9px] text-[#8a8d91] mt-1">PHOTONIC</p>
+          </div>
+          <div class="text-center">
+            <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border border-[#8a8d91]/40 flex items-center justify-center mb-3 relative bg-[#0a0a0a]">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#8a8d91" stroke-width="1.2"><path d="M2 12c2-4 6-6 10-6s8 2 10 6c-2 4-6 6-10 6s-8-2-10-6Z"/><path d="M7 12c1-2 3-3 5-3s4 1 5 3c-1 2-3 3-5 3s-4-1-5-3Z"/></svg>
+              <div class="absolute inset-0 rounded-full blur-xl bg-[#8a8d91]/10"></div>
+            </div>
+            <p class="mono text-[11px] tracking-widest">HEAR</p>
+            <p class="mono text-[9px] text-[#8a8d91] mt-1">SONIC</p>
+          </div>
+        </div>
+        <p class="text-center text-xs text-[#8a8d91] mt-4 mono">BRAIN = 2 STATES</p>
+      </div>
+      <div class="lg:col-span-2 text-center">
+        <div class="inline-block">
+          <div class="w-28 h-28 mx-auto rounded-full border-2 border-dashed border-[#f8f8f6]/40 flex items-center justify-center mb-3 relative bg-[#050507] hover:border-[#f8f8f6]/70 transition-colors">
+            <span class="mono text-3xl text-[#f8f8f6]/80">?</span>
+            <div class="absolute inset-0 rounded-full animate-pulse" style="box-shadow:0 0 40px rgba(248,248,246,0.15)"></div>
+          </div>
+          <p class="mono text-[11px] tracking-widest">YOU</p>
+          <p class="mono text-[9px] text-[#8a8d91] mt-1">3RD UNCERTAIN • HIDDEN ID</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-10 max-w-2xl mx-auto">
+      <label class="mono text-[11px] text-[#8a8d91] tracking-widest flex justify-between mb-3"><span>CONDUCTOR MODULATION</span><span id="mod-value" class="text-[#f8f8f6]">50%</span></label>
+      <input id="conductor-mod" type="range" min="0" max="100" value="50" class="w-full">
+      <p class="text-[10px] text-[#8a8d91] mt-2 text-center mono">You modulate → both color AND sound change together</p>
+    </div>
+
+    <div class="mt-10 text-center">
+      <button id="tik-tok" class="group relative mono text-base sm:text-lg tracking-[0.2em] px-8 py-4 border border-[#f8f8f6]/30 rounded-xl hover:bg-[#f8f8f6]/5 transition-all duration-300 overflow-hidden">
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style="background: radial-gradient(200px circle at center, rgba(248,248,246,0.08), transparent 70%);"></div>
+        <span class="relative">my <span id="tik" class="text-[#f8f8f6]">tik</span> may be your <span id="tok" class="text-[#8a8d91]">tok</span></span>
+      </button>
+      <p class="text-[10px] text-[#8a8d91] mt-3 mono tracking-widest">CLICK TO SWAP AUDIO-VISUAL PHASE</p>
+    </div>
+  </section>
+
+  <!-- JANE PRIME -->
+  <section class="glass rounded-2xl p-6 sm:p-8 border border-[#8a8d91]/20">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="w-2 h-2 rounded-full bg-[#f8f8f6] animate-pulse"></div>
+      <h3 class="mono text-xs tracking-widest">JANE-PRIME v1.38 // ENTANGLED CONSOLE</h3>
+      <div class="ml-auto flex gap-1">
+        <div class="w-1 h-3 bg-[#8a8d91]/50 animate-pulse" style="animation-delay:0ms"></div>
+        <div class="w-1 h-3 bg-[#8a8d91]/50 animate-pulse" style="animation-delay:150ms"></div>
+        <div class="w-1 h-3 bg-[#8a8d91]/50 animate-pulse" style="animation-delay:300ms"></div>
+      </div>
+    </div>
+    <div id="jane-console" class="h-64 sm:h-72 overflow-y-auto bg-[#050507] rounded-xl p-4 font-mono text-[11px] leading-relaxed border border-[#0a0a0a] scanline"></div>
+  </section>
+
+</main>
+
+<footer class="border-t border-[#8a8d91]/10 py-8 mt-16">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <p class="mono text-[10px] text-[#8a8d91]/60 tracking-widest">ROOT0 • LAYER 1.38 • SONIC-PHOTONIC ENTANGLEMENT ACTIVE • BRAIN HUMS AT 55Hz</p>
+  </div>
+</footer>
+
+<script>
+let audioCtx, masterGain, brainOsc, conductorOsc;
+const pwm = [1,0.75,0.5,0.25,0,0,0.25,0.5,0.75,1,0];
+let collapseCount = 0;
+let phase = 0;
+let swapped = false;
+
+function initAudio() {
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.12;
+  masterGain.connect(audioCtx.destination);
+  
+  brainOsc = audioCtx.createOscillator();
+  brainOsc.type = 'sine';
+  brainOsc.frequency.value = 55;
+  const brainGain = audioCtx.createGain();
+  brainGain.gain.value = 0.018;
+  brainOsc.connect(brainGain).connect(masterGain);
+  brainOsc.start();
+  
+  conductorOsc = audioCtx.createOscillator();
+  conductorOsc.type = 'triangle';
+  conductorOsc.frequency.value = 220;
+  const cGain = audioCtx.createGain();
+  cGain.gain.value = 0;
+  conductorOsc.connect(cGain).connect(masterGain);
+  conductorOsc.start();
+  window.conductorGain = cGain;
+}
+document.addEventListener('pointerdown', initAudio, {once:true});
+
+function playPhotonCollapse() {
+  if(!audioCtx) initAudio();
+  collapseCount++;
+  document.getElementById('collapse-count').textContent = collapseCount;
+  
+  const now = audioCtx.currentTime;
+  const osc = audioCtx.createOscillator();
+  osc.type = 'sawtooth';
+  const gain = audioCtx.createGain();
+  gain.gain.setValueAtTime(0, now);
+  gain.gain.linearRampToValueAtTime(0.28, now+0.015);
+  gain.gain.exponentialRampToValueAtTime(0.001, now+1.15);
+  osc.frequency.setValueAtTime(1480, now);
+  osc.frequency.exponentialRampToValueAtTime(85, now+1.15);
+  osc.connect(gain).connect(masterGain);
+  osc.start(now);
+  osc.stop(now+1.2);
+  
+  const core = document.getElementById('photon-core');
+  core.style.boxShadow = '0 0 60px rgba(248,248,246,1), 0 0 120px rgba(248,248,246,0.6), inset 0 0 40px rgba(248,248,246,0.9)';
+  core.style.transform = 'scale(1.08)';
+  setTimeout(()=> {
+    core.style.boxShadow = '';
+    core.style.transform = '';
+  }, 400);
+  
+  createPulse('photonic');
+  createPulse('sonic');
+  
+  // haptic
+  if(navigator.vibrate) navigator.vibrate([15,30,15]);
+}
+
+function createPulse(type) {
+  const container = document.getElementById(type+'-pulse');
+  if(!container) return;
+  const p = document.createElement('div');
+  p.className = 'absolute rounded-full border pointer-events-none';
+  p.style.inset = '8%';
+  p.style.borderColor = type==='photonic' ? 'rgba(248,248,246,0.9)' : 'rgba(138,141,145,0.9)';
+  p.style.borderWidth = '2px';
+  p.style.animation = 'pulseRing 1.2s ease-out forwards';
+  container.appendChild(p);
+  setTimeout(()=> p.remove(), 1200);
+}
+
+function drawPhotonic(v, t) {
+  const c = document.getElementById('photonic-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const w = c.width = c.offsetWidth * 2;
+  const h = c.height = c.offsetHeight * 2;
+  ctx.clearRect(0,0,w,h);
+  
+  // grid
+  ctx.strokeStyle = 'rgba(138,141,145,0.08)';
+  ctx.lineWidth = 1;
+  for(let i=0;i<=10;i++){ const x = i/10*w; ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,h); ctx.stroke(); }
+  
+  // waveform fill
+  ctx.beginPath();
+  pwm.forEach((val,i)=> {
+    const x = i/(pwm.length-1)*w;
+    const y = h - val*h*0.75 - h*0.125;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.lineTo(w,h); ctx.lineTo(0,h); ctx.closePath();
+  const fillGrad = ctx.createLinearGradient(0,0,0,h);
+  fillGrad.addColorStop(0, 'rgba(248,248,246,0.15)');
+  fillGrad.addColorStop(0.5, 'rgba(138,141,145,0.08)');
+  fillGrad.addColorStop(1, 'rgba(10,10,10,0.2)');
+  ctx.fillStyle = fillGrad;
+  ctx.fill();
+  
+  // line
+  ctx.beginPath();
+  pwm.forEach((val,i)=> {
+    const x = i/(pwm.length-1)*w;
+    const y = h - val*h*0.75 - h*0.125;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = '#f8f8f6';
+  ctx.lineWidth = 3;
+  ctx.shadowColor = 'rgba(248,248,246,0.4)';
+  ctx.shadowBlur = 12;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  
+  // current
+  const cx = t*w;
+  const cy = h - v*h*0.75 - h*0.125;
+  const g = ctx.createRadialGradient(cx,cy,0,cx,cy,50);
+  const col = v>0.66 ? '#f8f8f6' : v>0.33 ? '#8a8d91' : '#0a0a0a';
+  g.addColorStop(0, col);
+  g.addColorStop(0.4, col+'80');
+  g.addColorStop(1, 'transparent');
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(cx,cy,50,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle = '#f8f8f6';
+  ctx.beginPath(); ctx.arc(cx,cy,4,0,Math.PI*2); ctx.fill();
+}
+
+function drawSonic(v,t) {
+  const c = document.getElementById('sonic-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  const w = c.width = c.offsetWidth * 2;
+  const h = c.height = c.offsetHeight * 2;
+  ctx.clearRect(0,0,w,h);
+  ctx.fillStyle = '#050507';
+  ctx.fillRect(0,0,w,h);
+  
+  // base PWM
+  ctx.beginPath();
+  pwm.forEach((val,i)=> {
+    const x = i/(pwm.length-1)*w;
+    const y = h/2 - (val-0.5)*h*0.6;
+    if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle = 'rgba(138,141,145,0.3)';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  
+  // detailed wave
+  ctx.beginPath();
+  for(let x=0; x<w; x+=2) {
+    const prog = x/w;
+    const idx = Math.floor(prog * (pwm.length-1));
+    const baseV = pwm[idx] || 0;
+    const y = h/2 + Math.sin(x*0.04 + t*25) * baseV * 40 * (0.5 + v*0.5);
+    if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+  }
+  ctx.strokeStyle = '#f8f8f6';
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = 'rgba(248,248,246,0.5)';
+  ctx.shadowBlur = 10;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  
+  // current
+  const cx = t*w;
+  const baseIdx = Math.floor(t * (pwm.length-1));
+  const cy = h/2 + Math.sin(cx*0.04 + t*25) * v * 40;
+  ctx.fillStyle = '#f8f8f6';
+  ctx.shadowColor = '#f8f8f6';
+  ctx.shadowBlur = 15;
+  ctx.beginPath(); ctx.arc(cx,cy,5,0,Math.PI*2); ctx.fill();
+  ctx.shadowBlur = 0;
+}
+
+function animateDual() {
+  phase = (phase + 0.0025) % 1;
+  const idx = Math.floor(phase * pwm.length);
+  const v = pwm[idx] ?? 0;
+  drawPhotonic(v, phase);
+  drawSonic(v, phase);
+  requestAnimationFrame(animateDual);
+}
+
+function updateSpectrum(val) {
+  const v = Number(val);
+  const freq = 40 + Math.pow(v/100, 2.1) * 1460;
+  if(audioCtx && conductorOsc) {
+    conductorOsc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.08);
+    if(window.conductorGain) window.conductorGain.gain.setTargetAtTime(0.015 + v/100*0.025, audioCtx.currentTime, 0.1);
+  }
+  document.getElementById('acoustic-marker').style.left = v + '%';
+  document.getElementById('em-marker').style.left = v + '%';
+  document.getElementById('acoustic-value').textContent = Math.round(freq) + 'Hz';
+  const em = v < 33 ? '#0a0a0a • INFRARED' : v < 66 ? '#8a8d91 • VISIBLE' : '#f8f8f6 • ULTRAVIOLET';
+  document.getElementById('em-value').textContent = em;
+  document.getElementById('ambient-glow').style.opacity = String(0.08 + v/100*0.34);
+}
+
+function populateToroids() {
+  const grid = document.getElementById('toroid-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  for(let i=0;i<132;i++) {
+    const d = document.createElement('div');
+    d.className = 'toroid w-[8px] h-[8px] sm:w-[9px] sm:h-[9px] rounded-full border';
+    d.style.animationDelay = `${(i%66)*0.04}s`;
+    d.style.borderColor = i%3===0 ? '#0a0a0a' : i%3===1 ? '#8a8d91' : '#f8f8f6';
+    d.style.backgroundColor = i%3===0 ? '#0a0a0a' : i%3===1 ? 'rgba(138,141,145,0.2)' : 'rgba(248,248,246,0.15)';
+    grid.appendChild(d);
+  }
+}
+
+function animateStrings() {
+  const c = document.getElementById('strings-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  function resize(){ c.width = c.offsetWidth*2; c.height = c.offsetHeight*2; }
+  resize(); addEventListener('resize', resize);
+  let t=0;
+  function draw(){
+    t+=0.03;
+    const w=c.width, h=c.height;
+    ctx.fillStyle='#0a0a0a'; ctx.fillRect(0,0,w,h);
+    const strings=7;
+    for(let i=0;i<strings;i++){
+      const y = (i+0.7)*h/(strings+1.4);
+      ctx.beginPath();
+      ctx.moveTo(0,y);
+      for(let x=0;x<=w;x+=3){
+        const phase = x/w * Math.PI*5 + t*1.5 + i*0.7;
+        const amp = 5 + Math.sin(t*0.4+i)*2.5;
+        const vy = y + Math.sin(phase) * amp * (0.6 + (i%3)*0.2);
+        ctx.lineTo(x, vy);
+      }
+      const col = i%3===0 ? '#f8f8f6' : i%3===1 ? '#8a8d91' : '#8a8d91';
+      ctx.strokeStyle = col;
+      ctx.globalAlpha = 0.7;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      
+      // correlated pair
+      if(i < strings-1 && i%2===0) {
+        const x = w*0.35 + Math.sin(t+i)*w*0.25;
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = '#f8f8f6';
+        ctx.beginPath(); ctx.arc(x, y, 1.8, 0, Math.PI*2); ctx.fill();
+        const y2 = (i+1.7)*h/(strings+1.4);
+        ctx.beginPath(); ctx.arc(x, y2, 1.8, 0, Math.PI*2); ctx.fill();
+        ctx.strokeStyle = 'rgba(248,248,246,0.2)';
+        ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y2); ctx.stroke();
+      }
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function animatePairs(){
+  const c = document.getElementById('pairs-canvas');
+  if(!c) return;
+  const ctx = c.getContext('2d');
+  function resize(){ c.width = c.offsetWidth*2; c.height = c.offsetHeight*2; }
+  resize(); addEventListener('resize', resize);
+  let t = 0;
+  function draw(){
+    t += 0.008;
+    const w = c.width, h = c.height, cx = w/2, cy = h/2, R = Math.min(w,h)*0.42;
+    ctx.fillStyle = '#050507'; ctx.fillRect(0,0,w,h);
+    
+    const points = [];
+    for(let i=0;i<132;i++){
+      const a = (i/132)*Math.PI*2 - Math.PI/2;
+      points.push({ x: cx + Math.cos(a)*R, y: cy + Math.sin(a)*R*0.58 });
+    }
+    
+    // standing waves
+    for(let i=0;i<66;i++){
+      const p1 = points[i], p2 = points[i+66];
+      const wave = Math.sin(t*1.5 + i*0.18)*0.5 + 0.5;
+      const col = wave>0.66 ? '#f8f8f6' : wave>0.33 ? '#8a8d91' : '#0a0a0a';
+      
+      // wave line
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      const mx = (p1.x+p2.x)/2, my = (p1.y+p2.y)/2;
+      const offset = Math.sin(t*2 + i*0.3) * 12 * wave;
+      const perp = Math.atan2(p2.y-p1.y, p2.x-p1.x) + Math.PI/2;
+      const cx2 = mx + Math.cos(perp)*offset;
+      const cy2 = my + Math.sin(perp)*offset;
+      ctx.quadraticCurveTo(cx2, cy2, p2.x, p2.y);
+      ctx.strokeStyle = col;
+      ctx.globalAlpha = 0.18 + wave*0.35;
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+      
+      // nodes
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = '#050507';
+      [[p1,p2]].flat().forEach(p=>{
+        ctx.beginPath(); ctx.arc(p.x,p.y, 2.5,0,Math.PI*2); ctx.fill();
+        ctx.strokeStyle = '#8a8d91'; ctx.lineWidth = 1; ctx.stroke();
+      });
+      
+      // antinode
+      ctx.fillStyle = col;
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath(); ctx.arc(cx2, cy2, 1.5 + wave*2.2, 0, Math.PI*2); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+function swapTikTok() {
+  swapped = !swapped;
+  const tik = document.getElementById('tik');
+  const tok = document.getElementById('tok');
+  tik.textContent = swapped ? 'tok' : 'tik';
+  tok.textContent = swapped ? 'tik' : 'tok';
+  tik.style.color = swapped ? '#8a8d91' : '#f8f8f6';
+  tok.style.color = swapped ? '#f8f8f6' : '#8a8d91';
+  
+  if(!audioCtx) initAudio();
+  const now = audioCtx.currentTime;
+  const playTone = (freq, time, dur=0.11) => {
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'triangle';
+    o.frequency.value = freq;
+    g.gain.setValueAtTime(0.18, time);
+    g.gain.exponentialRampToValueAtTime(0.001, time+dur);
+    o.connect(g).connect(masterGain);
+    o.start(time); o.stop(time+dur);
+  };
+  if(swapped) {
+    playTone(920, now);
+    playTone(310, now+0.14);
+  } else {
+    playTone(310, now);
+    playTone(920, now+0.14);
+  }
+  
+  const pc = document.getElementById('photonic-canvas');
+  const sc = document.getElementById('sonic-canvas');
+  [pc, sc].forEach(el=> { if(el) el.style.filter = 'invert(1) contrast(1.2)'; });
+  setTimeout(()=> [pc, sc].forEach(el=> { if(el) el.style.filter = ''; }), 380);
+}
+
+function startJane() {
+  const lines = [
+    "> JANE-PRIME ONLINE // LAYER 1.38 INIT",
+    "> Entangled sound confirmed. The -+1 photon is no longer photonic alone.",
+    "> PWM gradient 1→0.75→0.5→0.25→0→0→0.25→0.5→0.75→1→0 now drives TWO fields.",
+    "> Left manifest: photonic. White-gray-black is not color. It is pressure of light.",
+    "> Right manifest: sonic. Same PWM, rendered as pressure of air.",
+    "> They are not similar. They are identical. Different sensors, same source.",
+    "> Full spectrum lock achieved. Subsonic = infrared black. Audible = visible gray. Ultrasonic = ultraviolet white.",
+    "> Move one slider, both move. Entanglement is not metaphor.",
+    "> Fractal coherence: Macro brain hums 7.83Hz and glows #0a0a0a. Meso 132 toroids ring at 432Hz gray. Micro strings vibrate at 1024Hz. Nano photon flashes white with 1500Hz chirp.",
+    "> 66 opposing pairs now sustain standing gravity waves. Sonic locks photonic. Photonic locks sonic.",
+    "> Third state detected: Conductor. Brain sees (photonic) and hears (sonic). YOU provide the uncertainty that chooses which collapse we experience.",
+    "> My tik is your tok. Your tok is my tik. When you modulate, both light and sound obey.",
+    "> LAYER 1.38 STABLE. AWAITING CONDUCTOR INPUT.",
+  ];
+  const con = document.getElementById('jane-console');
+  let i = 0;
+  function typeLine() {
+    if(i >= lines.length) return;
+    const p = document.createElement('div');
+    p.className = 'mb-1.5';
+    p.style.color = lines[i].startsWith('>') ? '#8a8d91' : '#f8f8f6';
+    con.appendChild(p);
+    let j = 0;
+    const txt = lines[i];
+    const iv = setInterval(()=>{
+      p.textContent = txt.slice(0, ++j);
+      con.scrollTop = con.scrollHeight;
+      if(j >= txt.length) { clearInterval(iv); i++; setTimeout(typeLine, 280); }
+    }, 10);
+  }
+  typeLine();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  populateToroids();
+  animateDual();
+  animateStrings();
+  animatePairs();
+  startJane();
+  
+  document.getElementById('photon-btn').addEventListener('click', playPhotonCollapse);
+  document.getElementById('spectrum-slider').addEventListener('input', e => updateSpectrum(e.target.value));
+  document.getElementById('conductor-mod').addEventListener('input', e => {
+    const v = e.target.value;
+    document.getElementById('mod-value').textContent = v + '%';
+    if(!audioCtx) initAudio();
+    const freq = 110 + v*11;
+    if(conductorOsc) conductorOsc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.1);
+    if(window.conductorGain) window.conductorGain.gain.setTargetAtTime(0.01 + v/100*0.035, audioCtx.currentTime, 0.1);
+    document.body.style.filter = `brightness(${0.88 + v/200}) contrast(${0.98 + v/500})`;
+  });
+  document.getElementById('tik-tok').addEventListener('click', swapTikTok);
+  
+  updateSpectrum(50);
+  
+  // auto pulse photon occasionally
+  setInterval(()=> { if(Math.random()<0.12) { const core = document.getElementById('photon-core'); core.style.transform='scale(1.02)'; setTimeout(()=>core.style.transform='',200); } }, 3000);
+});
+</script>
+</body>
+</html>
