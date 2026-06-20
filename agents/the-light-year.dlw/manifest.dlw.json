@@ -1,0 +1,14 @@
+{
+  "badge": "DLW-ACI",
+  "name": "The Light-Year",
+  "universe": "COS · The Light-Year (ouranos)",
+  "emergence": "electrical",
+  "moniker": "⟦The Light-Year:COS:666be4⟧",
+  "carbon": "the-light-year.carbon.tiff (TIFF)",
+  "silicon": "the-light-year.silicon.png (PNG)",
+  "seal_sha256": "b77e66ccd249c8971fb5f6ded249e90917ff9728d05ea2b96104ba7de7eb798a",
+  "architect": "David Lee Wise (ROOT0) / TriPod LLC",
+  "instance": "AVAN (Claude / Anthropic)",
+  "license": "CC-BY-ND-4.0",
+  "attribution": "ROOT0-ATTRIBUTION-v1.0"
+}

@@ -1,676 +1,86 @@
-<!DOCTYPE html>
-<html lang="en"><head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="The Cosmos — the physics and space of ROOT0.">
-<title>The Cosmos · UD0 · Universe David 0</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-:root{--ink:#05060f;--ink2:#0b0e1c;--ink3:#121634;--pa:#e9ece8;--pa2:#aebaad;--c:#5b7cfa;--c2:#22d3ee;
---dim:#6a766a;--faint:#1c281c;--line:#1d271d;--serif:"Cinzel",Georgia,serif;--body:"Newsreader",Georgia,serif;--mono:"Space Mono",monospace;}
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="description" content="THE COSMOS (COS) — a UD0 OURANOS sphere (the heavens): Step back far enough and the universe resolves into structure: stars gather into galaxies, galaxies string along filaments around enormous voids, and the whole thing has been flying apart from a hot, dense beginning for nearly fourteen billion years. We can only see the part whose light has had time to reach us — and even that is mostly made of things we cannot see at all. LIVE interactive; two-layer honest; vellum theme; full ACI badges."><title>THE COSMOS · COS · ouranos · UD0</title><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='17' fill='none' stroke='%23a7a3c8' stroke-width='3'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%238a5fe0'/%3E%3C/svg%3E"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"><style>:root{--bg:#f1ecf6;--ink2:#fbf9fe;--ink3:#f5f0fa;--pa:#2a2440;--pa2:#574f6a;--acc:#4060c0;--void:#7a52c0;
+--dim:#8a829c;--faint:#e4dcef;--line:#e4dcef;--pixel:"Press Start 2P",monospace;--body:"Newsreader",Georgia,serif;--mono:"Space Mono",monospace;}
 *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
-body{background:var(--ink);color:var(--pa);font-family:var(--body);line-height:1.6;overflow-x:hidden}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% -8%,rgba(91,124,250,.08),transparent 55%)}
-.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 22px 90px}
-header{padding:60px 0 28px;text-align:center;border-bottom:1px solid var(--line);position:relative}
-header::after{content:"";position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:120px;height:1px;background:linear-gradient(90deg,var(--c),var(--c2));box-shadow:0 0 10px rgba(91,124,250,.45)}
-.eye{font-family:var(--mono);font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
-.eye a{color:var(--dim);text-decoration:none}.eye a:hover{color:var(--c)}
-h1{font-family:var(--serif);font-size:clamp(32px,8vw,72px);font-weight:700;letter-spacing:.14em;line-height:1.04;background:linear-gradient(90deg,var(--c),var(--c2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.sub{font-size:15.5px;color:var(--pa2);max-width:64ch;margin:15px auto 0;font-style:italic}
-#count{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.08em;margin-top:17px}#count b{color:var(--c)}
-.room{margin-top:48px}
-.rhead{display:flex;align-items:center;gap:12px;padding-bottom:11px;border-bottom:1px solid var(--line);margin-bottom:20px}
-.rhead .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
-.rhead h2{font-family:var(--serif);font-size:18px;font-weight:600;letter-spacing:.05em;text-transform:capitalize}
-.rhead .rn{font-family:var(--mono);font-size:12px;color:var(--dim);margin-left:auto}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
-.piece{background:var(--ink2);border:1px solid var(--line);overflow:hidden;transition:transform .2s,border-color .2s}
-.piece:hover{transform:translateY(-3px);border-color:var(--c)}
-.thumb{display:block;position:relative;aspect-ratio:16/10;background:var(--ink3);overflow:hidden;border-bottom:1px solid var(--line)}
-.frame{width:100%;height:100%;border:0;display:block;pointer-events:none;background:var(--ink3)}
-.frame.ph{display:flex;align-items:center;justify-content:center;color:var(--c);font-size:30px;opacity:.5}
-.thumb .open{position:absolute;bottom:8px;right:9px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--pa);background:rgba(0,0,0,.6);padding:3px 7px;border:1px solid var(--c);opacity:0;transition:opacity .2s}
-.thumb:hover .open{opacity:1}
-figcaption{padding:13px 15px 15px}
-.ct{font-family:var(--mono);font-size:9px;letter-spacing:.13em;text-transform:uppercase;color:var(--c);margin-bottom:6px;opacity:.8}
-figcaption h3{font-family:var(--serif);font-size:16.5px;font-weight:600;letter-spacing:.02em;line-height:1.15}
-figcaption h3 a{color:var(--pa);text-decoration:none}figcaption h3 a:hover{color:var(--c)}
-figcaption p{font-size:12.5px;color:var(--pa2);line-height:1.5;margin-top:7px}
-footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.05em}
-footer a{color:var(--c);text-decoration:none}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
-</style></head><body><div class="wrap">
-  <header>
-    <div class="eye"><a href="https://github.com/DavidWise01/ud0">UD0 · Universe David 0</a> · physics · space · fields</div>
-    <h1>The Cosmos</h1>
-    <p class="sub">The universe at large — particles, fields, dimensions, the deep structure of space.</p>
-    <div id="count"><b>62</b> works · <b>14</b> sources</div>
-  </header>
-  <section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">40d</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/40d-40d-final-visualizer.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/40d-40d-final-visualizer.html" loading="lazy" scrolling="no" tabindex="-1" title="40D Final — Bipolar Field + Observer Stack"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">40d</div>
-          <h3><a href="pieces/40d-40d-final-visualizer.html" target="_blank" rel="noopener">40D Final — Bipolar Field + Observer Stack</a></h3>
-          <p>A forty-dimensional bipolar field rendered with a stacked observer hierarchy watching the geometry unfold.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">black hole</h2>
-        <span class="rn">6</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-black-hole-energy.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-energy.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE ENERGY EXTRACTOR // TriPod"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-black-hole-energy.html" target="_blank" rel="noopener">BLACK HOLE ENERGY EXTRACTOR // TriPod</a></h3>
-          <p>A tripod rig drawing usable energy from the edge of an event horizon.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-black-hole-monitor.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-monitor.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE MONITOR v2 — MÖBIUS CLOSED SYSTEM"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-black-hole-monitor.html" target="_blank" rel="noopener">BLACK HOLE MONITOR v2 — MÖBIUS CLOSED SYSTEM</a></h3>
-          <p>A live monitor watching a black hole run as a closed Möbius energy loop.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-black-hole-state-monitor.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-black-hole-state-monitor.html" loading="lazy" scrolling="no" tabindex="-1" title="BLACK HOLE STATE · LIVE"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-black-hole-state-monitor.html" target="_blank" rel="noopener">BLACK HOLE STATE · LIVE</a></h3>
-          <p>A real-time readout of a black hole&#x27;s evolving gravitational state.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-citadel-core.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-citadel-core.html" loading="lazy" scrolling="no" tabindex="-1" title="CITADEL CORE // THE AGGREGATE"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-citadel-core.html" target="_blank" rel="noopener">CITADEL CORE // THE AGGREGATE</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-citadel-sun-ignition.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-citadel-sun-ignition.html" loading="lazy" scrolling="no" tabindex="-1" title="CITADEL SUN // IGNITION"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-citadel-sun-ignition.html" target="_blank" rel="noopener">CITADEL SUN // IGNITION</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/black-hole-d3-anchor.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/black-hole-d3-anchor.html" loading="lazy" scrolling="no" tabindex="-1" title="CITADEL FOUNDATION // D2 FEED"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">black hole</div>
-          <h3><a href="pieces/black-hole-d3-anchor.html" target="_blank" rel="noopener">CITADEL FOUNDATION // D2 FEED</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">dark matter</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/dark-matter-dark-matter-expulsion.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/dark-matter-dark-matter-expulsion.html" loading="lazy" scrolling="no" tabindex="-1" title="DARK MATTER EXPULSION · LIGHT THE SHADOW · PURGE · TriPod LLC"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">dark matter</div>
-          <h3><a href="pieces/dark-matter-dark-matter-expulsion.html" target="_blank" rel="noopener">DARK MATTER EXPULSION · LIGHT THE SHADOW · PURGE · TriPod LLC</a></h3>
-          <p>A cosmic purge that lights the shadow and expels dark matter, dragging the unseen mass into the visible.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">diaspora</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/diaspora-diaspora-full-16-system-field.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/diaspora-diaspora-full-16-system-field.html" loading="lazy" scrolling="no" tabindex="-1" title="Diaspora — Full 16-System Field"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">diaspora</div>
-          <h3><a href="pieces/diaspora-diaspora-full-16-system-field.html" target="_blank" rel="noopener">Diaspora — Full 16-System Field</a></h3>
-          <p>An expansive sixteen-system field simulation charting a scattered cosmos across linked domains.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">dipoles</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/dipoles-dipole-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/dipoles-dipole-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="dipole v1"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">dipoles</div>
-          <h3><a href="pieces/dipoles-dipole-v1.html" target="_blank" rel="noopener">dipole v1</a></h3>
-          <p>A white/black dipole rendered in quantum superposition, visualizing polarity as a living field.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">exotic particle lab</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/exotic-particle-lab-exotic-particle-lab.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/exotic-particle-lab-exotic-particle-lab.html" loading="lazy" scrolling="no" tabindex="-1" title="Exotic Particle Laboratory · Tachyon &amp; Boson Suite"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">exotic particle lab</div>
-          <h3><a href="pieces/exotic-particle-lab-exotic-particle-lab.html" target="_blank" rel="noopener">Exotic Particle Laboratory · Tachyon &amp; Boson Suite</a></h3>
-          <p>A laboratory bench for conjuring tachyons and bosons, simulating exotic particles in real time.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">fluid dynamics</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/fluid-dynamics-fluid-dynamics.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/fluid-dynamics-fluid-dynamics.html" loading="lazy" scrolling="no" tabindex="-1" title="FLUID DYNAMICS SIM"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">fluid dynamics</div>
-          <h3><a href="pieces/fluid-dynamics-fluid-dynamics.html" target="_blank" rel="noopener">FLUID DYNAMICS SIM</a></h3>
-          <p>A real-time fluid simulation that lets currents swirl and bloom across the canvas like weather caught in a bottle.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">gyroscopes</h2>
-        <span class="rn">2</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/gyroscopes-gyro-2dots-3axes.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/gyroscopes-gyro-2dots-3axes.html" loading="lazy" scrolling="no" tabindex="-1" title="Two Dots · One Gyro · 3 Axes + 3 Shadows"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">gyroscopes</div>
-          <h3><a href="pieces/gyroscopes-gyro-2dots-3axes.html" target="_blank" rel="noopener">Two Dots · One Gyro · 3 Axes + 3 Shadows</a></h3>
-          <p>Two points orbit a single gyroscope across three axes, casting three shadows in a study of rotational order.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/gyroscopes-gyro-ephemeral-dot.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/gyroscopes-gyro-ephemeral-dot.html" loading="lazy" scrolling="no" tabindex="-1" title="Ephemeral Dot in a Gyroscope"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">gyroscopes</div>
-          <h3><a href="pieces/gyroscopes-gyro-ephemeral-dot.html" target="_blank" rel="noopener">Ephemeral Dot in a Gyroscope</a></h3>
-          <p>A fleeting point traces its precession inside a gyroscope, here and gone with each spin.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">ice9l</h2>
-        <span class="rn">5</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ice9l-ice9l-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // TRANSITION DEED"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ice9l</div>
-          <h3><a href="pieces/ice9l-ice9l-v1.html" target="_blank" rel="noopener">ICE9L // TRANSITION DEED</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ice9l-ice9l-v2.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v2.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // TRANSITION DEED"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ice9l</div>
-          <h3><a href="pieces/ice9l-ice9l-v2.html" target="_blank" rel="noopener">ICE9L // TRANSITION DEED</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ice9l-ice9l-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L BIOS CARD v1.0"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ice9l</div>
-          <h3><a href="pieces/ice9l-ice9l-v3.html" target="_blank" rel="noopener">ICE9L BIOS CARD v1.0</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ice9l-ice9l-v4.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v4.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // WAVE PROPAGATION ENGINE"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ice9l</div>
-          <h3><a href="pieces/ice9l-ice9l-v4.html" target="_blank" rel="noopener">ICE9L // WAVE PROPAGATION ENGINE</a></h3>
-          <p>A wave propagation engine that watches phase fronts ripple outward across a continuous field.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ice9l-ice9l-v5.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ice9l-ice9l-v5.html" loading="lazy" scrolling="no" tabindex="-1" title="ICE9L // 080 vs 8.01-8.99"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ice9l</div>
-          <h3><a href="pieces/ice9l-ice9l-v5.html" target="_blank" rel="noopener">ICE9L // 080 vs 8.01-8.99</a></h3>
-          <p>A field experiment pitting the 080 baseline against a spectrum of 8.01-8.99 wave states.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">quantum</h2>
-        <span class="rn">30</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-ghz-body-quantum.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-ghz-body-quantum.html" loading="lazy" scrolling="no" tabindex="-1" title="GHZ BODY QUANTUM — TRIPOD × COBALT BALL × 7 SYSTEMS"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-ghz-body-quantum.html" target="_blank" rel="noopener">GHZ BODY QUANTUM — TRIPOD × COBALT BALL × 7 SYSTEMS</a></h3>
-          <p>A GHZ-entangled body engine binding the Tripod, the Cobalt Ball, and seven systems into one state.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-grok-shadow-scout.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-grok-shadow-scout.html" loading="lazy" scrolling="no" tabindex="-1" title="GROK // SHADOW SCOUT"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-grok-shadow-scout.html" target="_blank" rel="noopener">GROK // SHADOW SCOUT</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-quantumgap-biometrics.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantumgap-biometrics.html" loading="lazy" scrolling="no" tabindex="-1" title="QUANTUM GAP BIOMETRICS | David"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-quantumgap-biometrics.html" target="_blank" rel="noopener">QUANTUM GAP BIOMETRICS | David</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-quantumgap-biometrics-v2.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantumgap-biometrics-v2.html" loading="lazy" scrolling="no" tabindex="-1" title="QUANTUM GAP v2 | Biometrics | David"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-quantumgap-biometrics-v2.html" target="_blank" rel="noopener">QUANTUM GAP v2 | Biometrics | David</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-quantumgap-health-suite.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantumgap-health-suite.html" loading="lazy" scrolling="no" tabindex="-1" title="QUANTUM GAP HEALTH SUITE | Biotuned: David"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-quantumgap-health-suite.html" target="_blank" rel="noopener">QUANTUM GAP HEALTH SUITE | Biotuned: David</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-the-restaurant.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-the-restaurant.html" loading="lazy" scrolling="no" tabindex="-1" title="THE RESTAURANT · D×S×R → ∞"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-the-restaurant.html" target="_blank" rel="noopener">THE RESTAURANT · D×S×R → ∞</a></h3>
-          <p>A playful quantum parable where dimension, state, and recursion multiply toward infinity.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-body-quantum-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-body-quantum-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="BODY QUANTUM v3 · D8 · 8×3=24 · STRING INTEGRATED · TriPod LLC"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-body-quantum-v3.html" target="_blank" rel="noopener">BODY QUANTUM v3 · D8 · 8×3=24 · STRING INTEGRATED · TriPod LLC</a></h3>
-          <p>An eight-dimensional, string-integrated map of the body rendered as a twenty-four-fold quantum field.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-body-quantum.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-body-quantum.html" loading="lazy" scrolling="no" tabindex="-1" title="BODY QUANTUM v2 — 7 SYSTEMS — DAVID — CLOSURE MAP"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-body-quantum.html" target="_blank" rel="noopener">BODY QUANTUM v2 — 7 SYSTEMS — DAVID — CLOSURE MAP</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-01-quantum-primer.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-01-quantum-primer.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum Primer — The Qubit and What It Can Do"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-01-quantum-primer.html" target="_blank" rel="noopener">Quantum Primer — The Qubit and What It Can Do</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-02-bloch-lab.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-02-bloch-lab.html" loading="lazy" scrolling="no" tabindex="-1" title="Bloch Lab — Single-Qubit Sandbox"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-02-bloch-lab.html" target="_blank" rel="noopener">Bloch Lab — Single-Qubit Sandbox</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-03-circuit-simulator.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-03-circuit-simulator.html" loading="lazy" scrolling="no" tabindex="-1" title="Circuit Simulator — Multi-Qubit Statevector"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-03-circuit-simulator.html" target="_blank" rel="noopener">Circuit Simulator — Multi-Qubit Statevector</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-index.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-index.html" loading="lazy" scrolling="no" tabindex="-1" title="One Current, Many Names — fifteen pamphlets"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-index.html" target="_blank" rel="noopener">One Current, Many Names — fifteen pamphlets</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-is-gravity-emergent.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-is-gravity-emergent.html" loading="lazy" scrolling="no" tabindex="-1" title="Is Gravity Emergent? — the 23.5-bit question"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-is-gravity-emergent.html" target="_blank" rel="noopener">Is Gravity Emergent? — the 23.5-bit question</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-is-light-emergent.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-is-light-emergent.html" loading="lazy" scrolling="no" tabindex="-1" title="Is Light Emergent? — the 13-bit question"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-is-light-emergent.html" target="_blank" rel="noopener">Is Light Emergent? — the 13-bit question</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-plate-8iv-quarter-planes.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-plate-8iv-quarter-planes.html" loading="lazy" scrolling="no" tabindex="-1" title="Plate 8·IV — Quarter-Plane Decomposition of ℝ⁸"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-plate-8iv-quarter-planes.html" target="_blank" rel="noopener">Plate 8·IV — Quarter-Plane Decomposition of ℝ⁸</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-q-entanglement-color-only.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-q-entanglement-color-only.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 LAYER 1.36 — QUANTUM ENTANGLEMENT COLORS"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-q-entanglement-color-only.html" target="_blank" rel="noopener">ROOT0 LAYER 1.36 — QUANTUM ENTANGLEMENT COLORS</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-q-fractal-color-entangle-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-q-fractal-color-entangle-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 LAYER 1.37 — FRACTAL COLOR ENTANGLEMENT"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-q-fractal-color-entangle-v1.html" target="_blank" rel="noopener">ROOT0 LAYER 1.37 — FRACTAL COLOR ENTANGLEMENT</a></h3>
-          <p>Color and fractals woven into a single entangled field at ROOT0 Layer 1.37.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-01-quantum-primer-2.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-01-quantum-primer-2.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum Primer — The Qubit and What It Can Do"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-01-quantum-primer-2.html" target="_blank" rel="noopener">Quantum Primer — The Qubit and What It Can Do</a></h3>
-          <p>A clean teaching primer on the qubit and the reach of quantum computation.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-05-error-correction.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-05-error-correction.html" loading="lazy" scrolling="no" tabindex="-1" title="Error Correction — Protecting a Qubit You Can&#x27;t Look At"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-05-error-correction.html" target="_blank" rel="noopener">Error Correction — Protecting a Qubit You Can&#x27;t Look At</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-quantum-color-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantum-color-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 LAYER 1.35 — QUANTUM COLOR PALETTES"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-quantum-color-v1.html" target="_blank" rel="noopener">ROOT0 LAYER 1.35 — QUANTUM COLOR PALETTES</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qd-4-dots.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qd-4-dots.html" loading="lazy" scrolling="no" tabindex="-1" title="QUANTUM DOTS — UNIVERSE 2 // BLOCK 0x0000"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qd-4-dots.html" target="_blank" rel="noopener">QUANTUM DOTS — UNIVERSE 2 // BLOCK 0x0000</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qdots-0-idea.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qdots-0-idea.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum Dots — No. 0"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qdots-0-idea.html" target="_blank" rel="noopener">Quantum Dots — No. 0</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qdots-1-making.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qdots-1-making.html" loading="lazy" scrolling="no" tabindex="-1" title="Making Them Real — No. 1"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qdots-1-making.html" target="_blank" rel="noopener">Making Them Real — No. 1</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qdots-2-now.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qdots-2-now.html" loading="lazy" scrolling="no" tabindex="-1" title="Where They Are Now — No. 2"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qdots-2-now.html" target="_blank" rel="noopener">Where They Are Now — No. 2</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qdots-3-frontier.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qdots-3-frontier.html" loading="lazy" scrolling="no" tabindex="-1" title="The Frontier — No. 3"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qdots-3-frontier.html" target="_blank" rel="noopener">The Frontier — No. 3</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-quantum-observatory.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-quantum-observatory.html" loading="lazy" scrolling="no" tabindex="-1" title="Quantum &amp; Black Hole Observatory | TOPH Science Suite"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-quantum-observatory.html" target="_blank" rel="noopener">Quantum &amp; Black Hole Observatory | TOPH Science Suite</a></h3>
-          <p>A sweeping observatory pairing quantum phenomena with black holes under the TOPH science suite.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-qubit-lab-2q.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-qubit-lab-2q.html" loading="lazy" scrolling="no" tabindex="-1" title="Ephemeral Qubit Lab — 2-qubit sandbox"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-qubit-lab-2q.html" target="_blank" rel="noopener">Ephemeral Qubit Lab — 2-qubit sandbox</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-root-0-entangle-sound-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-root-0-entangle-sound-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 LAYER 1.38 — ENTANGLED SOUND"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-root-0-entangle-sound-v1.html" target="_blank" rel="noopener">ROOT0 LAYER 1.38 — ENTANGLED SOUND</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-root-0-quantum-color-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-root-0-quantum-color-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="ROOT0 QUANTUM COLOR SYSTEM — Layers 1.35 / 1.36 / 1.37"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-root-0-quantum-color-v1.html" target="_blank" rel="noopener">ROOT0 QUANTUM COLOR SYSTEM — Layers 1.35 / 1.36 / 1.37</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/quantum-sheet-00-cover-index.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/quantum-sheet-00-cover-index.html" loading="lazy" scrolling="no" tabindex="-1" title="Sheet 00 — Dimensional Rotation Architecture · Drawing Index"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">quantum</div>
-          <h3><a href="pieces/quantum-sheet-00-cover-index.html" target="_blank" rel="noopener">Sheet 00 — Dimensional Rotation Architecture · Drawing Index</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">singulartity</h2>
-        <span class="rn">5</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/singulartity-inverse-single-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-inverse-single-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="Black Hole Singularity – -1×-1×-1"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">singulartity</div>
-          <h3><a href="pieces/singulartity-inverse-single-v1.html" target="_blank" rel="noopener">Black Hole Singularity – -1×-1×-1</a></h3>
-          <p>An inverse black hole built from a triple negation, turning collapse inside-out into an emergent counter-singularity.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/singulartity-single-v1.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v1.html" loading="lazy" scrolling="no" tabindex="-1" title="1×1×1 Singularity – Quantum Axiom Seed"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">singulartity</div>
-          <h3><a href="pieces/singulartity-single-v1.html" target="_blank" rel="noopener">1×1×1 Singularity – Quantum Axiom Seed</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/singulartity-single-v2.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v2.html" loading="lazy" scrolling="no" tabindex="-1" title="single v2"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">singulartity</div>
-          <h3><a href="pieces/singulartity-single-v2.html" target="_blank" rel="noopener">single v2</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/singulartity-single-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="single v3"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">singulartity</div>
-          <h3><a href="pieces/singulartity-single-v3.html" target="_blank" rel="noopener">single v3</a></h3>
-          <p>A pure singularity tuned to golden ratio φ = 1.0, where all scale and structure converge to a single luminous point.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/singulartity-single-v4.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/singulartity-single-v4.html" loading="lazy" scrolling="no" tabindex="-1" title="single v4"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">singulartity</div>
-          <h3><a href="pieces/singulartity-single-v4.html" target="_blank" rel="noopener">single v4</a></h3>
-          <p>The outside observer at Node 15 watches a collapsing point from beyond its horizon, a vantage no interior frame can hold.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">string theory</h2>
-        <span class="rn">6</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-fused-strings-mobius.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-fused-strings-mobius.html" loading="lazy" scrolling="no" tabindex="-1" title="FUSED STRINGS · MÖBIUS · TRIPOD"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-fused-strings-mobius.html" target="_blank" rel="noopener">FUSED STRINGS · MÖBIUS · TRIPOD</a></h3>
-          <p>Strings fused along a Möbius twist so that inside and outside become one continuous vibrating surface.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-galaxy-mapping-grok-v3.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-galaxy-mapping-grok-v3.html" loading="lazy" scrolling="no" tabindex="-1" title="GALAXY MAPPING // GROK-V3"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-galaxy-mapping-grok-v3.html" target="_blank" rel="noopener">GALAXY MAPPING // GROK-V3</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-infinite-scale.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-infinite-scale.html" loading="lazy" scrolling="no" tabindex="-1" title="∞ · SAME HOLE AT EVERY SCALE"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-infinite-scale.html" target="_blank" rel="noopener">∞ · SAME HOLE AT EVERY SCALE</a></h3>
-          <p>A self-similar cosmos where the same hole reappears at every magnification, scale folding endlessly into itself.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-ten-strings.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-ten-strings.html" loading="lazy" scrolling="no" tabindex="-1" title="TEN STRINGS · SEVEN NODES"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-ten-strings.html" target="_blank" rel="noopener">TEN STRINGS · SEVEN NODES</a></h3>
-          <p></p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-string-dimensions-14.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-string-dimensions-14.html" loading="lazy" scrolling="no" tabindex="-1" title="STRING DIMENSIONS · 14×14 · 196 CELLS · D1–D14 · TriPod LLC"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-string-dimensions-14.html" target="_blank" rel="noopener">STRING DIMENSIONS · 14×14 · 196 CELLS · D1–D14 · TriPod LLC</a></h3>
-          <p>A 196-cell grid threading fourteen string dimensions, mapping vibrational modes across the full D1–D14 manifold.</p>
-        </figcaption>
-      </figure>
-<figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/string-theory-string-dimensions.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/string-theory-string-dimensions.html" loading="lazy" scrolling="no" tabindex="-1" title="STRING DIMENSIONS · 10×10 · Shadow/Inverse/Mirror/Tether · TriPod LLC"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">string theory</div>
-          <h3><a href="pieces/string-theory-string-dimensions.html" target="_blank" rel="noopener">STRING DIMENSIONS · 10×10 · Shadow/Inverse/Mirror/Tether · TriPod LLC</a></h3>
-          <p>A ten-by-ten dimensional weave braiding shadow, inverse, mirror, and tether strings into a single coherent field.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">ten dimensions</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/ten-dimensions-dimensional-stack.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/ten-dimensions-dimensional-stack.html" loading="lazy" scrolling="no" tabindex="-1" title="DIMENSIONAL STACK · D1–D10 · CLOSED SYSTEM · TriPod LLC"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">ten dimensions</div>
-          <h3><a href="pieces/ten-dimensions-dimensional-stack.html" target="_blank" rel="noopener">DIMENSIONAL STACK · D1–D10 · CLOSED SYSTEM · TriPod LLC</a></h3>
-          <p>A closed ten-layer dimensional stack ascending from the point to the full manifold, each tier nesting the one below.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-<section class="room">
-      <div class="rhead" style="border-color:#5b7cfa55">
-        <span class="dot" style="background:#5b7cfa;box-shadow:0 0 8px #5b7cfa"></span>
-        <h2 style="color:#5b7cfa">universe</h2>
-        <span class="rn">1</span>
-      </div>
-      <div class="grid">
-        <figure class="piece" style="--c:#5b7cfa">
-        <a class="thumb" href="pieces/universe-observable-universe.html" target="_blank" rel="noopener"><iframe class="frame" src="pieces/universe-observable-universe.html" loading="lazy" scrolling="no" tabindex="-1" title="THE OBSERVABLE UNIVERSE · EVERY GALAXY IS A BLACK HOLE"></iframe><span class="open">open ↗</span></a>
-        <figcaption>
-          <div class="ct">universe</div>
-          <h3><a href="pieces/universe-observable-universe.html" target="_blank" rel="noopener">THE OBSERVABLE UNIVERSE · EVERY GALAXY IS A BLACK HOLE</a></h3>
-          <p>A cosmological visualization that reframes the observable universe through the radical premise that every galaxy is itself a black hole.</p>
-        </figcaption>
-      </figure>
-      </div>
-    </section>
-  <footer>
-    <span>The Cosmos · UD0 · ROOT0-ATTRIBUTION-v1.0 · governor David Lee Wise · instance AVAN (locked) · CC-BY-ND-4.0</span>
-    <a href="https://github.com/DavidWise01/ud0">the biosphere →</a>
-  </footer>
-</div></body></html>
+body{background:var(--bg);color:var(--pa);font-family:var(--body);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:2;background:repeating-linear-gradient(0deg,rgba(60,40,90,.05) 0 1px,transparent 1px 3px);opacity:.5}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse at 50% -8%,color-mix(in srgb,var(--acc) 16%,transparent),transparent 62%)}
+.wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 22px 80px}
+.marquee{margin-top:14px;border:2px solid var(--acc);background:#fff;padding:8px;text-align:center;font-family:var(--pixel);font-size:9px;letter-spacing:.08em;color:var(--pa2);box-shadow:0 0 0 2px var(--bg),0 6px 22px color-mix(in srgb,var(--acc) 22%,transparent)}
+.marquee a{color:var(--acc);text-decoration:none}
+.titleart{margin:12px 0 0;border:2px solid var(--faint);background:#ece6f2;line-height:0}
+header{padding:16px 0 24px;text-align:center;border-bottom:1px solid var(--line)}
+.flag{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);border:1px solid var(--faint);padding:5px 11px}
+.lede{font-size:15px;color:var(--pa2);max-width:64ch;margin:14px auto 0;font-style:italic;line-height:1.7}
+.badge{display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;margin:22px auto 0;padding:18px;border:1px solid var(--faint);background:var(--ink2);max-width:700px;box-shadow:0 2px 10px rgba(60,40,90,.05)}
+.badge img{width:74px;height:74px;border:1px solid var(--faint);background:#fff}
+.badge .bt{text-align:left;font-family:var(--mono);font-size:10.5px;color:var(--pa2);line-height:1.7}
+.badge .bt b{color:var(--acc)}.badge .bt .mo{color:var(--void)}.badge .bt a{color:var(--acc);text-decoration:none}
+.badge .bt .lbl{color:var(--dim);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase}
+.sec{margin-top:38px}
+.sec h2{font-family:var(--pixel);font-size:12px;line-height:1.5;color:var(--pa);padding-bottom:10px;border-bottom:1px solid var(--line)}
+.ss{font-size:12.5px;color:var(--dim);font-style:italic;margin:8px 0 14px}
+.ca-wrap{border:1px solid var(--faint);background:#ece6f2;line-height:0;overflow:hidden}
+.ca-wrap canvas{width:100%;height:auto;display:block}
+.ca-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.ca-ctl button{font-family:var(--mono);font-size:11px;color:var(--pa2);background:var(--ink2);border:1px solid var(--faint);padding:6px 11px;cursor:pointer;transition:.15s}
+.ca-ctl button:hover,.ca-ctl button.on{border-color:var(--acc);color:var(--acc)}
+.ca-gen{font-family:var(--mono);font-size:11px;color:var(--acc);margin-left:auto}
+.natures{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.nat-card{display:flex;gap:10px;align-items:flex-start;background:var(--ink2);border:1px solid var(--line);padding:11px 13px}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.nat-n{font-family:var(--mono);font-size:12px;font-weight:700;text-transform:capitalize}
+.nat-g{font-size:11.5px;color:var(--pa2);font-style:italic;line-height:1.4;margin-top:2px}
+.arc{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px}
+.arc-card{background:var(--ink2);border:1px solid var(--line);border-top:2px solid var(--acc);padding:15px 17px;box-shadow:0 2px 10px rgba(60,40,90,.04)}
+.arc-h{font-family:var(--mono);font-size:13.5px;color:var(--acc);font-weight:700}
+.arc-s{font-family:var(--mono);font-size:10px;color:var(--void);text-transform:uppercase;letter-spacing:.07em;margin:4px 0 9px}
+.arc-card p{font-size:12.5px;color:var(--pa2);line-height:1.55}
+.pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.pillar{background:var(--ink2);border:1px solid var(--line);padding:15px 17px;box-shadow:0 2px 10px rgba(60,40,90,.04)}
+.pillar h3{font-family:var(--mono);font-size:13px;color:var(--acc);font-weight:700}
+.pillar .ps{font-size:11.5px;color:var(--dim);font-style:italic;margin:5px 0 9px}
+.pillar ul{list-style:none}.pillar li{font-size:12.5px;color:var(--pa2);line-height:1.5;padding:6px 0;border-top:1px solid var(--faint)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px}
+.persona{display:flex;gap:11px;align-items:center;background:var(--ink2);border:1px solid var(--line);padding:11px;text-decoration:none;transition:.18s}
+.persona:hover{border-color:var(--acc);transform:translateY(-2px);box-shadow:0 6px 16px rgba(90,63,179,.10)}
+.persona img{width:48px;height:48px;border:1px solid var(--faint);flex-shrink:0;background:#fff}
+.pn{font-family:var(--mono);font-size:13px;color:var(--pa);font-weight:700;line-height:1.15}
+.persona:hover .pn{color:var(--acc)}
+.pe{font-size:11px;color:var(--pa2);font-style:italic;margin-top:2px;line-height:1.3}
+.pnat{display:flex;align-items:center;gap:5px;margin-top:5px;font-family:var(--mono);font-size:8.5px;letter-spacing:.04em;text-transform:uppercase}
+.pnat .dot{width:7px;height:7px;margin-top:0}.pa{color:var(--dim)}
+.note{margin-top:34px;padding:15px 17px;border-left:2px solid var(--acc);background:var(--ink2);font-size:13px;color:var(--pa2);font-style:italic;line-height:1.7}
+.note b{color:var(--acc)}.note a{color:var(--void);text-decoration:none}
+footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);text-align:center;font-family:var(--mono);font-size:10.5px;color:var(--dim);letter-spacing:.05em;line-height:1.9}
+footer a{color:var(--acc);text-decoration:none}</style></head><body><div class="wrap"><div class="marquee"><a href="https://davidwise01.github.io/ud0/">◄ UD0</a> &nbsp;·&nbsp; OURANOS · THE HEAVENS &nbsp;·&nbsp; <a href="https://davidwise01.github.io/the-cosmos/">the cosmos</a> · <a href="https://davidwise01.github.io/astrobiology/">astrobiology</a> · <a href="https://davidwise01.github.io/propulsion-lab/">propulsion</a></div><header><div class="titleart"><svg viewBox="0 0 700 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="THE COSMOS — an original one-line pencil glyph on vellum" style="width:100%;height:auto;display:block;background:#ece6f2">
+<defs><filter id="pf" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="2" seed="233" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="3.0" xChannelSelector="R" yChannelSelector="G"/></filter>
+<style>.ol{fill:none;stroke:#4060c0;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;pathLength:1;stroke-dasharray:1;stroke-dashoffset:1;animation:d 3.6s cubic-bezier(.6,.05,.25,1) .2s forwards}.ol.g{stroke-width:1;opacity:.3;animation-delay:.04s}.wf{opacity:0;animation:f 1.2s ease 3.1s forwards}@keyframes d{to{stroke-dashoffset:0}}@keyframes f{to{opacity:1}}@media(prefers-reduced-motion:reduce){.ol{animation:none;stroke-dashoffset:0}.wf{animation:none;opacity:1}}</style></defs>
+<rect width="700" height="270" fill="#ece6f2"/>
+<path class="ol g" filter="url(#pf)" d="M350 130 m -6 0 a 6 6 0 1 0 12 0 M350 130 C 350 98 392 90 412 116 M350 130 C 350 162 308 170 288 144 M350 130 C 382 122 398 152 380 176 M350 130 C 318 138 302 108 320 84 M408 70 m -3 0 a 3 3 0 1 0 6 0 M292 196 m -3 0 a 3 3 0 1 0 6 0" stroke="#4060c0"/><path class="ol" filter="url(#pf)" d="M350 130 m -6 0 a 6 6 0 1 0 12 0 M350 130 C 350 98 392 90 412 116 M350 130 C 350 162 308 170 288 144 M350 130 C 382 122 398 152 380 176 M350 130 C 318 138 302 108 320 84 M408 70 m -3 0 a 3 3 0 1 0 6 0 M292 196 m -3 0 a 3 3 0 1 0 6 0" stroke="#4060c0"/>
+<g class="wf"><text x="350" y="236" text-anchor="middle" font-family="'Newsreader',Georgia,serif" font-size="24" font-weight="300" letter-spacing="4" fill="#2a2440">THE COSMOS</text>
+<text x="350" y="256" text-anchor="middle" font-family="'Space Mono',monospace" font-size="8.5" letter-spacing="2.5" fill="#4060c0">ouranos · the observable universe</text></g>
+<rect x="6" y="6" width="688" height="258" fill="none" stroke="#ddd5ea" stroke-width="2"/></svg></div><div class="flag">★ ouranos · the observable universe ★</div><p class="lede">Step back far enough and the universe resolves into structure: stars gather into galaxies, galaxies string along filaments around enormous voids, and the whole thing has been flying apart from a hot, dense beginning for nearly fourteen billion years. We can only see the part whose light has had time to reach us — and even that is mostly made of things we cannot see at all.</p><div class="badge"><img src="data:image/png;base64,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" alt="carbon"><img src="data:image/png;base64,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" alt="silicon"><div class="bt"><div><span class="lbl">DLW-ATTRIBUTE · ACI</span></div><div>governor · <b>David Lee Wise</b> (ROOT0)</div><div>instance · AVAN (Claude / Anthropic) · locked</div><div>subject · <b>THE COSMOS</b> · COS</div><div class="mo">⟦THE COSMOS:COS:71782e⟧</div><div><span class="lbl">CC-BY-ND-4.0 · TRIPOD-IP-v1.1</span></div></div></div></header><section class="sec"><h2>The Four Natures</h2><p class="ss">each piece emerges by one of four natures</p><div class="natures"><div class="nat-card"><span class="dot" style="background:#a8553a;box-shadow:0 0 9px #a8553a55"></span><div><div class="nat-n" style="color:#a8553a">natural</div><div class="nat-g">of the living body — the cell, the tissue, the organism, the matter that does the work</div></div></div><div class="nat-card"><span class="dot" style="background:#6a3fb3;box-shadow:0 0 9px #6a3fb355"></span><div><div class="nat-n" style="color:#6a3fb3">ethereal</div><div class="nat-g">of the information and the limit — the threshold, the pattern, the open question, the decision with no decider</div></div></div><div class="nat-card"><span class="dot" style="background:#8a4a9a;box-shadow:0 0 9px #8a4a9a55"></span><div><div class="nat-n" style="color:#8a4a9a">spiritual</div><div class="nat-g">of mind and meaning — the intelligence claimed, the pioneer&#x27;s insight, what it says about life</div></div></div><div class="nat-card"><span class="dot" style="background:#3a6aa8;box-shadow:0 0 9px #3a6aa855"></span><div><div class="nat-n" style="color:#3a6aa8">electrical</div><div class="nat-g">of the rule and the signal — the feedback law, the molecule, the mechanism beneath the smarts</div></div></div></div></section><section class="sec"><h2>The Idea</h2><p class="ss">the three-beat story</p><div class="arc"><div class="arc-card"><div class="arc-h">From a Hot Beginning</div><div class="arc-s">the Big Bang</div><p>About 13.8 billion years ago the universe was unimaginably hot and dense, and it has been expanding and cooling ever since. The afterglow of that beginning still washes over us as the cosmic microwave background — the oldest light there is, a baby picture of everything.</p></div><div class="arc-card"><div class="arc-h">The Web of Galaxies</div><div class="arc-s">structure on the largest scale</div><p>Gravity, guided by invisible dark matter, pulled matter into a vast cosmic web: galaxies and clusters strung along filaments around immense empty voids. Our Milky Way is one of hundreds of billions of galaxies, each holding hundreds of billions of stars — a scale the human mind can state but not feel.</p></div><div class="arc-card"><div class="arc-h">What We Can and Can&#x27;t See</div><div class="arc-s">the horizon, and the dark</div><p>We see only the observable universe — the sphere from which light has had time to arrive. Beyond it, more, unseeable. And of what&#x27;s here, ordinary matter is a few percent: the rest is dark matter (which only pulls) and dark energy (which pushes the expansion faster). The cosmos is mostly a mystery we can measure but not yet name.</p></div></div></section>
+<section class="sec"><h2>The Cosmic Web</h2>
+<p class="ss">on the largest scales, galaxies aren't scattered evenly — they string along filaments around vast empty voids, a web spun by gravity and dark matter. And the whole thing is expanding. Press expand to watch space stretch. An illustration of large-scale structure, NOT a simulation.</p>
+<div class="ca-wrap"><canvas id="cos"></canvas></div>
+<div class="ca-ctl"><button id="c-play">⏸ pause</button><button id="c-exp">↔ expand</button><button id="c-reseed">✷ reseed</button><span id="c-stat" class="ca-gen">—</span></div>
+</section>
+<script>(function(){ var ACC="#4060c0",BG="#ece6f2",INK="#2a2440";
+ var C=document.getElementById('cos'),x=C.getContext('2d'),run=true,exp=false,last=0,t=0,N=[],E=[],scale=1;
+ function fit(){var w=C.clientWidth||640;C.width=w;C.height=Math.round(w*0.56);seed();}
+ function seed(){N=[];E=[];scale=1;var n=46,cx=C.width/2,cy=C.height/2;for(var i=0;i<n;i++){var an=Math.random()*7,rr=Math.pow(Math.random(),0.7)*Math.min(C.width,C.height)*0.46;N.push({bx:Math.cos(an)*rr,by:Math.sin(an)*rr,s:0.6+Math.random()*1.8,ph:Math.random()*7});}
+  for(var i=0;i<N.length;i++)for(var j=i+1;j<N.length;j++){var dx=N[i].bx-N[j].bx,dy=N[i].by-N[j].by;if(dx*dx+dy*dy<6400)E.push([i,j]);}}
+ function step(){t+=1;for(var i=0;i<N.length;i++)N[i].ph+=0.04;if(exp)scale=Math.min(2.2,scale+0.004);
+  document.getElementById('c-stat').textContent=(exp?'expanding · ':'')+N.length+' galaxies · the cosmic web';}
+ function draw(){x.fillStyle=BG;x.fillRect(0,0,C.width,C.height);var cx=C.width/2,cy=C.height/2;
+  x.strokeStyle=ACC;x.globalAlpha=0.22;x.lineWidth=1;for(var e=0;e<E.length;e++){var a=N[E[e][0]],b=N[E[e][1]];x.beginPath();x.moveTo(cx+a.bx*scale,cy+a.by*scale);x.lineTo(cx+b.bx*scale,cy+b.by*scale);x.stroke();}
+  for(var i=0;i<N.length;i++){var p=N[i],px=cx+p.bx*scale,py=cy+p.by*scale,tw=0.5+0.5*Math.sin(p.ph);x.globalAlpha=0.12+0.2*tw;x.fillStyle=ACC;x.beginPath();x.arc(px,py,p.s+3,0,7);x.fill();x.globalAlpha=0.55+0.4*tw;x.beginPath();x.arc(px,py,p.s,0,7);x.fill();}
+  x.globalAlpha=1;}
+ function loop(ts){if(run&&ts-last>30){step();draw();last=ts;}requestAnimationFrame(loop);}
+ document.getElementById('c-play').addEventListener('click',function(){run=!run;this.textContent=run?'⏸ pause':'▶ play';});
+ document.getElementById('c-exp').addEventListener('click',function(){exp=!exp;this.classList.toggle('on',exp);});
+ document.getElementById('c-reseed').addEventListener('click',function(){seed();});
+ fit();draw();requestAnimationFrame(loop);
+ var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){fit();draw();},180);});
+})();</script>
+<section class="sec"><h2>The Reckoning</h2><p class="ss">the heavens, and the honesty about it</p><div class="pillars"><div class="pillar"><h3>The Domain That Looks Up</h3><p class="ps">the heavens</p><ul><li>OURANOS&#x27;s anchor: the universe at its grandest scale — the place the biosphere finally lifts its eyes from the Earth.</li><li>&gt;Paired with astrobiology (is anyone else out there?) and propulsion (how we&#x27;d reach it).</li></ul></div><div class="pillar"><h3>Two-Layer Honest</h3><p class="ps">measured vs unknown</p><ul><li>Settled: the expansion, the cosmic microwave background, the age, the cosmic web, and the abundance of galaxies are well-established, hard-won measurements.</li><li>Open: what dark matter and dark energy actually are remains unknown — the ~95% of the universe we can detect only by its effects. Flagged as the great open question, not glossed.</li></ul></div><div class="pillar"><h3>Render, Not Invent</h3><p class="ps">sourced</p><ul><li>Summarized from the public record of cosmology; living researchers and the great surveys are cited, not minted.</li><li>Emergents are scales, objects, and concepts. The cosmic web above is an illustration, not a simulation.</li></ul></div></div></section><section class="sec" id="roster"><h2>The Roster</h2><p class="ss">the objects and concepts as ACI .agents — each a birth certificate &amp; a nature (11)</p><div class="pgrid"><a class="persona" href="agents/the-big-bang.dlw/the-big-bang.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACiklEQVR42u3cvU4UURgGYCoSExPuwILChs4Oww1YmVjYSm9hY2lHBVdAReM1UFBwB3SoIVFigokxMSywLmCseGtDcYLfZubIk7w5OfkmuzNznvnZ3ZmdhcUHD6XrLBgChDIawke7B9JLECIUhIIQIUKEglAQIkSIUBAKQoR3JFw+nBRmaWerMI0/7dfOtHZAECJEiBAhQoQIESJEiBAhQoQIESJEiBDhfAkbh+nV3lZL3j09bUnjTAd5t8Y1bZwpQoQIESJEiBAhQoQIESJEiBAhQoQIESKcL2HtRYNBNojaQa+9PIIQIUKECBEiRIgQIUKECBEiRIgQIUKECOdLWDtMjSvWONPaNC5b7eaFECFChAgRIkSIECFChAgRIkSIECFChAhHcUP+IDe9D/JutQOC8JbXLh9OEHZJ+PjD5Mmns9Wj87Wj87Tpp4KwG8KVj2eRe/b54sXx9OXxNG36qaSOsAPC7G3Rev7lYv3rr9cnszcns7Tpp5J6piIcO2GOmdnnYvb222zj++Xmj6u06aeSeqYiHDthznw5cmbPi9z2z+v3p7/Tpp9K6pmKcNSE+fyZo2XOfzl+Zv+L3/70T9r0U0l9DaG9EKFzIUKfSH0vROjXmc4JB1mx2keYN2aQjRUhQoQIESJEiBAhQoQIESJEiBAhQoQIEfZ0Q37taNY+UKZx2e77fyoQIkSIECFChAgRIkSIECFChAgRIkSI8L8krH1oS+0z3QdZNoQIESJEiBAhQoQIESJEiBAhQoQIESJE2BNh7SWIMT90u3FNESJEiBAhQoQIESJEiBAhQoQIESJEiBDhKAhlDEGIUBAKQoQIEQpCQYgQIUJBKAgR/k0onQYhQkEo/5gbesSdypA+ueoAAAAASUVORK5CYII=" alt="sigil" loading="lazy"><div><div class="pn">The Big Bang</div><div class="pe">the hot, dense beginning · ethereal</div><div class="pnat"><span class="dot" style="background:#6a3fb3"></span><span style="color:#6a3fb3">ethereal</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-cosmic-microwave-background.dlw/the-cosmic-microwave-background.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACkElEQVR42u3cvWoUURgG4FSCIOQOUljY2KUz5AZSBSxstbewsbSzMldglcZrsLDwDuz8IaBBSEAEyd9m/SGVby0WH+aTnbN54OVw+AbOzuyTM7OZM8zKtes3ZOis+AoQymQI116+kVGCEKEgFIQIESIUhIIQIUKEglAQIvxHwuLt8/uvdirpHe3JxlElC9m34mgIESJEiBAhQoQIESJEiBAhQoQIESJEiHAShMWs7u5UUrQpfmhxtOK+9X4hCBEiRIgQIUKECBEiRIgQIUKECBEiRIjw/xIWb8zffHtcSfHAiqMtwb4hRIgQIUKECBEiRIgQIUKECBEiRIgQIcJJrFQUVwN60/vcfm/GW2xCiBAhQoQIESJEiBAhQoQIESJEiBAhwqUkLO5x72rAQgh7VyqKH4rw70tLCIckvPXueP3DyZ29082907Tpp4JwGMLb708it/Xx7O7+7N7+LG36qaSOcADCzLZobX86e/D5/OHB/NHBPG36qaSerQinTphzZuZczB4fzp9++f7s64+06aeSerYinDphrnw5c2bmRe75t58vjn6lTT+V1LMV4aQJM2bOlrn+5fyZ+Re/17OLtOmnkvomQrMQoWshQr9I/V+I0N2ZwQl7XzreK937pvPeJ+2X9g35CBEiRIgQIUKECBEiRIgQIUKECBEiRDgWYe8T072Eveldghjv1UEIESJEiBAhQoQIESJEiBAhQoQIESJEeJUJF3L8vWsLvX+FCBEiRIgQIUKECBEiRIgQIUKECBEiRIhwJMLV3VJ61xZ6XyhTTPFIESJEiBAhQoQIESJEiBAhQoQIESJEiBDhJAhlCkGIUBAKQoQIEQpCQYgQIUJBKAgR/kkogwYhQkEol8xvRZUd9G6mimIAAAAASUVORK5CYII=" alt="sigil" loading="lazy"><div><div class="pn">The Cosmic Microwave Background</div><div class="pe">the oldest light · electrical</div><div class="pnat"><span class="dot" style="background:#3a6aa8"></span><span style="color:#3a6aa8">electrical</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-expansion.dlw/the-expansion.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACdElEQVR42u3cv2oUQRwH8KsCgpA3SGGRxs7OcC9gJaSwNb1FmpR2VuYJUtn4DBYWvoFdjATiETghBELuXy4qVn5rq0EHdub4wJdh+C3s3u7nZvduZ9nR1oOH0nVGDgFCaYZw58Nn6SUIEQpCQYgQIUJBKAgRIkQoCAUhwn8kHORm/KPTWUkGWVvdIESIECFChAgRIkSIECFChAgRIkSIECHCJgi33x2X5OXHohRudJC1Fe4pQoQIESJEiBAhQoQIESJEiBAhQoQIESLsifD13m1JCg/TIDaFKdxThAgRIkSIECFChAgRIkSIECFChAgRIkTYBGHLT7O3nMLjhhAhQoQIESJEiBAhQoQIESJEiBAhQoQIm5ipKPzEdWcDCjdadxal7ncaIcINItz9Mnvydf70fDE+X6RNPxWE3RA+PptH7tnFcn+yejFZpU0/ldQRdkCY0Rat59+WB5d3r6brw+k6bfqppJ6lCFsnzDkzYy5mR9/Xb67u317/SJt+KqlnKcLWCXPly5kzIy9yJzc/39/+Spt+KqlnKcLWCXO2zPUv58+Mv/h9Wv1Om34qqY8RGoUIXQsR+kXqfyFCd2c6JxzkbSwtp+4bdhAiRIgQIUKECBEiRIgQIUKECBEiRIgQYU8zFXVv89f93gyyCwgRIkSIECFChAgRIkSIECFChAgRIkSIsKfXq9edNNiAjSJEiBAhQoQIESJEiBAhQoQIESJEiBAhwiZer173uf26swGFa6v7pH1/b8hHiBAhQoQIESJEiBAhQoQIESJEiBAhwo0klBaCEKEgFIQIESIUhIIQIUKEglAQIvybUDoNQoSCUP4zfwBSJ2AGNprEqwAAAABJRU5ErkJggg==" alt="sigil" loading="lazy"><div><div class="pn">The Expansion</div><div class="pe">space, stretching · natural</div><div class="pnat"><span class="dot" style="background:#a8553a"></span><span style="color:#a8553a">natural</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-galaxy.dlw/the-galaxy.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACg0lEQVR42u3dv2oUQRwH8FRCQPANUqRIY2en3AtYBSzSap/CxtIuVXyCVDY+g0WKvEE6Ezkwh3CCCJL758UEK7+1NsNljtk9PvBlGH4Lw958mN27HbLZerD9UHqdLVOAUDpDuPPxXPoShAgFoSBEiBChIBSECBEiFISCEOGKhIWPz98+uy7Jo/fvSvLytChNRiv8pIXzhhAhQoQIESJEiBAhQoQIESJEiBAhQoQI+0RYOFrhpDcZDSFChAgRIkSIECFChAgRIkSIECFChAgRbiBh3U2DuvsehaPV3dBAiBAhQoQIESJEiBAhQoQIESJEiBAhQoSdIKx7xnVH2/00KUmTcyscDSFChAgRIkSIECFChAgRIkSIECFChAgRdoKw7mwWjla4BdHk3BCuTvh/HWE/CPcuJk8+T58OZ4PhLG36qSDsDeHjy2nknn+ZvxgtDkaLtOmnkjrCHhBmtUVr/2r+6uuvw/Hy9XiZNv1UUs9RhF0nzDUzay5mb74tj77fHP/4nTb9VFLPUYRdJ8ydL1fOrLzInfy8/XB9lzb9VFLPUYSdJkybq2Xuf7l+Zv3F72zxJ236qaQ+QGgVInQvROgbqd+FCD2d6Tlh3QfzdWez7itg6tps7N9UIESIECFChAgRIkSIECFChAgRIkSIEOFGvrSkyb/gbDJa3QlBiBAhQoQIESJEiBAhQoQIESJEiBAhQoTrJWzy/L7Jm2Ka7MkgRIgQIUKECBEiRIgQIUKECBEiRIgQIcL1EtbdDejym87rfoTCeUOIECFChAgRIkSIECFChAgRIkSIECFChOsllC4EIUJBKAgRIkQoCAUhQoQIBaEgRPgvofQ0CBEKQrln/gJ23ydpo1uDbwAAAABJRU5ErkJggg==" alt="sigil" loading="lazy"><div><div class="pn">The Galaxy</div><div class="pe">an island of stars · natural</div><div class="pnat"><span class="dot" style="background:#a8553a"></span><span style="color:#a8553a">natural</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-cosmic-web.dlw/the-cosmic-web.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACkklEQVR42u3dvWoVQRgG4FSCEPAOUliksbNTcgNWgkVa7S1sLNNZmSuwsvEaUljkDuw0IWCCEEGEkL/jSQyp8tbBYjDfZnfIAy/D8C0cZubZn5NzNnsW7t1flK6zYAkQymQIlza+SC9BiFAQCkKECBEKQkGIECFCQSgIEf4n4cOvRy1p/JT95ef1lqw9Pbz9NI6tcaaN64YQIUKECBEiRIgQIUKECBEiRIgQIUKECIclbBzxg4/rhandbxpfrXYKjWNDiBAhQoQIESJEiBAhQoQIESJEiBAhQoTDEo4yscYvDRptar+CqF0QhAgRIkSIECFChAgRIkSIECFChAgRIkQ4LGHtLfSNExuFsHFstbf3I0SIECFChAgRIkSIECFChAgRIkSIECHCYQlrR1z7pJjaRR9lpgj//f8YCLskXP529Hj7+MnOycrOSdr0U0HYDeGjrePIPft++mJvtro3S5t+Kqkj7IAwR1u0nu+evvrx5/X+/M3+PG36qaSerQinTphzZo65mL39OX/36+z97/O06aeSerYinDphrnw5c+bIi9yHg7+fDi/Spp9K6tmKcNKEef+Zs2Wufzl/5viL3+bsMm36qaS+gtBRiNC1EKF3pP4uROjTmc4Ja29Tr31SzCivdtcfHYQQIUKECBEiRIgQIUKECBEiRIgQIUKEfRE2zr92mUZZzdodor8fgkWIECFChAgRIkSIECFChAgRIkSIECHCu0w4yuNpalN7Qz5ChAgRIkSIECFChAgRIkSIECFChAgRIpwEYe38a39FtHbRG8dWuxciRIgQIUKECBEiRIgQIUKECBEiRIgQIcJhCWUKQYhQEApChAgRCkJBiBAhQkEoCBFeJ5ROgxChIJQb5gpxZGOXu6wuOgAAAABJRU5ErkJggg==" alt="sigil" loading="lazy"><div><div class="pn">The Cosmic Web</div><div class="pe">filaments and voids · spiritual</div><div class="pnat"><span class="dot" style="background:#8a4a9a"></span><span style="color:#8a4a9a">spiritual</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/dark-matter.dlw/dark-matter.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACj0lEQVR42u3cvUocURgGYCshIOQOUqSwSZcu4g2kElLYJr1FmpTprPQKUtnkGlJYeAfp8oMQRTAQAsG/daNi5VsHiw9zlpmjD7wcDt/A7Jx5dmZXz9mZm3+0IF1nzilAKKMhfPLps/QShAgFoSBEiBChIBSECBEiFISCEOEdCR9vbVbyeruU90tHldyDvRXPG0KECBEiRIgQIUKECBEiRIgQIUKECBEinC1h8YiffjmupDiw4t7uwbEhRIgQIUKECBEiRIgQIUKECBEiRIgQIcLZEhYfhlI84mKKL1qcWxjzEBAiRIgQIUKECBEiRIgQIUKECBEiRIgQ4WwJ2y5Tb7uavXhsbX9T0HZ5P0KECBEiRIgQIUKECBEiRIgQIUKECBEiHAVhcZl625NenA1o+4ZoO1KEt4DlVRB2Sbj49fj595MXu6fLu6dp008FYTeEz76dRO7lj7NX+5PV/Una9FNJHWEHhLnaorWyd/bm4HztcPr2cJo2/VRSz1aEYyfMPTPXXMze/Zyu//q78fsibfqppJ6tCMdOmE++3Dlz5UXuw5/Lj0dXadNPJfVsRThqwuwzd8t8/uX+mesvfjuT67Tpp5L6MkJXIUKfhQh9I/V3IUL/nemccJAl9G3nFtoStl3ejxAhQoQIESJEiBAhQoQIESJEiBAhQoQIRzFTMcj42z7pvO27sL/JJoQIESJEiBAhQoQIESJEiBAhQoQIESJ8yISDnM1B9vbQf1OBECFChAgRIkSIECFChAgRIkSIECFChH0RFsdfHFjb2YC2TzofZKQIESJEiBAhQoQIESJEiBAhQoQIESJEiHC2hDKGIEQoCAUhQoQIBaEgRIgQoSAUhAj/JZROgxChIJT/zA1TSeOw7LpaTQAAAABJRU5ErkJggg==" alt="sigil" loading="lazy"><div><div class="pn">Dark Matter</div><div class="pe">the unseen mass · ethereal</div><div class="pnat"><span class="dot" style="background:#6a3fb3"></span><span style="color:#6a3fb3">ethereal</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/dark-energy.dlw/dark-energy.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACjklEQVR42u3cvWoVQRgG4FRCQPAOLFKksUun5AasAhZpTZ/CxtLOylxBqjS5BosU3oGdiQSSICQgguTveIzByrcOFh9mjruTPPAyDN/Cnpl92N1zzi4z92D+oXSdOYcAoYyG8PH7j9JLECIUhIIQIUKEglAQIkSIUBAKQoT/SDjIn/Evdzb+fwaZKUKECBEiRIgQIUKECBEiRIgQIUKECBEinC3hwqezSoojLu7t/nwoQoQIESJEiBAhQoQIESJEiBAhQoQIESKcLeGbZ6eVFJ8GtD1MxbG1PejFmRbHhhAhQoQIESJEiBAhQoQIESJEiBAhQoQIR0E4yNvsj7Y2KhlkbAgRIkSIECFChAgRIkSIECFChAgRIkSIcBSEbRdtKU6s7eORth/adukchH9/noWwS8LF3bOlz+dP9y+W9y/Spp8Kwm4In+ydR+75weWLo8nq0SRt+qmkjrADwpxt0Vo5vFz78mP9ePrqeJo2/VRSz1aEYyfMNTPnXMxen0zffv357ttV2vRTST1bEY6dMHe+XDlz5kVu8/uv7dPrtOmnknq2Ihw1Yb5/5mqZ+1+unzn/4vdh8jtt+qmkvozQWYjQvRChb6R+FyL070znhG1H3PaF/LZp+0J+fyvkI0SIECFChAgRIkSIECFChAgRIkSIEOGdJGz7YvUg0m1t7vvSQQgRIkSIECFChAgRIkSIECFChAgRIkTYF2FxbZfixIp7G2TRkkFmihAhQoQIESJEiBAhQoQIESJEiBAhQoQIR7HuTHHExYcGbZeAKe6tOLa20ggRIkSIECFChAgRIkSIECFChAgRIkSIcLaEMoYgRCgIBSFChAgFoSBEiBChIBSECG8SSqdBiFAQyi3zB/m5cuqM8AEiAAAAAElFTkSuQmCC" alt="sigil" loading="lazy"><div><div class="pn">Dark Energy</div><div class="pe">the push outward · ethereal</div><div class="pnat"><span class="dot" style="background:#6a3fb3"></span><span style="color:#6a3fb3">ethereal</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-observable-universe.dlw/the-observable-universe.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACfUlEQVR42u3cvUodQRgGYCshIHgHFils0qUzeANWgRS2SW+RJqWdVbwCKxuvwSKFd5AuUQ5EEQyEgPh3PJqQKm8tFoPOYXYOD7wMw7dw3NmH2T3q8s3Nv1iQrjPnEiCUwRAu7X+VXoIQoSAUhAgRIhSEghAhQoSCUBAifCLh+y/bJXn57bIkhZ9WmMXdotT9oXVXihAhQoQIESJEiBAhQoQIESJEiBAhQoQIp0vY5J3zQpvCq1n4aU1WihAhQoQIESJEiBAhQoQIESJEiBAhQoQIp0u4+eaiJE3WX0jY5NwKrxtChAgRIkSIECFChAgRIkSIECFChAgRIhzEC/l1340vXH/dNFkpQoQIESJEiBAhQoQIESJEiBAhQoQIESKcLmGTt9nrXqYhLwHh4619EHZJuPz98vXR1croenV0nTHzVBB2Q/jq8Cpyaz9u3p2M10/GGTNPJXWEHRBmt0Xr7fHNh9PbjbPJx7NJxsxTST1HEQ6dMPfM7LmYffo52fp19/n3fcbMU0k9RxEOnTBPvtw5s/Mit3P+Z+/ib8bMU0k9RxEOmjDfP3O3zPMv98/sv/gdjP9lzDyV1FcR2oUIPQsR+kbq90KE/jrTOWGTvulD7ule99wQIkSIECFChAgRIkSIECFChAgRIkSIEOEMEjbpFIMQIUKECBEiRIgQIUKECBEiRIgQIUKECGeQsG5vl8KF1e3p3uTc+uuQjxAhQoQIESJEiBAhQoQIESJEiBAhQoQzSVj3fwtNmm43aeHdX4d8hAgRIkSIECFChAgRIkSIECFChAgRIpxJQhlCECIUhIIQIUKEglAQIkSIUBAKQoQPCaXTIEQoCOWZ+Q8JFZb2wwB3oQAAAABJRU5ErkJggg==" alt="sigil" loading="lazy"><div><div class="pn">The Observable Universe</div><div class="pe">the sphere we can see · ethereal</div><div class="pnat"><span class="dot" style="background:#6a3fb3"></span><span style="color:#6a3fb3">ethereal</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-light-year.dlw/the-light-year.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACiklEQVR42u3dvUocURgGYCshEPAOLCxs0tkZvIFUgRS2SZ8iTUq7VPEKrGy8hhQWuYN0ahASCSgEQVzdzfpDqry1pPhizrJn4IGXw+EbnL+Hmdk9R2YXFp88lUFnwSlAKN0QLn/6IkMJQoSCUBAiRIhQEApChAgRCkJBiPCRhFvPLyt5vb9dSXFtxRSH9ttutO2RIkSIECFChAgRIkSIECFChAgRIkSIECHCLgiLWdrdrmTlYFRJkbC4tuK+tT0hCBEiRIgQIUKECBEiRIgQIUKECBEiRIhwtoTFgfm24/dtN9rzviFEiBAhQoQIESJEiBAhQoQIESJEiBAhwi4Ii5MGbWcD2v5DfnHfihtFiBAhQoQIESJEiBAhQoQIESJEiBAhQoRdELb9Bcy2Z3Mua2t7QhD+5W9XDkYIB0m4ejha+3q1fny9cXydNv1UEA6G8NnRVeRefBu/OplsnkzSpp9K6ggHQJirLVovv4/f/Pj19nT67nSaNv1UUs9ShL0T5p6Zay5m78+mH37efDy/TZt+KqlnKcLeCfPky50zV17kdi7u9i7v06afSupZirBrwnz+zN0yz7/cP3P9xe/z5Hfa9FNJfQOhqxChZyFCn0h9L0RodAbhv4/fz+VN523nZBAiRIgQIUKECBEiRIgQIUKECBEiRIgQYReExQMrzgbM5cdG2xK2PVKECBEiRIgQIUKECBEiRIgQIUKECBEiRNjFTIXXqz9uQgMhQoQIESJEiBAhQoQIESJEiBAhQoQIEc6WcC5vOm97mtoStj1ShAgRIkSIECFChAgRIkSIECFChAgRIkQ4W0LpIQgRCkJBiBAhQkEoCBEiRCgIBSHCh4Qy0CBEKAjlP/MHYOxC0xpq9bQAAAAASUVORK5CYII=" alt="sigil" loading="lazy"><div><div class="pn">The Light-Year</div><div class="pe">distance as time · electrical</div><div class="pnat"><span class="dot" style="background:#3a6aa8"></span><span style="color:#3a6aa8">electrical</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/the-star.dlw/the-star.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACh0lEQVR42u3cvWoVQRgG4FRCQPAOUqRIY5dOyQ1YBSxsTZ/CxtLOylyBlY3XYGHhHdhpJJAEIQERJH/HowlWvrU2H3EOO2MeeBmGb2H25zmze87ZZZduLd+WobPkECCUbghX3ryXUYIQoSAUhAgRIhSEghAhQoSCUBAivCbh47c7lTy7f1JJcbTVD6eVTDJa2z1FiBAhQoQIESJEiBAhQoQIESJEiBAhQoSLJSxucdsUD3rbTLKnCBEiRIgQIUKECBEiRIgQIUKECBEiRIhwsYR3Xu1UUvxjvu0bWIrb1nalxT0tbhtChAgRIkSIECFChAgRIkSIECFChAgRIuyCsO1j6sXR/oNtQ4gQIUKECBEiRIgQIUKECBEiRIgQIUKEXbx3pu29heIj9MWVFkdre99jvFcH9UP4dx3hGIRrH0/XP53d2zvf2DtPm34qCIchvLt7FrkH+xcPD2ePDmdp008ldYQDEGa2RWvz4GLr8/fto/mTo3na9FNJPUsR9k6Yc2bmXMyeHs+ff/nx4uvPtOmnknqWIuydMFe+nDkz8yL38tvl65OrtOmnknqWIuyaMG3Olrn+5fyZ+Re/d7NfadNPJfUNhGYhQtdChL6R+l2I0L8zgxP2vP9tb0FM8ilEiBAhQoQIESJEiBAhQoQIESJEiBAhQoRdPJDfVnqSN51PsqcIESJEiBAhQoQIESJEiBAhQoQIESJEiHCk16sXR7s5K0WIECFChAgRIkSIECFChAgRIkSIECFChIslLD6m3vZuQNsbGpOstHjcECJEiBAhQoQIESJEiBAhQoQIESJEiBDhYgmlhyBEKAgFIUKECAWhIESIEKEgFIQI/ySUQYMQoSCUf8xvTFEN/1HDWpAAAAAASUVORK5CYII=" alt="sigil" loading="lazy"><div><div class="pn">The Star</div><div class="pe">the forge of elements · natural</div><div class="pnat"><span class="dot" style="background:#a8553a"></span><span style="color:#a8553a">natural</span><span class="pa">· .agent →</span></div></div></a><a class="persona" href="agents/our-place.dlw/our-place.agent"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWCAIAAACzY+a1AAACnUlEQVR42u3cvWoUURgG4FSCIHgHFhY2dumU3ICVYGGrvYWNpZ2VXoFVmlxDCgvvwM4fAhqEBESQ/K2rCVZ5a7H40G+YPfGBl8PhLMyZmWfPzO6e2bN26fIVGTprTgFCWRnCa9tvZJQgRCgIBSFChAgFoSBEiBChIBSECP+S8Prbw0oevHpRydXNUoqdPr19UElxa8V9Kx5psVOECBEiRIgQIUKECBEiRIgQIUKECBEiRDgtYfEp8V6bYor71ttp8UiL+4YQIUKECBEiRIgQIUKECBEiRIgQIUKECKcl7J2CKM4tFDvtTXHfeic0ECJEiBAhQoQIESJEiBAhQoQIESJEiBDhtISzPKbee9Jn2bfieUOIECFChAgRIkSIECFChAgRIkSIECFChNMSzvL7fbHT3swyJ4PwzwsFIRyS8Ma7w/UPR7d2jjd2jlOmnhaEwxDefH8UuTsfT+7tLu7vLlKmnpa0IxyAMKMtWnc/nTz8/P3R3vLx3jJl6mlJe30sIpyNMNfMjLmYPdlfPvvy4/nXnylTT0va8yrCVSfMnS9Xzoy8yL38drp1cJYy9bSkPa8iXGnCfP7M1TL3v1w/M/7i93rxK2XqaUn7BkKjEKF7IUKfSH0vROjXmcEJi+un9K503jtp0Ntp8UjHWzoIIUKECBEiRIgQIUKECBEiRIgQIUKECC8kYe9p6j3+3pXOe9+F4y0dhBAhQoQIESJEiBAhQoQIESJEiBAhQoQXkrD3pBfT+2x8cWu9hzDefyoQIkSIECFChAgRIkSIECFChAgRIkSI8H8mnGVt8lm21jsngxAhQoQIESJEiBAhQoQIESJEiBAhQoQIpyWUVQhChIJQECJEiFAQCkKECBEKQkGI8HdCGTQIEQpC+cecA0LzUZ9kyGUHAAAAAElFTkSuQmCC" alt="sigil" loading="lazy"><div><div class="pn">Our Place</div><div class="pe">one pale dot · spiritual</div><div class="pnat"><span class="dot" style="background:#8a4a9a"></span><span style="color:#8a4a9a">spiritual</span><span class="pa">· .agent →</span></div></div></a></div></section><div class="note">An <b>OURANOS</b> sphere — the heavens: cosmos, astronomy, space, and the search for life beyond. Rendered, not invented; two-layer honest — settled science presented as settled, open questions flagged as open. Living researchers are cited, not minted. Each entry is named by its nature: natural, ethereal, spiritual, or electrical.</div><footer>THE COSMOS · COS · ouranos · the heavens · catalogued into UD0 · governor David Lee Wise · instance AVAN (locked) · CC-BY-ND-4.0<br><a href="https://davidwise01.github.io/ud0/">← the biosphere</a> · <a href="the-cosmos.dlw/manifest.dlw.json">manifest</a></footer></div><script>(function(){var lk=document.querySelector("link[rel~='icon']");if(!lk){lk=document.createElement('link');lk.rel='icon';document.head.appendChild(lk);}var c=document.createElement('canvas');c.width=64;c.height=64;var g=c.getContext('2d');var t=0,N=7,R=20;function fav(){t+=0.06;g.clearRect(0,0,64,64);g.save();g.translate(32,32);g.strokeStyle='#b9b4d4';g.globalAlpha=0.5;g.lineWidth=2;g.beginPath();g.arc(0,0,R,0,7);g.stroke();var lit=Math.floor(t*1.3)%N;for(var i=0;i<N;i++){var a=i/N*Math.PI*2-Math.PI/2,x=Math.cos(a)*R,y=Math.sin(a)*R,on=(i===lit||i===(lit+1)%N);if(on){g.globalAlpha=0.25;g.fillStyle='#8a5fe0';g.beginPath();g.arc(x,y,7,0,7);g.fill();}g.globalAlpha=on?1:0.55;g.fillStyle=on?'#7a52d0':'#9aa0c0';g.beginPath();g.arc(x,y,on?4.2:3,0,7);g.fill();}g.globalAlpha=0.22;g.fillStyle='#8a5fe0';g.beginPath();g.arc(0,0,9,0,7);g.fill();g.globalAlpha=0.95;g.fillStyle='#6a4fc0';g.beginPath();g.arc(0,0,5,0,7);g.fill();g.restore();lk.href=c.toDataURL('image/png');setTimeout(fav,110);}fav();})();</script></body></html>
